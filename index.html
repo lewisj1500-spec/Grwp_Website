@@ -126,7 +126,7 @@
      Five stages, each an illustration sitting on a shared baseline with an
      arrow between. Art heights are tuned per stage so the pieces read as one
      row rather than five boxes. ── */
-  #jflow .journey { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 30px; align-items: start; margin-top: clamp(30px,3.6vw,50px); }
+  #jflow .journey { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 30px; align-items: start; }
   #jflow .stage { position: relative; min-width: 0; }
   #jflow .stage:not(:last-child)::after {
     content: "→"; position: absolute; right: -22px; top: 128px;
@@ -141,7 +141,7 @@
   #jflow .stage:nth-child(2)::after { right: -34px; }
   #jflow .stage:nth-child(3)::after { right: -14px; }
   #jflow .stage:nth-child(4)::after { right: -14px; }
-  #jflow .num { color: var(--coral-500); font-size: 13px; font-weight: 600; letter-spacing: .08em; margin: 22px 0 7px; }
+  #jflow .num { color: var(--coral-500); font-size: 13px; line-height: 1.3; font-weight: 600; letter-spacing: .08em; margin: 22px 0 7px; }
   #jflow h3 { margin: 0 0 7px; font-family: var(--font-display); font-variation-settings: var(--display-variation); font-weight: 900; font-size: clamp(24px,2.2vw,31px); line-height: 1; letter-spacing: -.03em; }
   #jflow .lede { margin: 0; color: var(--ink-500); font-size: 15px; line-height: 1.35; max-width: 210px; }
   /* The following section's phone mockup is pulled up by a negative margin so
@@ -149,26 +149,48 @@
      top of the last stage's copy. The mobile rules zero that margin, so this
      only applies from the tablet breakpoint up. */
   @media (min-width: 761px) {
-    /* beats the inline padding shorthand on the wrapper */
-    #jflow > div { padding-bottom: clamp(150px, 16vw, 250px) !important; }
+    /* The next section's phone mockup is pulled up by a negative margin so it
+       rises into the whitespace above. Give it that room inside its own
+       section, rather than padding the journey and distorting its spacing. */
+    #how { padding-top: clamp(140px, 12vw, 190px) !important; }
   }
   @media (max-width: 1100px) {
     #jflow .journey { grid-template-columns: repeat(2, minmax(0,1fr)); row-gap: 54px; }
     #jflow .stage:nth-child(2)::after, #jflow .stage:nth-child(3)::after, #jflow .stage:nth-child(4)::after { display: none; }
   }
   @media (max-width: 760px) {
-    #jflow .journey { grid-template-columns: 1fr; gap: 46px; margin-top: 26px; }
-    /* Restore the arrows the 1100px rule hides: stacked in one column, every
-       stage should point at the next. */
-    #jflow .stage:not(:last-child)::after { content: "↓"; display: block; right: auto; left: 50%; top: auto; bottom: -34px; transform: translateX(-50%); }
-    /* Centre the art on one column, and drop the per-stage nudges that only
-       make sense when the stages sit side by side. */
-    #jflow .art { height: 200px; justify-content: center; }
-    #jflow .art img { object-position: center bottom; }
+    /* Swipeable carousel. Cards are 78% wide so the next one peeks in, which is
+       the affordance; the 01-05 numbers already say where you are, so there is
+       no need for dots (and nothing for a re-render to lose). */
+    #jflow .journey {
+      display: flex;
+      grid-template-columns: none;
+      gap: 14px;
+      margin-top: 22px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      /* bleed to the screen edges so a card can sit flush while peeking */
+      margin-inline: calc(-1 * clamp(22px, 4.2vw, 64px));
+      padding-inline: clamp(22px, 4.2vw, 64px);
+      scroll-padding-inline: clamp(22px, 4.2vw, 64px);
+      padding-bottom: 2px;
+    }
+    #jflow .journey::-webkit-scrollbar { display: none; }
+    #jflow .stage { flex: 0 0 78%; scroll-snap-align: start; }
+    #jflow .stage:not(:last-child)::after { display: none; }
+    #jflow .art { height: 176px; justify-content: flex-start; }
+    #jflow .art img { object-position: left bottom; }
     #jflow .stage:nth-child(2) .art img,
     #jflow .stage:nth-child(3) .art img { position: static; bottom: auto; left: auto; }
-    #jflow .lede { max-width: none; }
-    #jflow .hand { display: none !important; }
+    #jflow .num { margin: 14px 0 5px; }
+    #jflow h3 { font-size: 26px; }
+    #jflow .lede { max-width: none; font-size: 14.5px; }
+    /* The handwriting is hidden on phones (as in the original), so its row
+       would otherwise sit there as 28px of empty margin. */
+    #jflow .hand, [data-m="jflow-handrow"] { display: none !important; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -205,6 +227,21 @@
     [style*="min-width: 150px"],
     [style*="min-width:130px"],
     [style*="min-width: 130px"] { min-width: 0 !important; }
+
+    /* --- vertical rhythm: the section padding, column gaps and heading
+           margins are all sized for a two-column desktop grid. Stacked into one
+           column they read as stretched, so bring them in. --- */
+    #grwp-page > section:not(#top) { padding-top: 34px !important; padding-bottom: 36px !important; }
+    #join { padding-top: 0 !important; }
+    #grwp-page > section > div,
+    #grwp-page > section > div > div { row-gap: 22px !important; }
+    #grwp-page section h2 { margin-bottom: 14px !important; }
+    #grwp-page section p:not(:last-child) { margin-bottom: 12px !important; }
+
+    /* --- the standalone handwritten bands --- */
+
+    /* --- components that carry desktop-sized furniture --- */
+    [data-m="cardgrid"] > * > div:first-child { height: 118px !important; }
 
     /* --- motion: shorter travel, shorter duration, no promoted layers --- */
     [data-reveal] { transform: translateY(13px); transition-duration: .42s !important; will-change: auto; }
@@ -254,20 +291,21 @@
     /* --- how it works: the phone no longer climbs over the copy above it --- */
     [data-m="phone-wrap"] { flex-wrap: wrap !important; }
     [data-m="phone-note"] { position: relative !important; flex: 1 0 100% !important; right: auto !important; top: auto !important; text-align: center !important; font-size: 22px !important; transform: rotate(-3deg) !important; margin: 4px 0 14px !important; }
-    [data-m="phone"] { margin-top: 0 !important; width: min(84%, 286px) !important; transform: rotate(-2deg) !important; }
+    [data-m="phone"] { margin-top: 0 !important; width: min(74%, 246px) !important; transform: rotate(-2deg) !important; }
     [data-m="steps"] > * { flex: 1 1 calc(50% - 9px) !important; min-width: 0 !important; }
 
     /* --- the problem: the chat card gets its width back --- */
     [data-m="chat-col"] { margin-right: 0 !important; max-width: none !important; }
-    [data-m="chat-card"] { margin: 0 34px !important; padding: 13px !important; }
+    [data-m="chat-card"] { margin: 0 30px !important; padding: 12px !important; }
     [data-m="annot-1"], [data-m="annot-2"], [data-m="annot-3"] { width: 74px !important; }
     [data-m="annot-1"] { left: -18px !important; top: 6% !important; }
     [data-m="annot-2"] { right: -18px !important; top: 28% !important; }
     [data-m="annot-3"] { left: -18px !important; bottom: -6px !important; }
 
     /* --- four-up icon rows become two-up instead of a column of four --- */
-    [data-m="grid4"] { gap: 18px 14px !important; }
+    [data-m="grid4"] { gap: 16px 14px !important; }
     [data-m="grid4"] > * { flex: 1 1 calc(50% - 7px) !important; min-width: 0 !important; }
+    [data-m="grid4"] > * > span { width: 48px !important; height: 48px !important; margin-bottom: 8px !important; }
     [data-m="grid4"] > * > div:last-child { font-size: 13px !important; }
 
     /* --- photo card grids: two-up, and tilted less so they stop clipping --- */
@@ -276,25 +314,25 @@
     [data-m="cardgrid"] > [data-m-wide] { flex: 1 1 100% !important; }
 
     /* --- split bands (belief / areas / groups / join) --- */
-    [data-m="band-media"] { flex: 1 1 100% !important; min-width: 0 !important; min-height: 228px !important; }
-    [data-m="band-body"] { flex: 1 1 100% !important; min-width: 0 !important; padding: 26px 22px 30px !important; }
-    [data-m="band-figure"] { flex: 1 1 100% !important; min-width: 0 !important; padding: 20px 18px 24px !important; }
+    [data-m="band-media"] { flex: 1 1 100% !important; min-width: 0 !important; min-height: 190px !important; }
+    [data-m="band-body"] { flex: 1 1 100% !important; min-width: 0 !important; padding: 22px 20px 26px !important; }
+    [data-m="band-figure"] { flex: 1 1 100% !important; min-width: 0 !important; padding: 16px 16px 20px !important; }
     [data-m="scribble"] { font-size: 21px !important; }
 
     /* Two sections put the photographs first because the copy is the right-hand
        column on desktop. Stacked, that buries the heading — so lead with words. */
     [data-m="copy-first"] { order: 1 !important; }
     [data-m="media-second"], [data-m-order="media-second"] { order: 2 !important; }
-    [data-m="map"] { flex: 1 1 100% !important; min-width: 0 !important; min-height: 300px !important; }
+    [data-m="map"] { flex: 1 1 100% !important; min-width: 0 !important; min-height: 260px !important; }
 
     /* --- community rows: the meeting time drops under the name --- */
     [data-m="club-row"] { flex-wrap: wrap !important; gap: 12px !important; }
     [data-m="club-meta"] { flex: 1 0 calc(100% - 78px) !important; text-align: left !important; margin-left: 78px !important; display: flex !important; align-items: baseline !important; gap: 6px !important; }
 
     /* --- standalone handwritten notes --- */
-    [data-m="takepics"] { height: auto !important; padding: 4px 20px 26px !important; }
-    [data-m="takepics"] img { width: min(62vw, 230px) !important; margin-left: 0 !important; }
-    [data-m="ordinary"] { width: min(66vw, 250px) !important; }
+    [data-m="takepics"] { height: auto !important; padding: 2px 20px 18px !important; }
+    [data-m="takepics"] img { width: min(54vw, 200px) !important; margin-left: 0 !important; }
+    [data-m="ordinary"] { width: min(56vw, 210px) !important; }
 
     /* --- footer --- */
     [data-m="footer-top"] { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
@@ -406,12 +444,14 @@
   </section>
 
   <!-- JOURNEY — from "we should" to Saturday at 7 -->
-  <section id="jflow" style="background:#F5F1E8">
-    <div style="max-width:1320px;margin:0 auto;padding:clamp(34px,4.4vw,64px) clamp(20px,5vw,64px) clamp(44px,5.4vw,80px)">
+  <section id="jflow" style="background:#F5F1E8;font-family:var(--font-ui);padding:clamp(28px,3.4vw,46px) clamp(22px,4.2vw,64px) clamp(44px,5vw,72px)">
 
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
-        <h2 style="margin:0;max-width:16em;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(38px,5.3vw,86px);line-height:.96;letter-spacing:-.035em">From “we should”<br />to <span style="font-style:italic;color:var(--coral-500)">Saturday at 7.</span></h2>
-        <span class="hand" data-m="scribble" style="flex:none;font-family:'Caveat',cursive;font-size:24px;line-height:1.05;color:var(--ink-800);transform:rotate(-5deg);margin-top:6px">Good people.<br />Great plans.</span>
+      <div data-m="jflow-handrow" style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:clamp(28px,3.4vw,44px)">
+        <span class="hand" data-m="scribble" style="margin-left:auto;font-family:'Caveat',cursive;font-size:24px;line-height:1.05;color:var(--ink-800);transform:rotate(-5deg);text-align:left;margin-right:35px;margin-top:4px">Good people.<br />Great plans.</span>
+      </div>
+
+      <div style="max-width:1050px;margin-bottom:clamp(34px,4vw,50px)">
+        <h2 style="margin:0;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(44px,5.3vw,86px);line-height:.96;letter-spacing:-.035em">From “we should”<br />to <span style="font-style:italic;color:var(--coral-500)">Saturday at 7.</span></h2>
       </div>
 
       <div class="journey">
@@ -446,7 +486,6 @@
           <p class="lede">Every meet becomes a memory. Everyone adds their photos, so nothing gets lost.</p>
         </article>
       </div>
-    </div>
   </section>
 
   <!-- HOW IT WORKS — the app itself -->
