@@ -2,3 +2,7 @@
 # untracked stops Vercel serving a 13MB file publicly. Extracted assets that
 # the site actually uses are committed under assets/.
 Add/
+
+# Raw source exports dropped into the tree. The site uses the derived
+# WebP files in assets/hero/, not these.
+assets/imagery/u245*.png
