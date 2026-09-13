@@ -10,6 +10,15 @@
 <meta property="og:description" content="Bring your people. Find the place. Make memories. London born, made for making plans.">
 <meta property="og:type" content="website">
 <script defer src="./support.js"></script>
+<noscript><style>
+  /* This page hydrates client-side. Without JS the component never mounts, so
+     the intro would hang forever on an unresolved animation value and the
+     <sc-for>/<sc-if> blocks would render as literal {{ ... }} template syntax.
+     Hide both so non-JS clients and crawlers get the static copy instead. */
+  #grwp-loader { display: none !important; }
+  #grwp-page { opacity: 1 !important; animation: none !important; }
+  sc-for, sc-if, [data-m="area-line"] { display: none !important; }
+</style></noscript>
 </head>
 <body>
 <x-dc>
@@ -597,7 +606,7 @@
           <button onClick="{{ pickStokey }}" style="border:none;background:{{ bgStokey }};color:{{ fgStokey }};border-radius:999px;padding:11px 18px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">Stoke Newington</button>
           <button onClick="{{ pickAll }}" style="border:1px solid var(--border-default);background:transparent;color:var(--ink-800);border-radius:999px;padding:11px 18px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">All of it</button>
         </div>
-        <p style="margin:18px 0 0;font-size:15px;font-weight:600;color:var(--ink-800)">{{ areaLine }}</p>
+        <p data-m="area-line" style="margin:18px 0 0;font-size:15px;font-weight:600;color:var(--ink-800)">{{ areaLine }}</p>
       </div>
       <div data-m="map" style="flex:1 1 420px;min-width:300px;position:relative;min-height:clamp(340px,40vw,480px);background:var(--cream-300);margin:clamp(10px,1.4vw,18px);border-radius:var(--radius-xl);overflow:hidden">
         <x-import component-from-global-scope="grwp-map" from="./grwp-map.js" warm="{{ mapWarm }}" hint-size="100%,100%"></x-import>
