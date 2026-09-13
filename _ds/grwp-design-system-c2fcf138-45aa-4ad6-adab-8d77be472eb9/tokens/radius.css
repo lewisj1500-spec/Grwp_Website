@@ -1,0 +1,10 @@
+:root{
+  --radius-xs:6px;
+  --radius-sm:10px;
+  --radius-md:14px;      /* buttons, inputs */
+  --radius-lg:18px;      /* cards, list rows */
+  --radius-xl:24px;      /* sheets, media tiles */
+  --radius-2xl:32px;
+  --radius-phone:44px;   /* device / screen frame */
+  --radius-pill:999px;   /* chips, avatars, category circles */
+}

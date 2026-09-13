@@ -1,0 +1,27 @@
+:root{
+  --space-0:0px;
+  --space-1:2px;
+  --space-2:4px;
+  --space-3:6px;
+  --space-4:8px;
+  --space-5:12px;
+  --space-6:16px;
+  --space-7:20px;
+  --space-8:24px;
+  --space-9:32px;
+  --space-10:40px;
+  --space-11:48px;
+  --space-12:64px;
+  --space-13:80px;
+
+  /* Layout constants */
+  --screen-gutter:20px;          /* horizontal padding on every app screen */
+  --card-pad:14px;
+  --card-gap:10px;               /* gap between stacked cards in a list */
+  --section-gap:24px;            /* gap between titled sections */
+  --tabbar-height:64px;
+  --statusbar-height:44px;
+  --hit-min:44px;                /* minimum touch target */
+  --app-width:390px;             /* iPhone design width */
+  --app-height:844px;
+}

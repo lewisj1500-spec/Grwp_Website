@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/colors.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/typography.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/radius.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/base.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/styles.css">
+<script src="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/_ds_bundle.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #F5F1E8; color: var(--ink-800); font-family: var(--font-ui); -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--coral-200); }
+  section[id] { scroll-margin-top: 84px; }
+  @keyframes grwpNoteOut { to { opacity: 0; transform: scale(.97); } }
+  @keyframes grwpLogoIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: none; } }
+  @keyframes grwpRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes grwpChip { from { opacity: 0; transform: translateY(8px) scale(.94); } to { opacity: 1; transform: none; } }
+  @keyframes grwpSeal { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: scale(1); } }
+  @keyframes grwpLift { to { opacity: 0; visibility: hidden; } }
+  @keyframes grwpFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @keyframes grwpScribble {
+    0%   { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
+  @keyframes grwpSend { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+  [data-msg="in"] { animation: grwpSend .34s cubic-bezier(.2,.8,.2,1) forwards; }
+  @media (prefers-reduced-motion: reduce) { [data-msg] { opacity: 1 !important; transform: none !important; } }
+  [data-write-css="go"] { opacity: 1 !important; animation: grwpScribble 1s steps(22, end) forwards; }
+  @media (prefers-reduced-motion: reduce) { [data-write-css="go"] { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { [data-write-css] { clip-path: none !important; animation: none !important; } }
+  @keyframes grwpPin { from { opacity: 0; transform: translateY(-8px) scale(.6); } to { opacity: 1; transform: none; } }
+
+  @keyframes grwpSafe { to { opacity: 1; } }
+  #grwp-page { opacity: 0; animation: grwpSafe 0s 2s forwards; }
+  #grwp-page[data-ready] { opacity: 1; animation: none; }
+  [data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .62s cubic-bezier(.2,.8,.2,1), transform .62s cubic-bezier(.2,.8,.2,1); will-change: opacity, transform; }
+  [data-reveal="in"] { opacity: 1; transform: none; }
+  [data-mode="sweep"] { transform: translateX(26px); }
+  [data-mode="cascade"] { transform: translateY(30px) scale(.985); transition-duration: .72s; }
+  [data-mode="settle"] { transform: translateY(-14px); transition-timing-function: cubic-bezier(.34,1.3,.64,1); }
+  [data-mode="sweep"][data-reveal="in"], [data-mode="cascade"][data-reveal="in"], [data-mode="settle"][data-reveal="in"] { transform: none; }
+  [data-reveal-print] { opacity: 0; transform: translateY(26px) scale(.97) rotate(var(--r, 0deg)); transition: opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1); }
+  [data-reveal-print="in"] { opacity: 1; transform: rotate(var(--r, 0deg)); }
+
+  [data-lift] { transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s cubic-bezier(.2,.8,.2,1); }
+  [data-lift]:hover { transform: translateY(-5px); box-shadow: 0 18px 34px rgba(18,26,22,.14); }
+  [data-print]:hover { transform: rotate(var(--r, 0deg)) translateY(-6px) scale(1.02) !important; z-index: 12; }
+  [data-print] { transition: transform .26s cubic-bezier(.2,.8,.2,1); }
+  button, a[href] { transition: transform .14s cubic-bezier(.2,.8,.2,1), background-color .14s linear, opacity .14s linear; }
+  button:active { transform: scale(.97); }
+
+  @media (prefers-reduced-motion: reduce) {
+    #grwp-loader, #grwp-loader * { animation-duration: .01ms !important; animation-delay: 0s !important; }
+    #grwp-loader { animation: grwpLift .01ms .3s forwards !important; }
+    [data-reveal], [data-reveal-print] { opacity: 1 !important; transform: none !important; transition: none !important; }
+    [data-lift]:hover, [data-print]:hover { transform: none !important; }
+  }
+</style>
+<meta name="ext-resource-dependency" content="assets/photo-find-1.png">
+<meta name="ext-resource-dependency" content="assets/photo-find-2.png">
+<meta name="ext-resource-dependency" content="assets/photo-find-3.png">
+<meta name="ext-resource-dependency" content="assets/photo-find-4.png">
+<meta name="ext-resource-dependency" content="assets/photo-mem-1.png">
+<meta name="ext-resource-dependency" content="assets/photo-mem-2.png">
+<meta name="ext-resource-dependency" content="assets/photo-mem-3.png">
+<meta name="ext-resource-dependency" content="assets/photo-mem-4.png">
+<meta name="ext-resource-dependency" content="assets/photo-club-1.png">
+<meta name="ext-resource-dependency" content="assets/photo-club-2.png">
+<meta name="ext-resource-dependency" content="assets/photo-club-3.png">
+<meta name="ext-resource-dependency" content="assets/imagery/member-1.png">
+<meta name="ext-resource-dependency" content="assets/imagery/member-2.png">
+<meta name="ext-resource-dependency" content="assets/imagery/member-3.png">
+<meta name="ext-resource-dependency" content="assets/imagery/member-4.png">
+<meta name="ext-resource-dependency" content="assets/imagery/member-5.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-hero-cloveclub.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-thumb-1.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-thumb-2.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-thumb-3.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-thumb-4.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-tile-1.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-tile-2.png">
+<meta name="ext-resource-dependency" content="assets/imagery/venue-tile-3.png">
+<meta name="ext-resource-dependency" content="assets/imagery/london-skyline-lines.png">
+<meta name="ext-resource-dependency" content="assets/icons/map-pin.svg">
+<meta name="ext-resource-dependency" content="assets/icons/heart.svg">
+<meta name="ext-resource-dependency" content="assets/icons/users-round.svg">
+<meta name="ext-resource-dependency" content="assets/icons/bookmark.svg">
+<meta name="ext-resource-dependency" content="assets/icons/message-circle.svg">
+<meta name="ext-resource-dependency" content="assets/icons/calendar.svg">
+<meta name="ext-resource-dependency" content="assets/icons/clock.svg">
+<meta name="ext-resource-dependency" content="assets/icons/x.svg">
+<meta name="ext-resource-dependency" content="assets/icons/plus.svg">
+<meta name="ext-resource-dependency" content="assets/icons/settings.svg">
+<meta name="ext-resource-dependency" content="assets/icons/user-round.svg">
+<meta name="ext-resource-dependency" content="assets/icons/check.svg">
+</helmet>
+
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#E76F51"></rect><circle cx="34" cy="30" r="6" fill="#F2EDE6"></circle><circle cx="50" cy="26" r="6" fill="#A3B18A"></circle><circle cx="66" cy="30" r="6" fill="#121A16"></circle><text x="50" y="68" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="26" fill="#121A16">Grwp</text></svg></template>
+
+<div id="grwp-page" style="background:#F5F1E8;color:var(--ink-800);font-family:var(--font-ui);overflow-x:clip">
+
+  <div id="grwp-loader" style="position:fixed;inset:0;z-index:200;background:var(--ink-900);display:flex;align-items:center;justify-content:center;padding:24px;animation:{{ loaderLift }}">
+    <img id="grwp-intro-note" src="assets/intro-handwriting.webp" alt="Offline is the new luxury" style="display:block;width:min(78vw,560px);height:auto;filter:brightness(0) invert(1);animation:grwpNoteOut .45s 4.1s cubic-bezier(.4,0,.2,1) forwards" />
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;pointer-events:none">
+      <img src="assets/logo-grwp-cream.png" alt="Grwp" style="display:block;width:clamp(150px,26vw,250px);height:auto;opacity:0;animation:grwpLogoIn .6s 4.45s cubic-bezier(.2,.8,.2,1) forwards" />
+      <span style="font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:rgba(242,237,230,.6);opacity:0;animation:grwpRise .45s 4.85s cubic-bezier(.2,.8,.2,1) forwards">London born</span>
+    </div>
+  </div>
+
+  <header style="max-width:1320px;margin:0 auto;padding:clamp(11px,1.5vw,16px) clamp(20px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+    <a href="#top" style="display:flex;align-items:center"><img src="assets/logo-grwp-black.png" alt="Grwp" style="display:block;height:clamp(26px,2.6vw,33px);width:auto" /></a>
+    <nav style="display:flex;align-items:center;gap:clamp(16px,2.4vw,36px)">
+      <a href="how-it-works.html" style="font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:var(--ink-800)">How it works</a>
+      <a href="#communities" style="font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:var(--ink-800)">Communities</a>
+      <a href="#memories" style="font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:var(--ink-800)">Stories</a>
+      <a href="#belief" style="font-size:14px;font-weight:500;color:var(--ink-600)" style-hover="color:var(--ink-800)">About</a>
+    </nav>
+    <a href="#join" style="font-size:14px;font-weight:600;color:var(--cream-100);background:var(--ink-800);border-radius:999px;padding:10px 20px;white-space:nowrap" style-hover="background:var(--ink-700)">Download the app</a>
+  </header>
+
+  <!-- HERO — full-bleed photograph -->
+  <section id="top" style="position:relative;background:var(--ink-900);overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:{{ heroBg }};background-size:cover;background-position:center"></div>
+    <div style="position:absolute;inset:0;z-index:1"><image-slot id="hero-band" src="assets/photo-hero-band.png" shape="rect" radius="0" placeholder="Drop your hero photo here — wide, friends at a table, London"></image-slot></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,19,16,.92) 0%,rgba(13,19,16,.78) 34%,rgba(13,19,16,.28) 62%,rgba(13,19,16,.12) 100%);pointer-events:none"></div>
+    <div style="position:absolute;right:0;bottom:0;width:clamp(200px,30%,420px);height:clamp(150px,26%,320px);background:radial-gradient(120% 100% at 80% 85%,rgba(13,19,16,.62) 0%,rgba(13,19,16,.32) 46%,rgba(13,19,16,0) 78%);pointer-events:none;z-index:4"></div>
+    <img src="assets/annot-offline-luxury-white.png" data-reveal-print alt="Offline is the new luxury" style="--r:-5deg;position:absolute;z-index:6;right:clamp(18px,5%,80px);bottom:clamp(24px,5%,64px);width:clamp(96px,12%,160px);max-width:none;transform:rotate(-5deg);filter:brightness(0) invert(1) drop-shadow(0 2px 12px rgba(13,19,16,.85));pointer-events:none" />
+    <div style="position:relative;z-index:3;max-width:1320px;margin:0 auto;padding:clamp(56px,9vw,130px) clamp(20px,5vw,64px) clamp(90px,12vw,170px);pointer-events:none">
+      <h1 style="margin:0 0 24px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(44px,7vw,104px);line-height:1;letter-spacing:-.035em;color:var(--cream-100);max-width:11em">Everyone wants to do something. <span style="color:var(--sage-300)">Nobody organises it.</span></h1>
+      <p style="margin:0 0 8px;font-size:clamp(17px,1.5vw,22px);line-height:1.45;color:var(--cream-300);max-width:22em">Bring your people. Find the place.</p>
+      <p style="margin:0 0 30px;font-size:clamp(17px,1.5vw,22px);line-height:1.45;font-weight:600;color:var(--sage-300)">Make memories.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;pointer-events:auto">
+        <div style="display:flex;gap:6px;background:rgba(255,255,255,.96);border-radius:999px;padding:6px;flex:1 1 320px;max-width:420px">
+          <input id="email-top" type="email" placeholder="you@email.com" aria-label="Email address" style="flex:1;min-width:0;background:transparent;border:none;padding:14px 18px;font-family:var(--font-ui);font-size:16px;color:var(--ink-800);outline:none" />
+          <button onClick="{{ sendTop }}" style="border:none;background:var(--ink-800);color:var(--cream-100);border-radius:999px;padding:14px 24px;font-family:var(--font-ui);font-size:15.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:var(--ink-700)">Get early access</button>
+        </div>
+        <span style="font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,237,230,.72)">iOS &amp; Android &middot; London first</span>
+      </div>
+      <sc-if value="{{ sentTop }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:14px 0 0;font-size:14px;font-weight:600;color:var(--cream-100)">You're on the list. We'll write once, when Grwp opens.</p>
+      </sc-if>
+      <p style="margin:22px 0 0;font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,237,230,.78);line-height:1.7">London born.<br />Made for making plans.</p>
+    </div>
+
+  </section>
+
+  <!-- PILLARS + COLLAGE -->
+  <section style="background:#F5F1E8">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
+      <div style="flex:1 1 420px;min-width:300px">
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-500);margin-bottom:16px">What makes it different</div>
+        <h2 style="margin:0 0 28px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(30px,3.8vw,54px);line-height:.94;letter-spacing:-.04em;max-width:16em">Not another app to <span style="color:var(--coral-700)">scroll.</span></h2>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid rgba(18,26,22,.12)">
+              <span style="flex:none;margin-top:2px"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="{{ p.icon }}" size="{{ i24 }}" hint-size="24px,24px"></x-import></span>
+              <div>
+                <div style="font-size:16px;font-weight:700">{{ p.title }}</div>
+                <div style="margin-top:5px;font-size:14.5px;line-height:1.55;color:var(--ink-500);max-width:26em">{{ p.body }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:1 1 380px;min-width:290px;position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.6vw,20px);flex-wrap:wrap">
+        <div style="background:#FFFFFF;padding:7px;border-radius:8px;box-shadow:0 18px 38px rgba(18,26,22,.14);transform:rotate(-4deg);flex:0 1 190px;min-width:150px">
+          <div style="height:clamp(140px,15vw,180px);border-radius:4px;overflow:hidden"><image-slot id="collage-a" src="assets/photo-collage-a.png" shape="rect" radius="4" placeholder="Street at dusk"></image-slot></div>
+        </div>
+        <div style="background:#FFFFFF;padding:7px;border-radius:8px;box-shadow:0 18px 38px rgba(18,26,22,.14);transform:rotate(3deg);flex:0 1 190px;min-width:150px;margin-top:clamp(0px,2vw,22px)">
+          <div style="height:clamp(140px,15vw,180px);border-radius:4px;overflow:hidden"><image-slot id="collage-b" src="assets/photo-collage-b.png" shape="rect" radius="4" placeholder="Table under string lights"></image-slot></div>
+        </div>
+        <div style="flex:0 0 auto;width:clamp(120px,13vw,160px);height:clamp(120px,13vw,160px);border-radius:999px;background:var(--sage-500);display:flex;align-items:center;justify-content:center;text-align:center;padding:18px">
+          <span style="font-family:'Caveat',cursive;font-size:clamp(20px,2vw,26px);line-height:1.1;color:var(--cream-100)">Good friends.<br />Great plans.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS — the app itself -->
+  <section id="how" style="position:relative;background:#FFFDFA;padding:clamp(20px,3vw,40px) 0 clamp(44px,6vw,92px)">
+    <span style="position:absolute;left:46%;top:60px;max-width:46%;width:420px;height:400px;border-radius:50% 50% 44% 56%/48% 52% 48% 52%;background:var(--sage-300);opacity:.45"></span>
+    <span style="position:absolute;right:4%;bottom:40px;max-width:34%;width:280px;height:280px;border-radius:52% 48% 46% 54%/46% 54% 46% 54%;background:var(--coral-300);opacity:.38"></span>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,56px);align-items:center">
+      <div style="flex:1 1 360px;min-width:290px">
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-500);margin-bottom:18px">How it works</div>
+        <h2 style="margin:0 0 12px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.6vw,66px);line-height:.92;letter-spacing:-.04em">Less chat.</h2>
+        <h2 style="margin:0 0 28px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.6vw,66px);line-height:.92;letter-spacing:-.04em;color:var(--coral-700)">More doing.</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,2vw,28px)">
+          <sc-for list="{{ steps }}" as="p" hint-placeholder-count="3">
+            <div style="flex:1 1 140px;min-width:130px">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:999px;background:var(--cream-300);margin-bottom:12px">
+                <x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="{{ p.icon }}" size="{{ i24 }}" hint-size="24px,24px"></x-import>
+              </span>
+              <div style="font-size:15px;font-weight:700">{{ p.title }}</div>
+              <div style="margin-top:6px;font-size:13.5px;line-height:1.5;color:var(--ink-500)">{{ p.body }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;position:relative;display:flex;justify-content:center;z-index:8">
+        <span style="position:absolute;right:2%;top:2%;font-family:'Caveat',cursive;font-size:25px;line-height:1.05;color:var(--ink-700);transform:rotate(6deg);text-align:right;z-index:6">Find<br />your next.</span>
+        <div style="width:min(78%,300px);transform:rotate(-4deg);z-index:4;margin-top:clamp(-150px,-15vw,-70px)">
+          <div style="background:var(--ink-900);border-radius:42px;padding:8px;box-shadow:0 44px 80px rgba(18,26,22,.28)">
+            <div style="position:relative;border-radius:35px;overflow:hidden;background:var(--cream-300);aspect-ratio:390/844;display:flex;flex-direction:column">
+              <div style="position:absolute;top:9px;left:50%;transform:translateX(-50%);width:62px;height:17px;border-radius:999px;background:var(--ink-900);z-index:9"></div>
+              <div style="padding:36px 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+                <img src="assets/logo-grwp-black.png" alt="Grwp" style="display:block;height:18px;width:auto" />
+                <x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.AvatarStack" members="{{ threeMembers }}" size="{{ av20 }}" hint-size="54px,20px"></x-import>
+              </div>
+              <div style="padding:4px 14px 10px">
+                <div style="background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:999px;padding:9px 14px;font-size:10.5px;color:var(--ink-400)">Food, drinks, date night&hellip;</div>
+              </div>
+              <div style="padding:0 14px 10px;display:flex;gap:6px;flex-wrap:wrap">
+                <span style="background:var(--ink-800);color:var(--cream-100);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Tonight</span>
+                <span style="background:#FFFFFF;border:1px solid var(--border-subtle);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Eat</span>
+                <span style="background:#FFFFFF;border:1px solid var(--border-subtle);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Drink</span>
+                <span style="background:#FFFFFF;border:1px solid var(--border-subtle);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Out</span>
+              </div>
+              <div style="flex:1;min-height:0;padding:0 14px;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:baseline;justify-content:space-between">
+                  <span style="font-size:12px;font-weight:700">For your group</span>
+                  <span style="font-size:9px;color:var(--coral-700);font-weight:600">See all</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <div style="flex:1;background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+                    <div style="height:74px"><image-slot id="app-tile-a" src="assets/photo-app-tile-a.png" shape="rect" radius="0" placeholder="Venue"></image-slot></div>
+                    <div style="padding:7px 8px 9px">
+                      <div style="font-size:10px;font-weight:700">Rooftop drinks</div>
+                      <div style="font-size:8.5px;color:var(--ink-400);margin-top:1px">East London</div>
+                    </div>
+                  </div>
+                  <div style="flex:1;background:#FFFFFF;border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden">
+                    <div style="height:74px"><image-slot id="app-tile-b" src="assets/photo-app-tile-b.png" shape="rect" radius="0" placeholder="Venue"></image-slot></div>
+                    <div style="padding:7px 8px 9px">
+                      <div style="font-size:10px;font-weight:700">Long dinner</div>
+                      <div style="font-size:8.5px;color:var(--ink-400);margin-top:1px">Haggerston</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-size:12px;font-weight:700;margin-top:2px">Popular with your group</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <span style="background:var(--sage-200);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Rooftop</span>
+                  <span style="background:var(--sage-200);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Italian</span>
+                  <span style="background:var(--sage-200);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Date night</span>
+                  <span style="background:var(--sage-200);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Live music</span>
+                  <span style="background:var(--sage-200);font-size:9px;font-weight:600;border-radius:999px;padding:6px 10px">Hidden gems</span>
+                </div>
+              </div>
+              <div style="background:#FFFFFF;border-top:1px solid var(--border-subtle);padding:9px 14px 12px;display:flex;align-items:center;justify-content:space-between">
+                <span style="font-size:8.5px;font-weight:600;color:var(--coral-700)">Explore</span>
+                <span style="font-size:8.5px;font-weight:500;color:var(--ink-400)">Groups</span>
+                <span style="width:30px;height:30px;border-radius:999px;background:var(--ink-800);color:var(--cream-100);display:inline-flex;align-items:center;justify-content:center;font-size:15px;line-height:1">+</span>
+                <span style="font-size:8.5px;font-weight:500;color:var(--ink-400)">Saved</span>
+                <span style="font-size:8.5px;font-weight:500;color:var(--ink-400)">Profile</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE PROBLEM -->
+  <section id="problem" style="position:relative;overflow:clip;background:#FFFDFA;padding:clamp(48px,7vw,104px) 0">
+    <span style="position:absolute;right:34%;top:90px;width:300px;height:300px;border-radius:56% 44% 48% 52%/48% 52% 48% 52%;background:var(--coral-500);opacity:.85"></span>
+    <span style="position:absolute;right:26%;top:300px;width:260px;height:260px;border-radius:48% 52% 56% 44%/52% 48% 52% 48%;background:var(--sage-300);opacity:.6"></span>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
+      <div style="flex:1 1 420px;min-width:300px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-600);margin-bottom:20px">The problem</div>
+        <h2 style="margin:0 0 24px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(40px,5.6vw,84px);line-height:.9;letter-spacing:-.04em">You know how this goes.</h2>
+        <p style="margin:0 0 16px;font-size:clamp(17px,1.3vw,19.5px);line-height:1.6;color:var(--ink-600);max-width:25em">Someone says we should do something. Everyone agrees. Somebody has to pick what and when, and nobody does. Three weeks later it's still sat in the chat.</p>
+        <p style="margin:0 0 26px;font-size:clamp(17px,1.3vw,19.5px);line-height:1.6;color:var(--ink-600);max-width:25em">And when you do get out, it's the same handful of places &mdash; because finding something new takes an hour nobody has.</p>
+        <span style="font-family:'Caveat',cursive;font-size:27px;line-height:1.05;color:var(--ink-700);transform:rotate(-6deg);display:inline-block">Same chaos.<br />Different plan.</span>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;max-width:min(100%,460px);position:relative;margin-right:clamp(0px,7vw,110px)">
+        <img src="assets/annot-sounds-good.png" data-write-css="0" alt="" style="opacity:0;position:absolute;left:-1%;top:calc(9% + 26px);width:clamp(94px,19%,165px);max-width:none;z-index:6;pointer-events:none" />
+        <img src="assets/annot-where-though.png" data-write-css=".5" alt="" style="opacity:0;position:absolute;right:-1%;top:calc(22% + 16px);width:clamp(90px,18%,158px);max-width:none;z-index:6;pointer-events:none" />
+        <img src="assets/annot-so-it-begins.png" data-write-css="1" alt="" style="opacity:0;position:absolute;left:-1%;bottom:0%;width:clamp(100px,21%,175px);max-width:none;z-index:6;pointer-events:none" />
+        <div style="background:#FFFFFF;border-radius:var(--radius-xl);padding:16px;box-shadow:0 26px 54px rgba(18,26,22,.16);margin:0 clamp(58px,15%,120px)">
+          <div style="display:flex;align-items:center;gap:10px;padding:4px 4px 14px;border-bottom:1px solid var(--border-subtle)">
+            <span style="width:30px;height:30px;border-radius:999px;background:var(--sage-500);color:var(--cream-100);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">J</span>
+            <div><div style="font-size:14px;font-weight:700">The Crew</div><div style="font-size:11px;color:var(--ink-400)">6 people</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;padding-top:14px">
+            <sc-for list="{{ chat }}" as="c" hint-placeholder-count="6">
+              <div data-msg style="opacity:0;transform:translateY(10px) scale(.97);display:flex;gap:8px;align-items:flex-end;justify-content:{{ c.justify }}">
+                <sc-if value="{{ c.initial }}" hint-placeholder-val="{{ true }}">
+                  <span style="width:24px;height:24px;border-radius:999px;flex:none;background:var(--sage-500);color:var(--cream-100);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">{{ c.initial }}</span>
+                </sc-if>
+                <div style="max-width:76%;background:{{ c.bg }};border-radius:{{ c.radius }};padding:10px 13px">
+                  <sc-if value="{{ c.author }}" hint-placeholder-val="{{ true }}">
+                    <div style="font-size:10px;font-weight:600;color:var(--ink-400);margin-bottom:3px">{{ c.author }}</div>
+                  </sc-if>
+                  <div style="font-size:13px;line-height:1.45;color:var(--ink-800)">{{ c.text }}</div>
+                </div>
+              </div>
+            </sc-for>
+            <div data-msg style="opacity:0;transform:translateY(10px) scale(.97);align-self:flex-start;background:var(--cream-300);border-radius:14px;padding:12px 16px;font-size:14px;color:var(--ink-400);letter-spacing:.14em">&bull;&bull;&bull;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:clamp(36px,5vw,72px) auto 0;padding:clamp(30px,4vw,48px) clamp(20px,5vw,64px) 0;border-top:1px solid rgba(18,26,22,.1)">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-400);margin-bottom:28px">It happens every time</div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px)">
+        <sc-for list="{{ problems }}" as="p" hint-placeholder-count="4">
+          <div style="flex:1 1 220px;min-width:190px;text-align:center">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:999px;background:#FFFFFF;box-shadow:0 10px 24px rgba(18,26,22,.08);margin-bottom:14px">
+              <x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="{{ p.icon }}" size="{{ i26 }}" hint-size="26px,26px"></x-import>
+            </span>
+            <div style="font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:700;font-size:17px;letter-spacing:-.01em">{{ p.title }}</div>
+            <div style="margin:8px auto 0;font-size:14px;line-height:1.55;color:var(--ink-500);max-width:17em">{{ p.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCOVERY -->
+  <section id="discovery" style="position:relative;overflow:hidden;background:var(--sage-100,#EDF0E7);padding:clamp(48px,7vw,104px) 0">
+    <span style="position:absolute;left:-120px;bottom:80px;width:340px;height:340px;border-radius:52% 48% 44% 56%/46% 54% 46% 54%;background:var(--sage-300);opacity:.55"></span>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
+      <div style="flex:1 1 420px;min-width:300px;order:2">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-600);margin-bottom:20px">Discovery</div>
+        <h2 style="margin:0 0 22px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(36px,5vw,72px);line-height:.92;letter-spacing:-.04em;max-width:14em">Fifteen things a day, <span style="color:var(--coral-700)">picked for you.</span></h2>
+        <p style="margin:0 0 16px;font-size:clamp(17px,1.3vw,19px);line-height:1.6;color:var(--ink-600);max-width:25em">A caf&eacute; you've walked past for years. A gallery that's on this week. A Saturday morning run club. A restaurant ten minutes away you've never heard of.</p>
+        <p style="margin:0 0 26px;font-size:clamp(17px,1.3vw,19px);line-height:1.6;color:var(--ink-600);max-width:25em">You tap the ones you'd actually turn up to and skip the rest. Takes a minute. Tomorrow there's a new fifteen.</p>
+      </div>
+      <div style="flex:1 1 420px;min-width:300px;order:1;display:flex;flex-wrap:wrap;gap:14px">
+        <div style="flex:1 1 190px;min-width:170px;max-width:280px;background:#FFFFFF;padding:8px;border-radius:var(--radius-lg);box-shadow:0 18px 40px rgba(18,26,22,.12);transform:rotate(-3deg)">
+          <div style="height:clamp(130px,14vw,168px);border-radius:12px;overflow:hidden"><image-slot id="find-1" src="assets/photo-find-1.png" shape="rounded" radius="12" placeholder="Fig & Thistle"></image-slot></div>
+          <div style="padding:12px 8px 8px">
+            <div style="font-size:15px;font-weight:700">Fig & Thistle</div>
+            <div style="font-size:12.5px;color:var(--ink-500);margin-top:3px">Café · Haggerston · 12 min</div>
+          </div>
+        </div>
+        <div style="flex:1 1 190px;min-width:170px;max-width:280px;background:#FFFFFF;padding:8px;border-radius:var(--radius-lg);box-shadow:0 18px 40px rgba(18,26,22,.12);transform:rotate(2deg)">
+          <div style="height:clamp(130px,14vw,168px);border-radius:12px;overflow:hidden"><image-slot id="find-2" src="assets/photo-find-2.png" shape="rounded" radius="12" placeholder="Sundry"></image-slot></div>
+          <div style="padding:12px 8px 8px">
+            <div style="font-size:15px;font-weight:700">Sundry</div>
+            <div style="font-size:12.5px;color:var(--ink-500);margin-top:3px">Gallery · Bethnal Green</div>
+          </div>
+        </div>
+        <div style="flex:1 1 190px;min-width:170px;max-width:280px;background:#FFFFFF;padding:8px;border-radius:var(--radius-lg);box-shadow:0 18px 40px rgba(18,26,22,.12);transform:rotate(2.5deg)">
+          <div style="height:clamp(130px,14vw,168px);border-radius:12px;overflow:hidden"><image-slot id="find-3" src="assets/photo-find-3.png" shape="rounded" radius="12" placeholder="Marsh Lane Run Club"></image-slot></div>
+          <div style="padding:12px 8px 8px">
+            <div style="font-size:15px;font-weight:700">Marsh Lane Run Club</div>
+            <div style="font-size:12.5px;color:var(--ink-500);margin-top:3px">Saturday · 9:00am</div>
+          </div>
+        </div>
+        <div style="flex:1 1 190px;min-width:170px;max-width:280px;background:#FFFFFF;padding:8px;border-radius:var(--radius-lg);box-shadow:0 18px 40px rgba(18,26,22,.12);transform:rotate(-2deg)">
+          <div style="height:clamp(130px,14vw,168px);border-radius:12px;overflow:hidden"><image-slot id="find-4" src="assets/photo-find-4.png" shape="rounded" radius="12" placeholder="Peckham rooftop"></image-slot></div>
+          <div style="padding:12px 8px 8px">
+            <div style="font-size:15px;font-weight:700">Peckham rooftop</div>
+            <div style="font-size:12.5px;color:var(--ink-500);margin-top:3px">Bar · Peckham · 9 min</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="background:#FFFDFA;padding:clamp(26px,4vw,54px) clamp(20px,5vw,64px);display:flex;justify-content:center">
+    <img src="assets/annot-ordinary-moments.png" data-reveal-print alt="Life is a collection of beautiful, ordinary moments" style="--r:-2deg;display:block;width:clamp(230px,34%,420px);height:auto;transform:rotate(-2deg)" />
+  </div>
+
+  <!-- BELIEF — dark band with photo -->
+  <section id="belief" style="background:#FFFDFA;padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px) clamp(48px,7vw,100px)">
+    <div style="max-width:1320px;margin:0 auto;background:var(--ink-800);border-radius:var(--radius-2xl);overflow:hidden;display:flex;flex-wrap:wrap;align-items:stretch">
+      <div style="flex:1 1 320px;min-width:260px;min-height:clamp(260px,28vw,380px);position:relative;background:var(--ink-700)">
+        <image-slot id="band-belief" src="assets/photo-band-belief.png" shape="rect" placeholder="Group, golden hour"></image-slot>
+        <span style="position:absolute;left:22px;top:22px;font-family:'Caveat',cursive;font-size:26px;line-height:1.05;color:var(--cream-100);transform:rotate(-6deg);pointer-events:none;z-index:3;text-shadow:0 2px 12px rgba(13,19,16,.5)">Great people.<br />More plans.</span>
+      </div>
+      <div style="flex:1 1 420px;min-width:300px;padding:clamp(30px,3.6vw,60px);color:var(--cream-500)">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-300);margin-bottom:18px">What we're not building</div>
+        <h2 style="margin:0 0 22px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.8vw,72px);line-height:.9;letter-spacing:-.04em;color:var(--cream-100)">Social, minus <span style="color:var(--coral-500)">the media.</span></h2>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:26em">No feed. No followers. No profile to keep up. Nobody sees what you liked &mdash; not your friends, not anyone.</p>
+        <p style="margin:0 0 24px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:26em">Every other app wants your time. We'd rather you spent it somewhere else.</p>
+        <p style="margin:0;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(20px,2.2vw,32px);line-height:1.12;letter-spacing:-.03em;color:var(--sage-300);max-width:22em">We measure success by the time you spend out of the app.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- YOUR AREAS -->
+  <section id="areas" style="background:#FFFDFA;padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px) clamp(48px,7vw,100px)">
+    <div style="max-width:1320px;margin:0 auto;background:#FFFFFF;border-radius:var(--radius-2xl);overflow:hidden;box-shadow:0 26px 60px rgba(18,26,22,.12);display:flex;flex-wrap:wrap">
+      <div style="flex:1 1 380px;min-width:290px;padding:clamp(28px,3.4vw,52px)">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-600);margin-bottom:18px">Your areas</div>
+        <h2 style="margin:0 0 20px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.4vw,64px);line-height:.92;letter-spacing:-.04em">Your areas, <span style="color:var(--coral-700)">not central London.</span></h2>
+        <p style="margin:0 0 14px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Every other app ranks by popularity, and popularity means central. So everyone in London gets the same twenty places in the middle of town.</p>
+        <p style="margin:0 0 24px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Grwp asks which parts of London you actually spend time in, then shows you what's good in them.</p>
+        <div style="font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin-bottom:10px">Pick an area</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button onClick="{{ pickPeckham }}" style="border:none;background:{{ bgPeckham }};color:{{ fgPeckham }};border-radius:999px;padding:11px 18px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">Peckham</button>
+          <button onClick="{{ pickBethnal }}" style="border:none;background:{{ bgBethnal }};color:{{ fgBethnal }};border-radius:999px;padding:11px 18px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">Bethnal Green</button>
+          <button onClick="{{ pickStokey }}" style="border:none;background:{{ bgStokey }};color:{{ fgStokey }};border-radius:999px;padding:11px 18px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">Stoke Newington</button>
+          <button onClick="{{ pickAll }}" style="border:1px solid var(--border-default);background:transparent;color:var(--ink-800);border-radius:999px;padding:11px 18px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap">All of it</button>
+        </div>
+        <p style="margin:18px 0 0;font-size:15px;font-weight:600;color:var(--ink-800)">{{ areaLine }}</p>
+      </div>
+      <div style="flex:1 1 420px;min-width:300px;position:relative;min-height:clamp(340px,40vw,480px);background:var(--cream-300);margin:clamp(10px,1.4vw,18px);border-radius:var(--radius-xl);overflow:hidden">
+        <x-import component-from-global-scope="grwp-map" from="./grwp-map.js" warm="{{ mapWarm }}" hint-size="100%,100%"></x-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- GROUPS — dark band -->
+  <section id="groups" style="background:#FFFDFA;padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px) clamp(48px,7vw,100px)">
+    <div style="max-width:1320px;margin:0 auto;background:var(--ink-800);border-radius:var(--radius-2xl);overflow:hidden;position:relative;display:flex;flex-wrap:wrap;align-items:center">
+      <div style="flex:1 1 380px;min-width:290px;padding:clamp(30px,3.6vw,60px);color:var(--cream-500)">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-300);margin-bottom:18px">Groups</div>
+        <h2 style="margin:0 0 20px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.6vw,68px);line-height:.92;letter-spacing:-.04em;color:var(--cream-100)">Nobody has <span style="color:var(--coral-500)">to go first.</span></h2>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:25em">Suggesting something is a small risk &mdash; you put an idea forward and nobody replies. So on Grwp everyone taps on their own, privately.</p>
+        <p style="margin:0 0 26px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:25em">When enough of your group likes the same thing it appears in the chat. Someone picks a day, everyone says if they're coming, and that's the plan.</p>
+        <span style="font-family:'Caveat',cursive;font-size:27px;color:var(--sage-300);transform:rotate(-5deg);display:inline-block">Plans are better together.</span>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;padding:clamp(20px,2.6vw,40px);display:flex;justify-content:center">
+        <div style="width:min(100%,380px);background:#FFFFFF;border-radius:var(--radius-xl);padding:18px;box-shadow:0 26px 54px rgba(13,19,16,.4)">
+          <div style="font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-400);margin-bottom:14px">Saturday lot</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:flex-end;gap:8px">
+              <span style="width:24px;height:24px;border-radius:999px;background:var(--sage-500);color:var(--cream-100);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">N</span>
+              <div style="background:var(--cream-300);border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:13px;line-height:1.45">Anything happening this weekend?</div>
+            </div>
+            <div style="background:var(--cream-100);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden">
+              <div style="background:var(--coral-500);color:var(--ink-800);padding:9px 14px;font-size:11.5px;font-weight:700">Three of you liked this</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 14px">
+                <span style="width:46px;height:46px;border-radius:12px;background:var(--sage-200);display:inline-flex;align-items:center;justify-content:center;color:var(--sage-700)"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="map-pin" size="{{ i20 }}" hint-size="20px,20px"></x-import></span>
+                <div style="min-width:0">
+                  <div style="font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:700;font-size:16px">Columbia Road</div>
+                  <div style="font-size:12px;color:var(--ink-500);margin-top:2px">Market &middot; Sunday, from 8:00am</div>
+                </div>
+              </div>
+              <div style="padding:0 14px 14px;display:flex;gap:8px">
+                <div style="flex:1;border:1px solid var(--border-default);border-radius:999px;padding:9px 0;text-align:center;font-size:12px;font-weight:600">Another day</div>
+                <div style="flex:1;background:var(--ink-800);color:var(--cream-500);border-radius:999px;padding:9px 0;text-align:center;font-size:12px;font-weight:600">I'm in</div>
+              </div>
+            </div>
+            <div style="align-self:flex-end;background:var(--sage-200);border-radius:14px 14px 4px 14px;padding:10px 13px;font-size:13px">Perfect. Sunday it is.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRWP AI -->
+  <section id="ai" style="position:relative;overflow:hidden;background:#FFFDFA;padding:clamp(40px,6vw,90px) clamp(20px,5vw,64px) clamp(48px,7vw,100px)">
+    <span style="position:absolute;left:40%;top:40px;width:320px;height:320px;border-radius:50% 50% 44% 56%/48% 52% 48% 52%;background:#6E5AA8;opacity:.16"></span>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
+      <div style="flex:1 1 400px;min-width:300px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;background:#6E5AA8">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.6L18 9l-4.4 1.4L12 15l-1.6-4.6L6 9l4.4-1.4L12 3z"></path><path d="M18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"></path></svg>
+          </span>
+          <span style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#6E5AA8">Grwp AI</span>
+        </div>
+        <h2 style="margin:0 0 20px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.6vw,68px);line-height:.92;letter-spacing:-.04em">Six people, <span style="color:#6E5AA8">six different tastes.</span></h2>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Finding something you'd like is easy. Finding something six of you would all like is the actual problem.</p>
+        <p style="margin:0;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Grwp AI sits in your group chat and knows what the group likes together. Ask it where you should go and it answers for all of you. When the chat's gone quiet, it puts something up.</p>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px;display:flex;justify-content:center">
+        <div style="width:min(100%,420px);background:#FFFFFF;border-radius:var(--radius-xl);padding:18px;box-shadow:0 26px 54px rgba(18,26,22,.14)">
+          <div style="display:flex;align-items:flex-end;gap:8px;margin-bottom:10px">
+            <span style="width:24px;height:24px;border-radius:999px;background:var(--sage-500);color:var(--cream-100);font-size:10px;font-weight:700;display:inline-flex;align-items:center;justify-content:center">N</span>
+            <div style="background:var(--cream-300);border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:13px;line-height:1.45">Where should the six of us go on Sunday?</div>
+          </div>
+          <div style="background:#F1EEFA;border:1px solid #DCD5F0;border-radius:var(--radius-lg);padding:16px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+              <span style="width:22px;height:22px;border-radius:999px;background:#6E5AA8;display:inline-flex;align-items:center;justify-content:center">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.6L18 9l-4.4 1.4L12 15l-1.6-4.6L6 9l4.4-1.4L12 3z"></path></svg>
+              </span>
+              <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6E5AA8">Grwp AI</span>
+            </div>
+            <div style="font-size:14.5px;line-height:1.6;color:var(--ink-800)">All six of you have liked the market at Columbia Road. It's on Sunday morning, ten minutes from four of you, and there's coffee at the end of it.</div>
+            <div style="margin-top:14px;background:#FFFFFF;border-radius:14px;padding:10px;display:flex;align-items:center;gap:10px">
+              <span style="width:42px;height:42px;border-radius:10px;background:#E6E0F4;display:inline-flex;align-items:center;justify-content:center;color:#6E5AA8"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="map-pin" size="{{ i20 }}" hint-size="20px,20px"></x-import></span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:14px;font-weight:700">Columbia Road</div>
+                <div style="font-size:11.5px;color:var(--ink-500);margin-top:2px">Market &middot; Sunday</div>
+              </div>
+              <span style="background:#6E5AA8;color:#FFFFFF;font-size:12px;font-weight:600;border-radius:999px;padding:8px 14px;white-space:nowrap">Put it to the group</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMORIES -->
+  <section id="memories" style="position:relative;overflow:hidden;padding:clamp(40px,6vw,90px) clamp(20px,5vw,64px) clamp(48px,7vw,100px)">
+    <span style="position:absolute;right:-100px;top:120px;width:340px;height:340px;border-radius:46% 54% 52% 48%/54% 46% 54% 46%;background:var(--coral-300);opacity:.45"></span>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
+      <div style="flex:1 1 400px;min-width:300px;position:relative">
+        <div style="display:flex;flex-wrap:wrap;gap:14px;padding-top:26px">
+          <div style="flex:1 1 180px;min-width:150px;max-width:290px;background:#FFFFFF;padding:8px 8px 14px;border-radius:10px;box-shadow:0 18px 40px rgba(18,26,22,.14);transform:rotate(-3deg)">
+            <div style="height:clamp(130px,14vw,170px);border-radius:6px;overflow:hidden"><image-slot id="mem-1" src="assets/photo-mem-1.png" shape="rounded" radius="6" placeholder="Long lunch"></image-slot></div>
+            <div style="padding:10px 4px 0;display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+              <span style="font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:700;font-size:15px">Long lunch</span>
+              <span style="font-size:11px;color:var(--ink-400)">25 MAY</span>
+            </div>
+          </div>
+          <div style="flex:1 1 180px;min-width:150px;max-width:290px;background:#FFFFFF;padding:8px 8px 14px;border-radius:10px;box-shadow:0 18px 40px rgba(18,26,22,.14);transform:rotate(2deg)">
+            <div style="height:clamp(130px,14vw,170px);border-radius:6px;overflow:hidden"><image-slot id="mem-2" src="assets/photo-mem-2.png" shape="rounded" radius="6" placeholder="Columbia Road"></image-slot></div>
+            <div style="padding:10px 4px 0;display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+              <span style="font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:700;font-size:15px">Columbia Road</span>
+              <span style="font-size:11px;color:var(--ink-400)">26 MAY</span>
+            </div>
+          </div>
+          <div style="flex:1 1 180px;min-width:150px;max-width:290px;background:#FFFFFF;padding:8px 8px 14px;border-radius:10px;box-shadow:0 18px 40px rgba(18,26,22,.14);transform:rotate(3deg)">
+            <div style="height:clamp(130px,14vw,170px);border-radius:6px;overflow:hidden"><image-slot id="mem-3" src="assets/photo-mem-3.png" shape="rounded" radius="6" placeholder="Saturday run"></image-slot></div>
+            <div style="padding:10px 4px 0;display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+              <span style="font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:700;font-size:15px">Saturday run</span>
+              <span style="font-size:11px;color:var(--ink-400)">1 JUN</span>
+            </div>
+          </div>
+          <div style="flex:1 1 100%;min-width:150px;max-width:none;background:#FFFFFF;padding:8px 8px 14px;border-radius:10px;box-shadow:0 18px 40px rgba(18,26,22,.14);transform:rotate(-2deg)">
+            <div style="height:clamp(130px,14vw,170px);border-radius:6px;overflow:hidden"><image-slot id="mem-4" src="assets/photo-mem-4.png" shape="rounded" radius="6" placeholder="Rooftop, late"></image-slot></div>
+            <div style="padding:10px 4px 0;display:flex;align-items:baseline;justify-content:space-between;gap:8px">
+              <span style="font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:700;font-size:15px">Rooftop, late</span>
+              <span style="font-size:11px;color:var(--ink-400)">8 JUN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 400px;min-width:300px">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-600);margin-bottom:18px">Memories</div>
+        <h2 style="margin:0 0 20px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.6vw,68px);line-height:.92;letter-spacing:-.04em">It happens, and <span style="color:var(--coral-700)">then it's gone.</span></h2>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Six people took photos. They're on six phones. Somebody says they'll send them round and never does.</p>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">On Grwp, once you've been, the plan becomes a memory on its own. Where you went, who came, everyone's photos in one place.</p>
+
+        <p style="margin:0;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Only the people who were there can see it. No profile, nothing to post &mdash; it's just kept.</p>
+      </div>
+    </div>
+  </section>
+
+  <div style="position:relative;z-index:5;height:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+    <img src="assets/annot-take-pictures.png" data-write-solo data-write-css="0" alt="Take pictures of everything" style="opacity:0;transform:rotate(-2deg);width:clamp(190px,26vw,330px);height:auto;margin-left:clamp(0px,-14vw,0px)" />
+  </div>
+
+  <!-- COMMUNITIES -->
+  <section id="communities" style="position:relative;overflow:hidden;background:var(--sage-100,#EDF0E7);padding:clamp(40px,6vw,90px) clamp(20px,5vw,64px) clamp(48px,7vw,100px)">
+    <span style="position:absolute;left:-140px;top:100px;width:320px;height:320px;border-radius:54% 46% 48% 52%/46% 54% 46% 54%;background:var(--sage-300);opacity:.55"></span>
+    <div style="position:relative;z-index:2;max-width:1320px;margin:0 auto">
+      <div style="position:relative;display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
+        <div style="flex:1 1 400px;min-width:300px">
+          <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-600);margin-bottom:18px">Communities</div>
+          <h2 style="margin:0 0 20px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.8vw,72px);line-height:.9;letter-spacing:-.04em">Meeting people gets harder <span style="color:var(--coral-700)">every year.</span></h2>
+          <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Your circle shrinks. Making new friends means turning up somewhere alone and hoping, and most people don't.</p>
+          <p style="margin:0 0 24px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Communities on Grwp make it easy. Anyone can start one &mdash; you set what it is, where it meets, and who can join.</p>
+          <a href="#join" style="display:inline-block;background:var(--ink-800);color:var(--cream-100);border-radius:999px;padding:15px 28px;font-size:15.5px;font-weight:600" style-hover="background:var(--ink-700)">Start a community</a>
+        </div>
+        <div style="flex:1 1 400px;min-width:300px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#FFFFFF;border-radius:var(--radius-lg);padding:12px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 36px rgba(18,26,22,.1)">
+            <div style="width:64px;height:64px;border-radius:12px;flex:none;overflow:hidden"><image-slot id="club-1" src="assets/photo-club-1.png" shape="rounded" radius="12" placeholder="Photo"></image-slot></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:15.5px;font-weight:700">Marsh Lane Run Club</div>
+              <div style="font-size:12.5px;color:var(--ink-500);margin-top:2px">5k, nobody dropped · London Fields</div>
+              <div style="margin-top:7px"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.AvatarStack" members="{{ threeMembers }}" size="{{ av20 }}" hint-size="54px,20px"></x-import></div>
+            </div>
+            <div style="text-align:right;flex:none">
+              <div style="font-size:10.5px;color:var(--ink-400)">Next meet</div>
+              <div style="font-size:12.5px;font-weight:700;margin-top:2px">Sat 9:00am</div>
+            </div>
+          </div>
+          <div style="background:#FFFFFF;border-radius:var(--radius-lg);padding:12px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 36px rgba(18,26,22,.1)">
+            <div style="width:64px;height:64px;border-radius:12px;flex:none;overflow:hidden"><image-slot id="club-2" src="assets/photo-club-2.png" shape="rounded" radius="12" placeholder="Photo"></image-slot></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:15.5px;font-weight:700">Sunday book club</div>
+              <div style="font-size:12.5px;color:var(--ink-500);margin-top:2px">One book a month · someone's front room</div>
+              <div style="margin-top:7px"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.AvatarStack" members="{{ threeMembers }}" size="{{ av20 }}" hint-size="54px,20px"></x-import></div>
+            </div>
+            <div style="text-align:right;flex:none">
+              <div style="font-size:10.5px;color:var(--ink-400)">Next meet</div>
+              <div style="font-size:12.5px;font-weight:700;margin-top:2px">Sun 4:00pm</div>
+            </div>
+          </div>
+          <div style="background:#FFFFFF;border-radius:var(--radius-lg);padding:12px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 36px rgba(18,26,22,.1)">
+            <div style="width:64px;height:64px;border-radius:12px;flex:none;overflow:hidden"><image-slot id="club-3" src="assets/photo-club-3.png" shape="rounded" radius="12" placeholder="Photo"></image-slot></div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:15.5px;font-weight:700">Creative Minds</div>
+              <div style="font-size:12.5px;color:var(--ink-500);margin-top:2px">Galleries and late openings · East</div>
+              <div style="margin-top:7px"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.AvatarStack" members="{{ threeMembers }}" size="{{ av20 }}" hint-size="54px,20px"></x-import></div>
+            </div>
+            <div style="text-align:right;flex:none">
+              <div style="font-size:10.5px;color:var(--ink-400)">Next meet</div>
+              <div style="font-size:12.5px;font-weight:700;margin-top:2px">Wed 6:30pm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:clamp(32px,4vw,56px);padding-top:clamp(28px,4vw,44px);border-top:1px solid rgba(18,26,22,.1);display:flex;flex-wrap:wrap;gap:clamp(20px,3vw,40px)">
+        <sc-for list="{{ starts }}" as="s" hint-placeholder-count="4">
+          <div style="flex:1 1 210px;min-width:180px;text-align:center">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:999px;background:#FFFFFF;box-shadow:0 10px 24px rgba(18,26,22,.08);margin-bottom:12px">
+              <x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="{{ s.icon }}" size="{{ i24 }}" hint-size="24px,24px"></x-import>
+            </span>
+            <div style="font-size:15px;font-weight:700">{{ s.title }}</div>
+            <div style="margin:6px auto 0;font-size:13.5px;line-height:1.5;color:var(--ink-500);max-width:16em">{{ s.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGN UP -->
+  <section id="join" style="padding:0 clamp(20px,5vw,64px) clamp(40px,6vw,80px)">
+    <div style="max-width:1320px;margin:0 auto;background:var(--sage-300);border-radius:var(--radius-2xl);overflow:hidden;display:flex;flex-wrap:wrap;align-items:center">
+      <div style="flex:1 1 340px;min-width:260px;min-height:clamp(240px,26vw,340px);position:relative;background:var(--sage-700)">
+        <image-slot id="band-join" src="assets/photo-band-join.png" shape="rect" placeholder="Friends, sunset"></image-slot>
+        <img src="assets/annot-todo-live-white.png" data-write-solo data-write-css="0" alt="" style="position:absolute;left:clamp(12px,6%,54px);bottom:clamp(12px,7%,54px);width:clamp(96px,30%,150px);max-width:none;transform:rotate(-4deg);z-index:9;pointer-events:none" />
+        <span style="position:absolute;left:22px;top:22px;font-family:'Caveat',cursive;font-size:25px;line-height:1.05;color:var(--cream-100);transform:rotate(-7deg);pointer-events:none;z-index:3;text-shadow:0 2px 12px rgba(13,19,16,.5)">Communities turn plans<br />into real life.</span>
+      </div>
+      <div style="flex:1 1 420px;min-width:300px;padding:clamp(30px,3.6vw,56px)">
+        <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-600);margin-bottom:16px">More than a chat</div>
+        <h2 style="margin:0 0 16px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(32px,4.4vw,64px);line-height:.92;letter-spacing:-.04em;color:var(--ink-800)">Find your people.</h2>
+        <p style="margin:0 0 26px;font-size:16.5px;line-height:1.6;color:var(--ink-700);max-width:26em">Grwp opens in London first, on iOS and Android, later this year. Leave your email and we'll tell you the day it's ready.</p>
+        <div style="display:flex;gap:6px;background:#FFFFFF;border-radius:999px;padding:6px;max-width:440px">
+          <input id="email-bottom" type="email" placeholder="you@email.com" aria-label="Email address" style="flex:1;min-width:0;background:transparent;border:none;padding:14px 18px;font-family:var(--font-ui);font-size:16px;color:var(--ink-800);outline:none" />
+          <button onClick="{{ sendBottom }}" style="border:none;background:var(--ink-800);color:var(--cream-100);border-radius:999px;padding:14px 24px;font-family:var(--font-ui);font-size:15.5px;font-weight:600;cursor:pointer;white-space:nowrap" style-hover="background:var(--ink-700)">Get early access</button>
+        </div>
+        <sc-if value="{{ sentBottom }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:12px 0 0;font-size:14px;font-weight:600;color:var(--ink-800)">You're on the list. See you there.</p>
+        </sc-if>
+        <p style="margin:12px 0 0;font-size:13.5px;color:var(--ink-600)">No spam. One email, when we launch.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:var(--ink-800);color:var(--cream-500)">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(30px,4vw,48px) clamp(20px,5vw,64px) clamp(22px,3vw,32px)">
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px);align-items:center;justify-content:space-between">
+        <img src="assets/logo-grwp-cream.png" alt="Grwp" style="display:block;height:clamp(28px,3.4vw,38px);width:auto" />
+        <span style="font-size:14px">London Born.</span>
+        <span style="font-size:14px">Made For Making Plans.</span>
+      </div>
+      <div style="margin-top:clamp(20px,3vw,30px);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between">
+        <div style="display:flex;flex-wrap:wrap;gap:24px">
+          <a href="#top" style="font-size:15px" style-hover="color:var(--sage-300)">Home</a>
+          <a href="how-it-works.html" style="font-size:15px" style-hover="color:var(--sage-300)">How it works</a>
+          <a href="#join" style="font-size:15px" style-hover="color:var(--sage-300)">Early access</a>
+          <a href="#" style="font-size:15px" style-hover="color:var(--sage-300)">Privacy</a>
+          <a href="#" style="font-size:15px" style-hover="color:var(--sage-300)">Contact</a>
+        </div>
+        <span style="display:inline-flex;gap:7px">
+          <span style="width:10px;height:10px;border-radius:999px;background:var(--dot-teal)"></span>
+          <span style="width:10px;height:10px;border-radius:999px;background:var(--dot-coral)"></span>
+          <span style="width:10px;height:10px;border-radius:999px;background:var(--dot-green)"></span>
+        </span>
+      </div>
+      <div style="margin-top:clamp(20px,3vw,30px);padding-top:18px;border-top:1px solid var(--border-inverse)">
+        <span style="font-size:13px;color:rgba(242,237,230,.66)">&copy; Grwp &middot; London</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;holdLoader&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Intro&quot;},&quot;heroImage&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Hero&quot;},&quot;formspreeId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;mkoaybbp&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Signup&quot;},&quot;mapWarm&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Map&quot;}}">
+const M = [
+  { src: 'assets/imagery/member-1.png', name: 'Ade' },
+  { src: 'assets/imagery/member-2.png', name: 'Priya' },
+  { src: 'assets/imagery/member-3.png', name: 'Tom' },
+  { src: 'assets/imagery/member-4.png', name: 'Nia' },
+  { src: 'assets/imagery/member-5.png', name: 'Sam' }
+];
+const AREA_LINES = {
+  all: 'Fifteen a day from every area you’ve picked.',
+  peckham: 'Five in Peckham. Four you’ve never been to.',
+  bethnal: 'Five around Bethnal Green, including the Sunday market.',
+  stokey: 'Five in Stoke Newington, all inside a fifteen-minute walk.'
+};
+
+class Component extends DCLogic {
+  state = { area: 'all', sentTop: false, sentBottom: false };
+
+  componentDidMount() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+    clearTimeout(this._wire);
+    this._wire = setTimeout(() => this.wireMotion(), 260);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this._wire);
+    if (this._io) this._io.disconnect();
+  }
+
+  wireMotion() {
+    if (this._io) this._io.disconnect();
+    const root = document.querySelector('#grwp-page') || document.body;
+
+    // Each section gets its own entrance so no two read the same, and nothing
+    // inside a section arrives all at once.
+    const MODES = ['rise', 'sweep', 'cascade', 'settle', 'rise', 'sweep', 'cascade', 'settle'];
+    const sections = Array.from(root.querySelectorAll('section, footer'))
+      .filter((s) => !s.closest('#grwp-loader'));
+
+    sections.forEach((sec, si) => {
+      const mode = MODES[si % MODES.length];
+      const blocks = Array.from(sec.children).filter((el) => el.nodeType === 1);
+      const targets = blocks.length === 1 ? Array.from(blocks[0].children) : blocks;
+
+      targets.forEach((el, i) => {
+        if (el.hasAttribute('data-reveal')) return;
+        if (el.tagName === 'SPAN' && el.style.position === 'absolute') return;
+
+        // Deepen the stagger: reveal a column's own children rather than the column.
+        const kids = Array.from(el.children).filter((k) => k.nodeType === 1);
+        const deep = kids.length >= 3 && kids.length <= 10 && el.offsetHeight > 160;
+        const units = deep ? kids : [el];
+
+        units.forEach((u, j) => {
+          if (u.hasAttribute('data-reveal')) return;
+          u.setAttribute('data-reveal', '');
+          u.setAttribute('data-mode', mode);
+          const step = mode === 'cascade' ? 0.11 : mode === 'sweep' ? 0.07 : 0.09;
+          u.style.transitionDelay = (Math.min(i, 4) * 0.12 + Math.min(j, 6) * step).toFixed(2) + 's';
+        });
+      });
+    });
+
+    // Photo prints keep their tilt through the reveal and the hover lift.
+    root.querySelectorAll('[style*="rotate("]').forEach((el) => {
+      const m = /rotate\((-?[\d.]+deg)\)/.exec(el.getAttribute('style') || '');
+      if (!m || el.closest('#grwp-loader') || el.tagName === 'IMG' && el.closest('[data-print]')) return;
+      el.style.setProperty('--r', m[1]);
+      el.setAttribute('data-print', '');
+      if (!el.closest('[data-reveal]')) el.setAttribute('data-reveal-print', '');
+    });
+
+    // Cards and rows lift on hover.
+    root.querySelectorAll('[style*="border-radius"]').forEach((el) => {
+      const r = getComputedStyle(el).borderTopLeftRadius;
+      const px = parseFloat(r);
+      if (!(px >= 14 && px <= 26)) return;
+      if (el.closest('#grwp-loader') || el.querySelector('grwp-map') || el.closest('[data-print]')) return;
+      if (el.offsetWidth < 120 || el.offsetHeight < 80) return;
+      el.setAttribute('data-lift', '');
+    });
+
+    // First screen is driven by the loader timeline, not the scroll observer —
+    // otherwise it reveals behind the intro and is over before anyone sees it.
+    // Use the supplied handwriting clip only if it really decodes here;
+    // otherwise the drawn note stays and writes itself on.
+    const vid = null;
+    const note = document.getElementById('grwp-intro-note');
+    // Animated WebP loops with no way to stop it, so grab the finished frame
+    // and freeze on it rather than letting the writing start over.
+
+    const loader = document.getElementById('grwp-loader');
+    const logoWrap = loader && loader.lastElementChild;
+    if (vid && note) {
+      const swap = () => {
+        if (!vid.videoWidth) return;
+        note.style.display = 'none';
+        note.style.animation = 'none';
+        vid.style.display = 'block';
+        // Play the whole note, fast enough to keep the intro short.
+        const target = 3.2;
+        const rate = Math.min(4, Math.max(1, (vid.duration || target) / target));
+        vid.playbackRate = rate;
+        const dur = (vid.duration || target) / rate;
+        // Re-time the handover to the real end of the writing.
+        vid.style.animation = 'grwpNoteOut .45s ' + dur.toFixed(2) + 's cubic-bezier(.4,0,.2,1) forwards';
+        if (logoWrap) {
+          logoWrap.querySelectorAll('[style*="animation"]').forEach((el, i) => {
+            el.style.animationDelay = (dur + 0.25 + i * 0.35).toFixed(2) + 's';
+          });
+        }
+        if (loader) loader.style.animation = 'grwpLift .6s ' + (dur + 1.25).toFixed(2) + 's cubic-bezier(.4,0,.2,1) forwards';
+        vid.play().catch(() => {});
+      };
+      if (vid.readyState >= 2) swap();
+      else {
+        vid.addEventListener('loadeddata', swap, { once: true });
+        vid.addEventListener('loadedmetadata', () => { if (vid.readyState >= 2) swap(); }, { once: true });
+      }
+    }
+
+    const page = document.getElementById('grwp-page');
+    if (page) page.setAttribute('data-ready', '');
+
+    const above = new Set(
+      Array.from(root.querySelectorAll('[data-reveal], [data-reveal-print]'))
+        .filter((el) => el.getBoundingClientRect().top < window.innerHeight * 0.95)
+    );
+
+    // Scroll-gated rather than observer-gated: an element only reveals once its
+    // TOP has climbed above 68% of the viewport, so nothing plays at the bottom edge.
+    const pending = Array.from(root.querySelectorAll('[data-reveal], [data-reveal-print]'))
+      .filter((el) => !above.has(el));
+
+    const check = () => {
+      const gate = window.innerHeight * 0.92;
+      for (let i = pending.length - 1; i >= 0; i--) {
+        const el = pending[i];
+        const top = el.getBoundingClientRect().top;
+        if (top < gate) {
+          el.setAttribute(el.hasAttribute('data-reveal-print') ? 'data-reveal-print' : 'data-reveal', 'in');
+          pending.splice(i, 1);
+        }
+      }
+      if (!pending.length) window.removeEventListener('scroll', onScroll);
+    };
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; check(); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    check();
+    // The page streams in, so late sections arrive after this ran — keep
+    // picking them up, and never leave anything hidden.
+    const rescan = setInterval(() => {
+      root.querySelectorAll('[data-reveal], [data-reveal-print]').forEach((el) => {
+        const v = el.getAttribute('data-reveal') || el.getAttribute('data-reveal-print');
+        if (v !== 'in' && !pending.includes(el) && !above.has(el)) pending.push(el);
+      });
+      check();
+    }, 400);
+    setTimeout(() => {
+      clearInterval(rescan);
+      root.querySelectorAll('[data-reveal], [data-reveal-print]').forEach((el) => {
+        el.setAttribute(el.hasAttribute('data-reveal-print') ? 'data-reveal-print' : 'data-reveal', 'in');
+      });
+    }, 12000);
+    this._io = { disconnect: () => window.removeEventListener('scroll', onScroll) };
+    this._above = above;
+
+    // Handwritten notes write themselves out when scrolled to, not on page load.
+    root.querySelectorAll('img[data-writes]').forEach((img) => {
+      const gif = img.getAttribute('data-writes');
+      const pre = new Image();
+      pre.src = gif;
+      const writeIo = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          writeIo.disconnect();
+          setTimeout(() => {
+            if (img.dataset.invert) img.style.filter = 'brightness(0) invert(1) drop-shadow(0 2px 10px rgba(13,19,16,.65))';
+            img.src = gif + '?t=' + Date.now();
+          }, 260);
+        });
+      }, { threshold: 0.6 });
+      writeIo.observe(img);
+    });
+
+    // Notes without a handwriting clip still write themselves on, left to right.
+    // Group chat plays out: messages land one by one, notes arrive alongside.
+    // The chat block streams in after mount, so poll until it exists.
+    const wireChat = () => {
+      const card = root.querySelector('img[data-write-css]:not([data-write-solo])');
+      if (!card) return false;
+      const host = card.parentElement;
+      const notes = Array.from(root.querySelectorAll('img[data-write-css]:not([data-write-solo])'));
+      const run = () => {
+        const bubbles = Array.from(host.querySelectorAll('[data-msg]'));
+        const step = 380;
+        bubbles.forEach((el, i) => setTimeout(() => el.setAttribute('data-msg', 'in'), 300 + i * step));
+        const cues = [1, 3, Math.max(bubbles.length - 1, 4)];
+        notes.forEach((img, i) => {
+          setTimeout(() => img.setAttribute('data-write-css', 'go'), 300 + (cues[i] ?? i * 2) * step + 240);
+        });
+      };
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          io.disconnect();
+          run();
+        });
+      }, { threshold: 0.2 });
+      io.observe(host);
+      // If it is already on screen at wire-up time, go straight away.
+      const r = host.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) { io.disconnect(); run(); }
+      return true;
+    };
+    let tries = 0;
+    const tryWire = () => {
+      if (wireChat() || ++tries > 60) return;
+      setTimeout(tryWire, 200);
+    };
+    tryWire();
+
+    // Notes elsewhere on the page write on when their own section arrives.
+    root.querySelectorAll('img[data-write-solo]').forEach((img) => {
+      const soloIo = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          soloIo.disconnect();
+          setTimeout(() => img.setAttribute('data-write-css', 'go'), 320);
+        });
+      }, { threshold: 0.45 });
+      soloIo.observe(img);
+    });
+
+
+    root.querySelectorAll('img[data-write-css-unused]').forEach((img) => {
+      const wait = parseFloat(img.dataset.writeCss || '0') * 1000;
+
+      const cssIo = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          cssIo.disconnect();
+          setTimeout(() => img.setAttribute('data-write-css', 'go'), 260 + wait);
+        });
+      }, { threshold: 0.5 });
+      cssIo.observe(img);
+    });
+
+    // Grwp AI types its suggestion out when the section arrives.
+    const ai = Array.from(root.querySelectorAll('div')).find(
+      (el) => el.childNodes.length === 1 && el.textContent.startsWith('All six of you have liked')
+    );
+    if (ai) {
+      const full = ai.textContent;
+      ai.textContent = '';
+      ai.style.minHeight = ai.offsetHeight + 'px';
+      const typeIo = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          typeIo.disconnect();
+          let i = 0;
+          const tick = () => {
+            i = Math.min(full.length, i + 2);
+            ai.textContent = full.slice(0, i);
+            if (i < full.length) setTimeout(tick, 18);
+          };
+          setTimeout(tick, 320);
+        });
+      }, { threshold: 0.5 });
+      typeIo.observe(ai);
+    }
+
+    // Map pins drop in once the map is in view.
+    const mapHost = root.querySelector('grwp-map');
+    if (mapHost) {
+      const pinIo = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          if (!en.isIntersecting) return;
+          pinIo.disconnect();
+          const pins = mapHost.shadowRoot
+            ? mapHost.shadowRoot.querySelectorAll('path.leaflet-interactive')
+            : mapHost.querySelectorAll('path.leaflet-interactive');
+          pins.forEach((p, i) => {
+            p.style.opacity = '0';
+            p.style.transition = 'opacity .4s cubic-bezier(.2,.8,.2,1)';
+            setTimeout(() => { p.style.opacity = '1'; }, 40 + i * 14);
+          });
+        });
+      }, { threshold: 0.25 });
+      pinIo.observe(mapHost);
+    }
+
+    // The first screen plays its own entrance once the intro has lifted.
+    const firstScreen = Array.from(above);
+    const loaderEl = document.getElementById('grwp-loader');
+    const lifted = !loaderEl || getComputedStyle(loaderEl).visibility === 'hidden';
+    // Hold the hero until the intro has actually lifted (5.6s + its 0.6s ease).
+    const start = lifted ? 120 : Math.max(120, 5900 - performance.now());
+
+    firstScreen.forEach((el, i) => {
+      el.style.transitionDelay = (Math.min(i, 8) * 0.12).toFixed(2) + 's';
+    });
+    setTimeout(() => {
+      firstScreen.forEach((el) => {
+        el.setAttribute(el.hasAttribute('data-reveal-print') ? 'data-reveal-print' : 'data-reveal', 'in');
+      });
+    }, start);
+  }
+
+  pickArea(key) {
+    this.setState({ area: key });
+    const map = document.querySelector('grwp-map');
+    if (map && map.focusArea) map.focusArea(key === 'all' ? null : key);
+  }
+
+  send(which) {
+    const input = document.getElementById('email-' + which);
+    if (!input) return;
+    const email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      input.style.outline = '2px solid #B4432B';
+      input.focus();
+      return;
+    }
+    input.style.outline = '';
+    const id = this.props.formspreeId || 'mkoaybbp';
+    const key = 'sent' + which.charAt(0).toUpperCase() + which.slice(1);
+    fetch('https://formspree.io/f/' + id, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'Grwp landing page (' + which + ')' })
+    }).then((r) => {
+      if (!r.ok) throw new Error('failed');
+      input.value = '';
+      this.setState({ [key]: true });
+    }).catch(() => {
+      input.style.outline = '2px solid #B4432B';
+      input.placeholder = 'Something went wrong — try again';
+    });
+  }
+
+  renderVals() {
+    const a = this.state.area;
+    const pill = (on) => ({ bg: on ? '#121A16' : '#F2EDE6', fg: on ? '#F2EDE6' : '#121A16' });
+    const p = pill(a === 'peckham'), b = pill(a === 'bethnal'), s = pill(a === 'stokey');
+    const url = (f) => 'url(assets/imagery/' + f + ')';
+    const heroImage = (this.props.heroImage ?? '').trim();
+    const holdLoader = this.props.holdLoader ?? false;
+    return {
+      loaderLift: holdLoader ? 'none' : 'grwpLift .6s 5.6s cubic-bezier(.4,0,.2,1) forwards',
+      heroBg: heroImage ? 'url(' + heroImage + ')' : 'none',
+      noHero: !heroImage,
+      mapWarm: (this.props.mapWarm ?? true) ? 'true' : 'false',
+      av16: 16, av20: 20, av24: 24, i14: 14, i24: 24, i26: 26, i30: 30,
+      twoMembers: M.slice(0, 2),
+      threeMembers: M.slice(0, 3),
+      planRows: [
+        { img: url('venue-hero-cloveclub.png'), name: 'Rooftop Drinks', when: 'Fri 18 Apr' },
+        { img: url('venue-tile-2.png'), name: 'Sunday Runners', when: 'Sun 21 Apr' },
+        { img: url('venue-thumb-3.png'), name: 'Food Explorers', when: 'Sat 27 Apr' },
+        { img: url('venue-tile-3.png'), name: 'Creative Minds', when: 'Wed 24 Apr' }
+      ],
+      steps: [
+        { icon: 'users-round', title: 'Bring your people', body: 'Friends, flatmates, work crew — whoever.' },
+        { icon: 'map-pin', title: 'Find somewhere', body: 'Real places near you, picked for the group.' },
+        { icon: 'heart', title: 'Make memories', body: 'Turn "what shall we do?" into "that was good."' }
+      ],
+      pillars: [
+        { icon: 'bookmark', title: 'Fifteen a day, then it stops', body: 'A set arrives each morning and ends. Nothing to keep scrolling through.' },
+        { icon: 'map-pin', title: 'Ten minutes from your door', body: 'You choose the areas you spend time in, and Grwp stays in them.' },
+        { icon: 'heart', title: 'Nobody sees what you tapped', body: 'Not your group, not ever. Only the places enough of you agreed on.' }
+      ],
+      chat: [
+        { author: 'Jess', text: 'Anyone fancy doing something this weekend?', avatar: url('member-2.png'), bg: 'var(--cream-300)', radius: '14px 14px 14px 4px', justify: 'flex-start' },
+        { author: '', text: 'Yes! Where?', avatar: '', bg: 'var(--sage-200)', radius: '14px 14px 4px 14px', justify: 'flex-end' },
+        { author: 'Tom', text: 'Not sure… maybe a restaurant?', avatar: url('member-3.png'), bg: 'var(--cream-300)', radius: '14px 14px 14px 4px', justify: 'flex-start' },
+        { author: 'Nia', text: "I don't mind! Maybe something new?", avatar: url('member-4.png'), bg: 'var(--cream-300)', radius: '14px 14px 14px 4px', justify: 'flex-start' },
+        { author: 'Charlie', text: "I'm busy Friday", avatar: url('member-5.png'), bg: 'var(--cream-300)', radius: '14px 14px 14px 4px', justify: 'flex-start' },
+        { author: 'Ade', text: 'What about a walk instead?', avatar: url('member-1.png'), bg: 'var(--cream-300)', radius: '14px 14px 14px 4px', justify: 'flex-start' }
+      ],
+      problems: [
+        { icon: 'message-circle', title: 'Too many opinions', body: 'Everyone has a say, which makes it hard to decide.' },
+        { icon: 'calendar', title: 'It takes forever', body: 'A five-minute plan turns into days of messages.' },
+        { icon: 'clock', title: 'Something gets in the way', body: 'Different schedules, different moods, different weeks.' },
+        { icon: 'x', title: "And often it doesn't happen", body: 'The chat goes quiet and another weekend goes by.' }
+      ],
+      finds: [
+        { slot: 'find-1', src: 'assets/photo-find-1.png', name: 'Fig & Thistle', meta: 'Café · Haggerston · 12 min', tilt: '-3deg' },
+        { slot: 'find-2', src: 'assets/photo-find-2.png', name: 'Sundry', meta: 'Gallery · Bethnal Green', tilt: '2deg' },
+        { slot: 'find-3', src: 'assets/photo-find-3.png', name: 'Marsh Lane Run Club', meta: 'Saturday · 9:00am', tilt: '2.5deg' },
+        { slot: 'find-4', src: 'assets/photo-find-4.png', name: 'Columbia Road', meta: 'Market · Sunday morning', tilt: '-2deg' }
+      ],
+      memories: [
+        { slot: 'mem-1', src: 'assets/photo-mem-1.png', name: 'Long lunch', date: '25 MAY', tilt: '-3deg' },
+        { slot: 'mem-2', src: 'assets/photo-mem-2.png', name: 'Columbia Road', date: '26 MAY', tilt: '2deg' },
+        { slot: 'mem-3', src: 'assets/photo-mem-3.png', name: 'Saturday run', date: '1 JUN', tilt: '3deg' },
+        { slot: 'mem-4', src: 'assets/photo-mem-4.png', name: 'Reservoir walk', date: '8 JUN', tilt: '-2deg' }
+      ],
+      clubs: [
+        { slot: 'club-1', src: 'assets/photo-club-1.png', name: 'Marsh Lane Run Club', meta: '5k, nobody dropped · London Fields', when: 'Sat 9:00am' },
+        { slot: 'club-2', src: 'assets/photo-club-2.png', name: 'Sunday book club', meta: "One book a month · someone's front room", when: 'Sun 4:00pm' },
+        { slot: 'club-3', src: 'assets/photo-club-3.png', name: 'Creative Minds', meta: 'Galleries and late openings · East', when: 'Wed 6:30pm' }
+      ],
+      starts: [
+        { icon: 'plus', title: 'Anyone can start one', body: 'Create a community in minutes.' },
+        { icon: 'settings', title: "Set what it's about", body: 'From food to fitness, work to weekends.' },
+        { icon: 'map-pin', title: 'Choose where it meets', body: 'Online or in real life. Your call.' },
+        { icon: 'user-round', title: 'Let the right people in', body: 'Open, invite-only, or by approval.' }
+      ],
+      areaLine: AREA_LINES[a],
+      bgPeckham: p.bg, fgPeckham: p.fg,
+      bgBethnal: b.bg, fgBethnal: b.fg,
+      bgStokey: s.bg, fgStokey: s.fg,
+      pickPeckham: () => this.pickArea('peckham'),
+      pickBethnal: () => this.pickArea('bethnal'),
+      pickStokey: () => this.pickArea('stokey'),
+      pickAll: () => this.pickArea('all'),
+      sentTop: this.state.sentTop,
+      sentBottom: this.state.sentBottom,
+      sendTop: () => this.send('top'),
+      sendBottom: () => this.send('bottom')
+    };
+  }
+}
+</script>
+</body>
+</html>
