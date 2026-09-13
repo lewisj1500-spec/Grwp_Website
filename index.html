@@ -76,7 +76,7 @@
   @keyframes grwpPin { from { opacity: 0; transform: translateY(-8px) scale(.6); } to { opacity: 1; transform: none; } }
 
   @keyframes grwpSafe { to { opacity: 1; } }
-  #grwp-page { opacity: 0; animation: grwpSafe 0s 1.4s forwards; }
+  #grwp-page { opacity: 0; animation: grwpSafe 0s 2s forwards; }
   #grwp-page[data-ready] { opacity: 1; animation: none; }
 
   /* Intro: three handwritten lines, each wiped on left-to-right. 36KB of stills
@@ -84,7 +84,7 @@
   #grwp-intro-note .gil {
     position: absolute; display: block; height: auto; max-width: none;
     clip-path: inset(0 100% 0 0);
-    animation: grwpScribble .46s steps(20, end) forwards;
+    animation: grwpScribble 1.25s steps(40, end) forwards;
   }
   /* Returning within the session, on a metered connection, or with motion
      reduced: no intro at all, straight to the page. */
@@ -298,14 +298,14 @@
 <div id="grwp-page" style="background:#F5F1E8;color:var(--ink-800);font-family:var(--font-ui);overflow-x:clip">
 
   <div id="grwp-loader" style="position:fixed;inset:0;z-index:200;background:var(--ink-900);display:flex;align-items:center;justify-content:center;padding:24px;animation:{{ loaderLift }}">
-    <div id="grwp-intro-note" role="img" aria-label="Life is a collection of beautiful, ordinary moments" style="position:relative;width:min(86vw,560px);aspect-ratio:1033/478;animation:grwpNoteOut .3s 1.30s cubic-bezier(.4,0,.2,1) forwards">
-      <img class="gil" src="assets/intro-line-1.webp" alt="" width="1033" height="115" fetchpriority="high" decoding="sync" style="left:0;top:0;width:100%;animation-delay:.05s;height:auto" />
-      <img class="gil" src="assets/intro-line-2.webp" alt="" width="951" height="130" fetchpriority="high" decoding="sync" style="left:1.258%;top:37.866%;width:92.062%;animation-delay:.42s;height:auto" />
-      <img class="gil" src="assets/intro-line-3.webp" alt="" width="1033" height="105" fetchpriority="high" decoding="sync" style="left:0;top:78.033%;width:100%;animation-delay:.79s;height:auto" />
+    <div id="grwp-intro-note" role="img" aria-label="Life is a collection of beautiful, ordinary moments" style="position:relative;width:min(86vw,560px);aspect-ratio:1033/478;animation:grwpNoteOut .45s 4.1s cubic-bezier(.4,0,.2,1) forwards">
+      <img class="gil" src="assets/intro-line-1.webp" alt="" width="1033" height="115" fetchpriority="high" decoding="sync" style="left:0;top:0;width:100%;animation-delay:.1s;height:auto" />
+      <img class="gil" src="assets/intro-line-2.webp" alt="" width="951" height="130" fetchpriority="high" decoding="sync" style="left:1.258%;top:37.866%;width:92.062%;animation-delay:1.35s;height:auto" />
+      <img class="gil" src="assets/intro-line-3.webp" alt="" width="1033" height="105" fetchpriority="high" decoding="sync" style="left:0;top:78.033%;width:100%;animation-delay:2.65s;height:auto" />
     </div>
     <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;pointer-events:none">
-      <img width="858" height="250" src="assets/logo-grwp-cream.webp" alt="Grwp" style="display:block;width:clamp(150px,26vw,250px);height:auto;opacity:0;animation:grwpLogoIn .45s 1.48s cubic-bezier(.2,.8,.2,1) forwards" />
-      <span style="font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:rgba(242,237,230,.6);opacity:0;animation:grwpRise .38s 1.70s cubic-bezier(.2,.8,.2,1) forwards">London born</span>
+      <img width="858" height="250" src="assets/logo-grwp-cream.webp" alt="Grwp" style="display:block;width:clamp(150px,26vw,250px);height:auto;opacity:0;animation:grwpLogoIn .6s 4.45s cubic-bezier(.2,.8,.2,1) forwards" />
+      <span style="font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;color:rgba(242,237,230,.6);opacity:0;animation:grwpRise .45s 4.85s cubic-bezier(.2,.8,.2,1) forwards">London born</span>
     </div>
   </div>
 
@@ -1170,13 +1170,13 @@ class Component extends DCLogic {
     // Hand over as the intro fades rather than at a fixed point on the clock:
     // the loader's own animation starts when the component renders, which is
     // not when navigation did. Fall back to a fixed delay if that is unreadable.
-    let start = 100;
+    let start = 120;
     if (!lifted) {
       const lift = (loaderEl.getAnimations ? loaderEl.getAnimations() : [])[0];
       const elapsed = lift && lift.startTime != null
         ? performance.now() - lift.startTime
         : performance.now();
-      start = Math.max(100, 2200 - elapsed);
+      start = Math.max(120, 5900 - elapsed);
     }
 
     firstScreen.forEach((el, i) => {
@@ -1229,7 +1229,7 @@ class Component extends DCLogic {
     const heroImage = (this.props.heroImage ?? '').trim();
     const holdLoader = this.props.holdLoader ?? false;
     return {
-      loaderLift: holdLoader ? 'none' : 'grwpLift .45s 1.95s cubic-bezier(.4,0,.2,1) forwards',
+      loaderLift: holdLoader ? 'none' : 'grwpLift .6s 5.6s cubic-bezier(.4,0,.2,1) forwards',
       heroBg: heroImage ? 'url(' + heroImage + ')' : 'none',
       noHero: !heroImage,
       mapWarm: (this.props.mapWarm ?? true) ? 'true' : 'false',
