@@ -1,0 +1,4 @@
+# Design-tool source bundles. These live in the deploy root, so keeping them
+# untracked stops Vercel serving a 13MB file publicly. Extracted assets that
+# the site actually uses are committed under assets/.
+Add/

@@ -121,6 +121,56 @@
   button, a[href] { transition: transform .14s cubic-bezier(.2,.8,.2,1), background-color .14s linear, opacity .14s linear; }
   button:active { transform: scale(.97); }
 
+
+  /* ── JOURNEY section ─────────────────────────────────────────────────────
+     Five stages, each an illustration sitting on a shared baseline with an
+     arrow between. Art heights are tuned per stage so the pieces read as one
+     row rather than five boxes. ── */
+  #jflow .journey { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 30px; align-items: start; margin-top: clamp(30px,3.6vw,50px); }
+  #jflow .stage { position: relative; min-width: 0; }
+  #jflow .stage:not(:last-child)::after {
+    content: "→"; position: absolute; right: -22px; top: 128px;
+    font-size: 26px; color: var(--ink-400); z-index: 4;
+  }
+  #jflow .art { height: 236px; display: flex; align-items: flex-end; justify-content: flex-start; }
+  #jflow .art img { height: 100%; width: auto; max-width: none; max-height: none; object-fit: contain; object-position: left bottom; display: block; }
+  #jflow .stage:nth-child(1) .art img { height: 82%; }
+  #jflow .stage:nth-child(2) .art img { height: 64%; position: relative; bottom: 34px; }
+  #jflow .stage:nth-child(3) .art img { height: 86%; position: relative; left: 34px; }
+  #jflow .stage:nth-child(1)::after { right: -14px; }
+  #jflow .stage:nth-child(2)::after { right: -34px; }
+  #jflow .stage:nth-child(3)::after { right: -14px; }
+  #jflow .stage:nth-child(4)::after { right: -14px; }
+  #jflow .num { color: var(--coral-500); font-size: 13px; font-weight: 600; letter-spacing: .08em; margin: 22px 0 7px; }
+  #jflow h3 { margin: 0 0 7px; font-family: var(--font-display); font-variation-settings: var(--display-variation); font-weight: 900; font-size: clamp(24px,2.2vw,31px); line-height: 1; letter-spacing: -.03em; }
+  #jflow .lede { margin: 0; color: var(--ink-500); font-size: 15px; line-height: 1.35; max-width: 210px; }
+  /* The following section's phone mockup is pulled up by a negative margin so
+     it rises into the whitespace above. Give it room to land in, or it sits on
+     top of the last stage's copy. The mobile rules zero that margin, so this
+     only applies from the tablet breakpoint up. */
+  @media (min-width: 761px) {
+    /* beats the inline padding shorthand on the wrapper */
+    #jflow > div { padding-bottom: clamp(150px, 16vw, 250px) !important; }
+  }
+  @media (max-width: 1100px) {
+    #jflow .journey { grid-template-columns: repeat(2, minmax(0,1fr)); row-gap: 54px; }
+    #jflow .stage:nth-child(2)::after, #jflow .stage:nth-child(3)::after, #jflow .stage:nth-child(4)::after { display: none; }
+  }
+  @media (max-width: 760px) {
+    #jflow .journey { grid-template-columns: 1fr; gap: 46px; margin-top: 26px; }
+    /* Restore the arrows the 1100px rule hides: stacked in one column, every
+       stage should point at the next. */
+    #jflow .stage:not(:last-child)::after { content: "↓"; display: block; right: auto; left: 50%; top: auto; bottom: -34px; transform: translateX(-50%); }
+    /* Centre the art on one column, and drop the per-stage nudges that only
+       make sense when the stages sit side by side. */
+    #jflow .art { height: 200px; justify-content: center; }
+    #jflow .art img { object-position: center bottom; }
+    #jflow .stage:nth-child(2) .art img,
+    #jflow .stage:nth-child(3) .art img { position: static; bottom: auto; left: auto; }
+    #jflow .lede { max-width: none; }
+    #jflow .hand { display: none !important; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     #grwp-loader, #grwp-loader * { animation-duration: .01ms !important; animation-delay: 0s !important; }
     #grwp-loader { animation: grwpLift .01ms .3s forwards !important; }
@@ -355,34 +405,46 @@
 
   </section>
 
-  <!-- PILLARS + COLLAGE -->
-  <section style="background:#F5F1E8">
-    <div style="max-width:1320px;margin:0 auto;padding:clamp(40px,6vw,84px) clamp(20px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(28px,4vw,64px);align-items:center">
-      <div style="flex:1 1 420px;min-width:300px">
-        <div style="font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-500);margin-bottom:16px">What makes it different</div>
-        <h2 style="margin:0 0 28px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(30px,3.8vw,54px);line-height:.94;letter-spacing:-.04em;max-width:16em">Not another app to <span style="color:var(--coral-700)">scroll.</span></h2>
-        <div style="display:flex;flex-direction:column">
-          <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
-            <div style="display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid rgba(18,26,22,.12)">
-              <span style="flex:none;margin-top:2px"><x-import component-from-global-scope="GrwpDesignSystem_c2fcf1.Icon" name="{{ p.icon }}" size="{{ i24 }}" hint-size="24px,24px"></x-import></span>
-              <div>
-                <div style="font-size:16px;font-weight:700">{{ p.title }}</div>
-                <div style="margin-top:5px;font-size:14.5px;line-height:1.55;color:var(--ink-500);max-width:26em">{{ p.body }}</div>
-              </div>
-            </div>
-          </sc-for>
-        </div>
+  <!-- JOURNEY — from "we should" to Saturday at 7 -->
+  <section id="jflow" style="background:#F5F1E8">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(34px,4.4vw,64px) clamp(20px,5vw,64px) clamp(44px,5.4vw,80px)">
+
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px">
+        <h2 style="margin:0;max-width:16em;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(38px,5.3vw,86px);line-height:.96;letter-spacing:-.035em">From “we should”<br />to <span style="font-style:italic;color:var(--coral-500)">Saturday at 7.</span></h2>
+        <span class="hand" data-m="scribble" style="flex:none;font-family:'Caveat',cursive;font-size:24px;line-height:1.05;color:var(--ink-800);transform:rotate(-5deg);margin-top:6px">Good people.<br />Great plans.</span>
       </div>
-      <div data-m="collage" style="flex:1 1 380px;min-width:290px;position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.6vw,20px);flex-wrap:wrap">
-        <div data-m="collage-photo" style="background:#FFFFFF;padding:7px;border-radius:8px;box-shadow:0 18px 38px rgba(18,26,22,.14);transform:rotate(-4deg);flex:0 1 190px;min-width:150px">
-          <div style="height:clamp(140px,15vw,180px);border-radius:4px;overflow:hidden"><image-slot id="collage-a" src="assets/photo-collage-a.webp" shape="rect" radius="4" placeholder="Street at dusk"></image-slot></div>
-        </div>
-        <div data-m="collage-photo" style="background:#FFFFFF;padding:7px;border-radius:8px;box-shadow:0 18px 38px rgba(18,26,22,.14);transform:rotate(3deg);flex:0 1 190px;min-width:150px;margin-top:clamp(0px,2vw,22px)">
-          <div style="height:clamp(140px,15vw,180px);border-radius:4px;overflow:hidden"><image-slot id="collage-b" src="assets/photo-collage-b.webp" shape="rect" radius="4" placeholder="Table under string lights"></image-slot></div>
-        </div>
-        <div data-m="collage-seal" style="flex:0 0 auto;width:clamp(120px,13vw,160px);height:clamp(120px,13vw,160px);border-radius:999px;background:var(--sage-500);display:flex;align-items:center;justify-content:center;text-align:center;padding:18px">
-          <span style="font-family:'Caveat',cursive;font-size:clamp(20px,2vw,26px);line-height:1.1;color:var(--cream-100)">Good friends.<br />Great plans.</span>
-        </div>
+
+      <div class="journey">
+        <article class="stage">
+          <div class="art"><img src="assets/journey/01-discover.webp" width="854" height="720" loading="lazy" decoding="async" alt="A fan of venue cards — Aoba Ramen in Shoreditch on top, liked" /></div>
+          <div class="num">01</div>
+          <h3>Discover</h3>
+          <p class="lede">Grwp suggests places you'd love, in the areas you love. On your own or with your friends.</p>
+        </article>
+        <article class="stage">
+          <div class="art"><img src="assets/journey/02-match.webp" width="1310" height="720" loading="lazy" decoding="async" alt="Five group members above a card reading Your Group Loves This" /></div>
+          <div class="num">02</div>
+          <h3>Match</h3>
+          <p class="lede">When you and your friends like the same place, that's a match.</p>
+        </article>
+        <article class="stage">
+          <div class="art"><img src="assets/journey/03-plan.webp" width="617" height="720" loading="lazy" decoding="async" alt="A plan card for Aoba Ramen, Saturday 13 September, 7:30pm, five going" /></div>
+          <div class="num">03</div>
+          <h3>Plan</h3>
+          <p class="lede">Pick a day and a time. You already know everyone loves the place, so the planning's done.</p>
+        </article>
+        <article class="stage">
+          <div class="art"><img src="assets/journey/04-meet.webp" width="643" height="720" loading="lazy" decoding="async" alt="A polaroid of the table on the night, captioned Saturday, 7:30" /></div>
+          <div class="num">04</div>
+          <h3>Meet</h3>
+          <p class="lede">What Grwp's all about. Turn up. Real time spent with your people.</p>
+        </article>
+        <article class="stage">
+          <div class="art"><img src="assets/journey/05-remember.webp" width="658" height="720" loading="lazy" decoding="async" alt="A memory card dated Saturday 13 September with four photos from the night" /></div>
+          <div class="num">05</div>
+          <h3>Remember</h3>
+          <p class="lede">Every meet becomes a memory. Everyone adds their photos, so nothing gets lost.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -1255,11 +1317,6 @@ class Component extends DCLogic {
         { icon: 'users-round', title: 'Bring your people', body: 'Friends, flatmates, work crew — whoever.' },
         { icon: 'map-pin', title: 'Find somewhere', body: 'Real places near you, picked for the group.' },
         { icon: 'heart', title: 'Make memories', body: 'Turn "what shall we do?" into "that was good."' }
-      ],
-      pillars: [
-        { icon: 'bookmark', title: 'Fifteen a day, then it stops', body: 'A set arrives each morning and ends. Nothing to keep scrolling through.' },
-        { icon: 'map-pin', title: 'Ten minutes from your door', body: 'You choose the areas you spend time in, and Grwp stays in them.' },
-        { icon: 'heart', title: 'Nobody sees what you tapped', body: 'Not your group, not ever. Only the places enough of you agreed on.' }
       ],
       chat: [
         { author: 'Jess', text: 'Anyone fancy doing something this weekend?', avatar: url('member-2.png'), bg: 'var(--cream-300)', radius: '14px 14px 14px 4px', justify: 'flex-start' },
