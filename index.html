@@ -247,9 +247,9 @@
   @media (max-width: 760px) {
     /* svh alone is the height with the URL bar SHOWING, so once the bar
        collapses on scroll the hero came up short and the next section
-       peeked in. lvh is the collapsed height; take whichever is taller so
-       it fills in both states, with room to spare for the art. */
-    .grwp-hero { min-height: max(110svh, 100lvh); }
+       peeked in. lvh is the collapsed height, kept as a floor so this can
+       never come in under a full screen whatever the chrome is doing. */
+    .grwp-hero { min-height: max(120svh, 100lvh); }
     .grwp-hero { grid-template-rows: auto minmax(300px,1fr) 62vw; }
 
     /* Each foliage plate carries its leaves on its own side of an otherwise
