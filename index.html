@@ -138,7 +138,7 @@
   @keyframes grwpSwayLs { 0%, 100% { transform: rotate(-0.7deg); } 50% { transform: rotate(0.8deg); } }
   @keyframes grwpSwayRs { 0%, 100% { transform: rotate(0.7deg); }  50% { transform: rotate(-0.8deg); } }
 
-  .grwp-hero { position: relative; z-index: 2; min-height: 100vh; display: grid; grid-template-rows: auto minmax(380px,1fr) 37.8vw; background: #F6F2EA; font-family: "Satoshi", system-ui, sans-serif; color: #13231C; }
+  .grwp-hero { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto minmax(380px,1fr) 37.8vw; background: #F6F2EA; font-family: "Satoshi", system-ui, sans-serif; color: #13231C; }
   .grwp-hero img { display: block; }
 
   /* sky (moves with the river) */
@@ -211,6 +211,82 @@
   /* The section after the hero has to sit below it (z-index < 2) so it slides
      up under the railing. */
   .grwp-after { position: relative; z-index: 1; margin-top: -1px; }
+
+  /* ── HERO on phones ─────────────────────────────────────────────
+     Not in the design file, which has no mobile treatment. Its fluid sizing
+     is tuned for a wide frame, and three things fall out of that on a phone:
+       · the headline is sized off 6.4vw, which is 25px at 390px wide;
+       · the art is sized to fit the width, which shrinks the leaves and the
+         river to a texture — bigger and cropped reads better than small and
+         whole, so the layers are pushed well past both edges;
+       · the band needs more height to match, which the third grid row has to
+         reserve or the headline runs into it. ── */
+  @media (max-width: 560px) {
+    /* Once the pill wraps below the logo the nav is two rows deep, and at the
+       design's desktop padding that is 165px of a 640px screen before the
+       headline starts. Tighten it to its own scale. */
+    .grwp-nav { padding-top: 12px; padding-bottom: 12px; gap: 12px; }
+    /* Fallback until wireHero() measures the real thing: logo row, gap, pill
+       row, plus the vertical padding. */
+    .grwp-nav-slot { height: calc(24px + clamp(112px,12vw,150px) * .3835 + 12px + 54px); }
+  }
+
+  /* The pill is fixed-size and does not shrink, so below ~390px the CTA runs
+     off the right edge. Scale its type and padding with the screen instead of
+     dropping an item. */
+  @media (max-width: 420px) {
+    .grwp-nav { padding-left: max(12px, 3vw); padding-right: max(12px, 3vw); }
+    .grwp-nav-pill { font-size: min(15px, 3.7vw); }
+    .grwp-nav-pill a { padding: 0 min(16px, 3.1vw); }
+    .grwp-nav-pill a.cta { padding: 0 min(22px, 4.3vw); }
+    /* Same squeeze on the signup, or the placeholder truncates. */
+    .grwp-signup input { padding: 0 min(18px, 3.5vw); }
+    .grwp-signup button { padding: 0 min(22px, 4.6vw); }
+  }
+
+  @media (max-width: 760px) {
+    .grwp-hero { grid-template-rows: auto minmax(300px,1fr) 40vw; }
+
+    /* Each foliage plate carries its leaves on its own side of an otherwise
+       empty frame, so widening the frame slides them off the edge and opens a
+       hole in the middle. Widen the plates inside it instead, anchored to
+       their own edge, and the leaves grow inward and overlap. */
+    .grwp-canopy { top: -6vw; }
+    .grwp-canopy-inner img { width: 172%; }
+    .grwp-canopy-inner .r { left: auto; right: 0; }
+
+    /* The oak is one frame with a corner at each end, shown twice — each half
+       windows one end of it. At 300% each window shows a third, not a half,
+       so the offset that lines up the right-hand end moves with it. */
+    .grwp-front { top: -4vw; }
+    .grwp-front-row > div img { width: 300%; }
+    .grwp-front-row .r img { margin-left: -200%; }
+
+    /* The river is a continuous panorama, so this one does just crop. */
+    .grwp-band { height: 40vw; }
+    .grwp-band-art { left: -32%; right: auto; width: 164%; }
+
+    /* 11vw puts the sticker at 43px on a 390px screen, which is a smudge. */
+    .grwp-tagline { width: min(150px, 21vw); }
+    .grwp-head-inner { padding-top: 0; }
+    .grwp-h1 { font-size: min(44px, 10vw, 8.6cqh); }
+    .grwp-sub { font-size: 16px; }
+  }
+
+  /* Short phones (SE-sized, and anything in landscape-ish portrait): the
+     cluster is five stacked elements and simply does not fit next to a 40vw
+     band. Everything steps down together rather than the headline alone. */
+  @media (max-width: 760px) and (max-height: 720px) {
+    .grwp-hero { grid-template-rows: auto minmax(260px,1fr) 36vw; }
+    .grwp-band { height: 36vw; }
+    /* A short window onto art this wide crops away the skyline and leaves
+       nothing but water. Pull the panorama back so the city fits the window. */
+    .grwp-band-art { left: -15%; width: 130%; }
+    .grwp-tagline { width: min(150px, 17vw); }
+    .grwp-h1 { font-size: min(38px, 8.4vw, 8cqh); }
+    .grwp-sub { font-size: 15px; }
+    .grwp-small { font-size: 10.5px; gap: 1cqh; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .grwp-canopy-inner img, .grwp-front-row > div { animation: none; }
@@ -1176,6 +1252,20 @@ class Component extends DCLogic {
     if (nav.dataset.wired) return;
     nav.dataset.wired = 'on';
 
+    // .grwp-nav-slot's height is a formula for a one-row nav: the taller of
+    // the logo and the pill. On a narrow screen the pill wraps onto a second
+    // row, the formula under-reserves, and the fixed nav lands on top of the
+    // headline. Measure the real thing instead. Only meaningful while the nav
+    // is at its full height, which is exactly when the slot matters.
+    const slot = document.querySelector('.grwp-nav-slot');
+    const sizeSlot = () => {
+      if (slot && !nav.classList.contains('is-solid')) {
+        slot.style.height = nav.offsetHeight + 'px';
+      }
+    };
+    sizeSlot();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeSlot);
+
     const parallax = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = null, solid = null;
 
@@ -1200,7 +1290,7 @@ class Component extends DCLogic {
     };
 
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(frame); };
-    const onResize = () => { solid = null; onScroll(); };
+    const onResize = () => { solid = null; sizeSlot(); onScroll(); };
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
     frame();
