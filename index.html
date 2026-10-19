@@ -250,7 +250,7 @@
        peeked in. lvh is the collapsed height, kept as a floor so this can
        never come in under a full screen whatever the chrome is doing. */
     .grwp-hero { min-height: max(120svh, 100lvh); }
-    .grwp-hero { grid-template-rows: auto minmax(300px,1fr) 62vw; }
+    .grwp-hero { grid-template-rows: auto minmax(300px,1fr) 79vw; }
 
     /* Each foliage plate carries its leaves on its own side of an otherwise
        empty frame, so widening the frame slides them off the edge and opens a
@@ -270,10 +270,10 @@
     /* The river is a continuous panorama, so this one does just crop — but
        the WINDOW has to match the art's height or band's overflow:hidden
        slices straight through the skyline and the page sky shows above the
-       cut. 164% wide at 100/40 is 65.6vw tall; 62vw keeps the design's own
+       cut. 210% wide at 100/40 is 84vw tall; 79vw keeps the design's own
        slim crop off the top and nothing more. */
-    .grwp-band { height: 62vw; }
-    .grwp-band-art { left: -32%; right: auto; width: 164%; }
+    .grwp-band { height: 79vw; }
+    .grwp-band-art { left: -55%; right: auto; width: 210%; }
 
     /* 11vw puts the sticker at 43px on a 390px screen, which is a smudge. */
     .grwp-tagline { width: min(150px, 21vw); }
@@ -286,11 +286,11 @@
      cluster is five stacked elements and simply does not fit next to a 40vw
      band. Everything steps down together rather than the headline alone. */
   @media (max-width: 760px) and (max-height: 720px) {
-    .grwp-hero { grid-template-rows: auto minmax(260px,1fr) 49vw; }
-    .grwp-band { height: 49vw; }
+    .grwp-hero { grid-template-rows: auto minmax(260px,1fr) 62vw; }
+    .grwp-band { height: 62vw; }
     /* A short window onto art this wide crops away the skyline and leaves
        nothing but water. Pull the panorama back so the city fits the window. */
-    .grwp-band-art { left: -15%; width: 130%; }
+    .grwp-band-art { left: -32.5%; width: 165%; }
     .grwp-tagline { width: min(150px, 17vw); }
     .grwp-h1 { font-size: min(38px, 8.4vw, 8cqh); }
     .grwp-sub { font-size: 15px; }
