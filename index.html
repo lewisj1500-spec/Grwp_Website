@@ -153,16 +153,16 @@
   /* foliage */
   .grwp-canopy { position: absolute; top: -3vw; left: -6%; right: -6%; z-index: 3; pointer-events: none; will-change: transform; }
   .grwp-canopy-inner { position: relative; }
-  .grwp-canopy-inner img { width: 100%; height: auto; }
+  .grwp-canopy-inner img { width: var(--canopy, 100%); height: auto; }
   .grwp-canopy-inner .l { transform-origin: 0 0; animation: grwpSwayL 14s ease-in-out infinite; }
-  .grwp-canopy-inner .r { position: absolute; top: 0; left: 0; transform-origin: 100% 0; animation: grwpSwayR 19s ease-in-out -6s infinite; }
+  .grwp-canopy-inner .r { position: absolute; top: 0; right: 0; left: auto; transform-origin: 100% 0; animation: grwpSwayR 19s ease-in-out -6s infinite; }
   .grwp-front { position: absolute; top: -2vw; left: -5%; right: -5%; z-index: 4; pointer-events: none; will-change: transform; }
   .grwp-front-row { display: flex; }
   .grwp-front-row > div { width: 50%; overflow: hidden; }
-  .grwp-front-row > div img { width: 200%; max-width: none; height: auto; }
+  .grwp-front-row > div img { width: var(--oak, 200%); max-width: none; height: auto; }
   .grwp-front-row .l { transform-origin: 0 0; animation: grwpSwayRs 15s ease-in-out -3s infinite; }
   .grwp-front-row .r { transform-origin: 100% 0; animation: grwpSwayLs 11s ease-in-out -8s infinite; }
-  .grwp-front-row .r img { margin-left: -100%; }
+  .grwp-front-row .r img { margin-left: calc(100% - var(--oak, 200%)); }
 
   /* nav: fixed, turns solid halfway down the hero */
   .grwp-nav-slot { position: relative; height: calc(44px + max(54px, clamp(112px,12vw,150px) * .3835)); }
@@ -226,17 +226,33 @@
      779/3200 of its own height), so below 32.2vw the band's overflow:hidden
      starts cutting the skyline. That is the floor; above it the band keeps
      the design's own 37.8vw wherever it fits, which is every tablet. ── */
-  @media (min-width: 761px) and (min-height: 800px) {
-    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, max(32.2vw, 44vh)); }
-    .grwp-band { height: min(37.8vw, max(32.2vw, 44vh)); }
+  @media (min-width: 761px) and (min-height: 700px) {
+    /* The band's floor is only 32.2vw while the river sits 19.5% up the art.
+       Slide the river most of the way down and the floor becomes the river
+       image's own height, 24.34vw, which lets the band shrink with the screen
+       instead of the width alone. What is lost is open water, not skyline. */
+    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, max(27vw, 42vh)); }
+    .grwp-band { height: min(37.8vw, max(27vw, 42vh)); }
+    .grwp-river { bottom: 4%; }
   }
 
   /* Landscape only. 32cqh is a third of the headline row: fine on the tall row
      the design assumes, crippling once that row is squeezed to fit one screen.
      Portrait tablets have the room, so they keep the design's spacing. */
-  @media (min-width: 761px) and (min-height: 800px) and (min-aspect-ratio: 4/3) {
+  @media (min-width: 761px) and (min-height: 700px) and (min-aspect-ratio: 4/3) {
     .grwp-head-inner { padding-top: min(32cqh, 8px); }
     .grwp-h1 { font-size: min(92px, 6.4vw, 8.4cqh); }
+
+    /* Both foliage layers are sized off viewport WIDTH, so on a short wide
+       laptop they hang a third of the way down the screen and meet the band
+       in the middle. Cap them against the HEIGHT instead: the plates are
+       3:1, so a width cap of Nvh lands the leaves at about N/3 vh deep. */
+    .grwp-canopy { --canopy: min(100%, 78vh); }
+    /* The oak cannot shrink the same way: each half windows one end of a
+       single frame, so anything under 200% makes both halves show the WHOLE
+       frame and its far corner leaks into the middle. Lift it instead, so it
+       hangs less far down without changing size. */
+    .grwp-front { top: min(-2vw, -7vh); }
   }
 
   /* ── HERO on phones ─────────────────────────────────────────────
@@ -283,16 +299,12 @@
        empty frame, so widening the frame slides them off the edge and opens a
        hole in the middle. Widen the plates inside it instead, anchored to
        their own edge, and the leaves grow inward and overlap. */
-    .grwp-canopy { top: -6vw; }
-    .grwp-canopy-inner img { width: 172%; }
-    .grwp-canopy-inner .r { left: auto; right: 0; }
+    .grwp-canopy { top: -6vw; --canopy: 172%; }
 
     /* The oak is one frame with a corner at each end, shown twice — each half
        windows one end of it. At 300% each window shows a third, not a half,
        so the offset that lines up the right-hand end moves with it. */
-    .grwp-front { top: -4vw; }
-    .grwp-front-row > div img { width: 300%; }
-    .grwp-front-row .r img { margin-left: -200%; }
+    .grwp-front { top: -4vw; --oak: 300%; }
 
     /* The river is a continuous panorama, so this one does just crop — but
        the WINDOW has to match the art's height or band's overflow:hidden
