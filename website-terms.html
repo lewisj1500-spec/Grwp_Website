@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Website terms — Grwp</title>
+<meta name="description" content="The terms covering your use of grwp.app. The Grwp app will have its own terms, which you'll accept when you sign up.">
+<meta name="theme-color" content="#F2EDE6">
+<meta name="robots" content="index, follow">
+
+<!-- Deliberately plain: no x-dc, no support.js, no design-system bundle. These
+     terms have to render for everyone, including with JavaScript off, so this
+     page links the token stylesheets and nothing else. -->
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/colors.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/typography.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/radius.css">
+<link rel="stylesheet" href="_ds/grwp-design-system-c2fcf138-45aa-4ad6-adab-8d77be472eb9/tokens/base.css">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg-page, #F2EDE6); color: var(--text-primary, #121A16); font-family: var(--font-ui), system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: inherit; }
+  ::selection { background: var(--coral-200); }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 clamp(20px,5vw,72px); }
+
+  header { position: sticky; top: 0; z-index: 80; background: rgba(242,237,230,.93); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border-subtle, rgba(18,26,22,.1)); }
+  .bar { max-width: 1320px; margin: 0 auto; padding: 12px clamp(20px,5vw,72px); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .bar img { display: block; height: clamp(26px,3vw,34px); width: auto; }
+  .bar nav { display: flex; align-items: center; gap: clamp(14px,2vw,24px); }
+  .bar a.home { font-size: 15px; font-weight: 500; color: var(--text-secondary, #44524B); text-decoration: none; }
+  .bar a.home:hover { color: var(--text-primary, #121A16); }
+  .bar a.cta { font-size: 15px; font-weight: 500; color: var(--text-on-coral, #FFFFFF); background: var(--coral-500, #E76F51); border-radius: 999px; padding: 11px 22px; white-space: nowrap; text-decoration: none; }
+  .bar a.cta:hover { background: var(--coral-600, #D1583B); }
+
+  .lede { padding: clamp(44px,7vw,96px) 0 clamp(20px,3vw,32px); }
+  .eyebrow { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--text-secondary, #44524B); margin-bottom: 22px; }
+  .eyebrow span { width: 32px; height: 1px; background: var(--coral-500, #E76F51); flex: none; }
+  h1 { margin: 0 0 16px; font-family: var(--font-display), Georgia, serif; font-variation-settings: var(--display-variation); font-weight: 900; font-size: clamp(32px,4.6vw,60px); line-height: 1; letter-spacing: -.035em; }
+  .meta { margin: 0; font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--text-secondary, #44524B); }
+
+  main { padding-bottom: clamp(56px,8vw,112px); }
+  h2 { margin: clamp(30px,4vw,46px) 0 10px; font-family: var(--font-display), Georgia, serif; font-variation-settings: var(--display-variation); font-weight: 900; font-size: clamp(21px,2.2vw,28px); line-height: 1.15; letter-spacing: -.02em; }
+  p { margin: 0 0 14px; font-size: 17px; line-height: 1.65; color: var(--text-secondary, #44524B); }
+  p.intro { font-size: 18px; color: var(--text-primary, #121A16); }
+  main a { color: var(--text-primary, #121A16); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+  main a:hover { color: var(--coral-600, #D1583B); }
+
+  footer { background: var(--ink-800, #121A16); color: var(--text-inverse, #F2EDE6); }
+  .foot { max-width: 1320px; margin: 0 auto; padding: clamp(30px,4vw,48px) clamp(20px,5vw,72px) clamp(22px,3vw,32px); }
+  .foot-top { display: flex; flex-wrap: wrap; gap: clamp(20px,4vw,56px); align-items: center; justify-content: space-between; }
+  .foot-top img { display: block; height: clamp(28px,3.4vw,40px); width: auto; }
+  .foot-top span { font-size: 14px; }
+  .foot-links { margin-top: clamp(20px,3vw,30px); display: flex; flex-wrap: wrap; gap: 24px; }
+  .foot-links a { font-size: 15px; text-decoration: none; }
+  .foot-links a:hover { color: var(--coral-300, #F0A78F); }
+  .foot-base { margin-top: clamp(20px,3vw,30px); padding-top: 18px; border-top: 1px solid var(--border-inverse, rgba(242,237,230,.16)); font-size: 13px; color: var(--text-inverse-muted, rgba(242,237,230,.66)); }
+
+  @media (max-width: 600px) {
+    .bar a.home { display: none; }
+    .foot-top { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a href="index.html" aria-label="Grwp home"><img src="assets/logo-grwp-black.webp" alt="Grwp" width="858" height="250"></a>
+    <nav>
+      <a class="home" href="index.html">Home</a>
+      <a class="cta" href="index.html#join">Join the waitlist</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="lede">
+    <div class="eyebrow"><span></span>Legal</div>
+    <h1>Website terms</h1>
+    <p class="meta">Version 0.1 &middot; 20 October 2026</p>
+  </div>
+
+  <main>
+    <p class="intro">These terms cover your use of our website, grwp.app. The Grwp app will have its own terms, which you&rsquo;ll accept when you sign up.</p>
+
+    <h2>Who we are</h2>
+    <p>Grwp Social Limited, a company registered in England and Wales (company number 17183116). Registered office: 27 Old Gloucester Street, London, WC1N 3AX. ICO registration ZC147688. Contact: <a href="mailto:support@grwp.app">support@grwp.app</a>.</p>
+
+    <h2>About this site</h2>
+    <p>Grwp hasn&rsquo;t launched yet. What we say here about the app is a preview, and features may change before launch.</p>
+
+    <h2>Using the site</h2>
+    <p>Please don&rsquo;t misuse it. For example, don&rsquo;t try to break it, overload it, or get into parts of it you&rsquo;re not meant to reach.</p>
+
+    <h2>Our content</h2>
+    <p>The Grwp name, logo, designs and text on this site belong to us. You&rsquo;re welcome to view our pages and share links to them. Please don&rsquo;t copy or reuse our content without asking.</p>
+
+    <h2>Links</h2>
+    <p>If we link to other websites, we&rsquo;re not responsible for what&rsquo;s on them.</p>
+
+    <h2>Liability</h2>
+    <p>We provide this site free and &ldquo;as is&rdquo;. We aren&rsquo;t liable for any loss from using it, except where the law doesn&rsquo;t allow us to limit our liability, including for death or personal injury caused by our negligence, and for fraud.</p>
+
+    <h2>Privacy</h2>
+    <p>Our website privacy notice explains how we use any data you give us: <a href="/website-privacy">grwp.app/website-privacy</a>.</p>
+
+    <h2>Law</h2>
+    <p>These terms are governed by the law of England and Wales. If you live in Scotland or Northern Ireland, you can also bring a claim in your local courts.</p>
+
+    <h2>Changes</h2>
+    <p>We may update these terms. The version and date at the top show when.</p>
+  </main>
+</div>
+
+<footer>
+  <div class="foot">
+    <div class="foot-top">
+      <img src="assets/logo-grwp-cream.webp" alt="Grwp" width="858" height="250" loading="lazy">
+      <span>London Born.</span>
+      <span>Made For Making Plans.</span>
+    </div>
+    <div class="foot-links">
+      <a href="index.html">Home</a>
+      <a href="how-it-works.html">How it works</a>
+      <a href="index.html#join">Early access</a>
+      <a href="/website-privacy">Privacy</a>
+      <a href="/website-terms">Terms</a>
+    </div>
+    <div class="foot-base">&copy; Grwp &middot; London</div>
+  </div>
+</footer>
+
+</body>
+</html>
