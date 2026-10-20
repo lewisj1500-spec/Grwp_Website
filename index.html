@@ -9,6 +9,16 @@
 <meta property="og:title" content="Grwp — Everyone wants to do something. Nobody organises it.">
 <meta property="og:description" content="Bring your people. Find the place. Make memories. London born, made for making plans.">
 <meta property="og:type" content="website">
+<script>
+/* dc-runtime resolves these CDN URLs through window.__resources, so the vendored
+   copies in /vendor/ are used and nothing is fetched from unpkg.com. The files
+   are byte-identical to what unpkg served (checked against the SRI hashes in
+   support.js). Must run before support.js, which is deferred. */
+window.__resources = {
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "/vendor/react.production.min.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "/vendor/react-dom.production.min.js"
+};
+</script>
 <script defer src="./support.js"></script>
 <noscript><style>
   /* This page hydrates client-side. Without JS the component never mounts, so
@@ -34,10 +44,7 @@
 <link rel="preload" as="image" href="assets/intro-line-1.webp" fetchpriority="high">
 <link rel="preload" as="image" href="assets/intro-line-2.webp">
 <link rel="preload" as="image" href="assets/intro-line-3.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap"></noscript>
+<link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin>
 <script>
 /* Skip the intro when replaying it would only be in the way: a second page view
    in this tab, a data-saver / very slow connection, or reduced motion. */
@@ -187,19 +194,27 @@
   .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: min(1000px, 100%); max-width: 100%; padding: 0 clamp(0px, 6vw, 96px); }
   .grwp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: 2.2cqh; }
 
-  /* Cycling words. Every option for a slot sits in the same grid cell, so the
-     pill is always as wide as its own longest word and the sentence never
-     re-flows when one changes - the brief's "reserve each slot's width"
-     option, which also keeps the wrap stable at 390px. */
-  .grwp-pill { overflow: hidden; display: inline-flex; white-space: nowrap; align-items: center; gap: .18em; vertical-align: baseline; margin: .04em 0; padding: .02em .32em .06em; border: 0; border-radius: .4em; color: #13231C; font: inherit; letter-spacing: inherit; line-height: 1; cursor: pointer; transform: rotate(-1.5deg); }
+  /* Cycling words. Each pill hugs its current word and animates its width to
+     the next one, so the sentence moves rather than jumping. The full stop is
+     tied to the WHERE pill so it can never wrap onto a line by itself. */
+  /* border-box, because the width the script animates to is measured with
+     getBoundingClientRect, which includes the padding. gap rather than a
+     margin on the icon, so .25em is .25em of the headline and not of the
+     icon's own reduced size. */
+  .grwp-pill { display: inline-flex; align-items: center; gap: .25em; white-space: nowrap; vertical-align: baseline; overflow: hidden; box-sizing: border-box; padding: .08em .35em; border: 0; border-radius: .4em; color: #13231C; font: inherit; letter-spacing: inherit; line-height: 1; cursor: pointer; transition: width 300ms cubic-bezier(.2,.8,.2,1); }
   .grwp-pill:hover { filter: brightness(.95); }
   .grwp-pill:focus-visible { outline: 3px solid #13231C; outline-offset: 2px; }
+  .grwp-pill .w { text-align: left; }
   .grwp-pill .i { font-size: .38em; opacity: .6; }
-  .grwp-pill .slot { display: inline-grid; }
-  .grwp-pill .slot > span { grid-area: 1 / 1; text-align: center; visibility: hidden; }
-  .grwp-pill .slot > span.on { visibility: visible; animation: grwpWordIn 420ms cubic-bezier(.2,.8,.2,1); }
-  @keyframes grwpWordIn { from { opacity: 0; transform: translateY(.45em); } to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .grwp-pill .slot > span.on { animation: none; } }
+  .grwp-pill[data-pill="who"]   { transform: rotate(-1.5deg); }
+  .grwp-pill[data-pill="what"]  { transform: rotate(1.5deg); }
+  .grwp-pill[data-pill="where"] { transform: rotate(-1.5deg); }
+  .grwp-end { white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .grwp-pill { transition: none; } }
+
+  /* The break after WHO only applies on desktop; narrower screens wrap freely. */
+  .grwp-br { display: none; }
+  @media (min-width: 1024px) { .grwp-br { display: inline; } }
   /* font-family / font-variation-settings / word-spacing are not in the design
      file, which has no base h1 rule. Here the design system sets bare <h1> in
      Fraunces, so the Satoshi the design inherits has to be restated. */
@@ -210,7 +225,6 @@
   .grwp-signup input { flex: 1; min-width: 0; height: max(40px, min(48px, 10cqh)); border: 0; outline: 0; background: transparent; padding: 0 18px; font: 500 16px "Satoshi", system-ui, sans-serif; color: #13231C; }
   .grwp-signup button { flex-shrink: 0; height: max(40px, min(48px, 10cqh)); padding: 0 22px; border: 0; border-radius: 999px; background: #13231C; color: #F6F2EA; font: 700 15px "Satoshi", system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 140ms; }
   .grwp-signup button:hover { background: #2E4A3F; }
-  .grwp-small { margin-top: 1.6cqh; display: flex; flex-direction: column; align-items: flex-start; gap: 1cqh; font-size: 12px; line-height: 1.5; font-weight: 700; letter-spacing: .14em; color: #13231C; }
   /* Not in the design file: the consent line that has to sit under the field,
      and this page's Formspree confirmation, restyled for the new cluster. */
   .grwp-consent { margin: 1.2cqh 0 0; font-size: 12.5px; line-height: 1.5; color: rgba(19,35,28,.74); }
@@ -299,6 +313,15 @@
               mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
   }
 
+  /* ── HERO headline on desktop ───────────────────────────────────
+     Exactly two lines, broken after WHO. The cap is set by the longest
+     combination - "This Saturday, the work crew" / "want a Sunday roast in
+     Greenwich." - which runs about 17.5px of line for every 1px of font
+     size, so 46px is the largest that still fits the 827px text column. ── */
+  @media (min-width: 1024px) {
+    .grwp-h1 { font-size: clamp(30px, 3.4vw, 46px); }
+  }
+
   /* ── HERO on phones ─────────────────────────────────────────────
      Not in the design file, which has no mobile treatment. Its fluid sizing
      is tuned for a wide frame, and three things fall out of that on a phone:
@@ -379,7 +402,6 @@
     .grwp-band-art { left: -32.5%; width: 165%; }
     .grwp-h1 { font-size: min(34px, 7.2vw, 7.6cqh); }
     .grwp-sub { font-size: 15px; }
-    .grwp-small { font-size: 10.5px; gap: 1cqh; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -700,7 +722,7 @@
       <div class="grwp-head-inner">
         <div class="grwp-head-col">
           <div class="grwp-eyebrow">EVERY PLAN STARTS SOMEWHERE</div>
-          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho.">This Saturday, <button class="grwp-pill" type="button" data-pill="who" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="slot" aria-hidden="true"><span class="on">the family</span><span>the flatmates</span><span>the uni lot</span><span>the work crew</span><span>the cousins</span><span>the book club</span></span><span class="i" aria-hidden="true">↻</span></button><br> want <button class="grwp-pill" type="button" data-pill="what" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="slot" aria-hidden="true"><span class="on">brunch</span><span>a Sunday roast</span><span>a pub quiz</span><span>crazy golf</span><span>a picnic</span><span>ramen</span><span>a gallery trip</span><span>live jazz</span></span><span class="i" aria-hidden="true">↻</span></button> in <button class="grwp-pill" type="button" data-pill="where" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="slot" aria-hidden="true"><span class="on">Soho</span><span>Peckham</span><span>Hackney</span><span>Brixton</span><span>Borough</span><span>Clapham</span><span>Camden</span><span>Greenwich</span></span><span class="i" aria-hidden="true">↻</span></button>.</h1>
+          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho.">This Saturday, <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button><br class="grwp-br">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button> in <span class="grwp-end"><button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></h1>
           <p class="grwp-sub">Grwp finds the place that works for everyone.</p>
           <div class="grwp-signup">
             <input id="email-top" type="email" placeholder="you@email.com" aria-label="Email address" />
@@ -710,10 +732,6 @@
           <sc-if value="{{ sentTop }}" hint-placeholder-val="{{ false }}">
             <p class="grwp-sent">You’re on the list. We’ll email you once, when Grwp launches. Changed your mind? Email <a href="mailto:privacy@grwp.app">privacy@grwp.app</a> and we’ll remove you.</p>
           </sc-if>
-          <div class="grwp-small">
-            <div>IPHONE FIRST · LONDON FIRST</div>
-            <div>LONDON BORN.<br />MADE FOR MAKING PLANS.</div>
-          </div>
         </div>
       </div>
     </div>
@@ -951,8 +969,21 @@
         </div>
         <p data-m="area-line" style="margin:18px 0 0;font-size:15px;font-weight:600;color:var(--ink-800)">{{ areaLine }}</p>
       </div>
-      <div data-m="map" style="flex:1 1 420px;min-width:300px;position:relative;min-height:clamp(340px,40vw,480px);background:var(--cream-300);margin:clamp(10px,1.4vw,18px);border-radius:var(--radius-xl);overflow:hidden">
-        <x-import component-from-global-scope="grwp-map" from="./grwp-map.js" warm="{{ mapWarm }}" hint-size="100%,100%"></x-import>
+      <div style="flex:1 1 420px;min-width:300px;margin:clamp(10px,1.4vw,18px)">
+      <div data-m="map" style="position:relative;min-height:clamp(340px,40vw,480px);background:var(--cream-300);border-radius:var(--radius-xl);overflow:hidden">
+        <!-- Static export of the same view the Leaflet map showed. Live tiles
+             meant every visitor's IP reached tile.openstreetmap.fr, which the
+             privacy notice does not allow for. 2x WebP. -->
+        <img src="img/map-london-areas.webp" width="1316" height="1040" loading="lazy" decoding="async"
+             alt="Map of London with Grwp place markers across Peckham, Bethnal Green and Stoke Newington"
+             style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block" />
+        <div style="position:absolute;left:14px;bottom:14px;z-index:5;background:rgba(255,255,255,.94);border:1px solid rgba(18,26,22,0.08);border-radius:16px;padding:11px 14px;display:flex;flex-direction:column;gap:7px;font:500 12px/1 var(--font-ui);color:#121A16">
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:999px;background:#7D8F6D;flex:none"></span>Been</span>
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:999px;background:#D9CDB8;flex:none"></span>Saved</span>
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:999px;background:#E76F51;flex:none"></span>Going</span>
+        </div>
+      </div>
+      <p style="margin:8px 2px 0;font:400 11px/1.4 var(--font-ui);color:var(--ink-400)">&copy; OpenStreetMap contributors</p>
       </div>
     </div>
   </section>
@@ -1420,32 +1451,73 @@ class Component extends DCLogic {
     h1.dataset.wired = 'on';
 
     const KEYS = ['who', 'what', 'where'];
-    const at = { who: 0, what: 0, where: 0 };
-    const slots = {};
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pills = {}, lists = {}, at = {};
     KEYS.forEach((k) => {
       const b = h1.querySelector('[data-pill="' + k + '"]');
-      slots[k] = b ? Array.from(b.querySelectorAll('.slot > span')) : [];
+      if (!b) return;
+      pills[k] = b;
+      lists[k] = (b.dataset.words || '').split('|').filter(Boolean);
+      at[k] = 0;
     });
-    if (KEYS.some((k) => slots[k].length < 2)) return;
+    if (KEYS.some((k) => !pills[k] || lists[k].length < 2)) return;
 
+    // Width is animated, not jumped: measure the pill with the new word in
+    // place, put the old width back, then let the CSS transition run.
     const show = (k, i) => {
+      const b = pills[k], word = b.querySelector('.w');
+      const from = b.getBoundingClientRect().width;
       at[k] = i;
-      slots[k].forEach((el, j) => el.classList.toggle('on', j === i));
+      word.textContent = lists[k][i];
+      b.style.transition = 'none';
+      b.style.width = 'auto';
+      const to = b.getBoundingClientRect().width;
+      if (still) { b.style.width = ''; b.style.transition = ''; return; }
+      b.style.width = from + 'px';
+      void b.offsetWidth;                 // flush, or there is nothing to animate from
+      b.style.transition = '';
+      b.style.width = to + 'px';
     };
 
-    // Taps work whatever the motion setting, and hold the timer off briefly
-    // so an automatic change cannot stomp on the reader's own.
+    // Below 1024px the sentence wraps freely, so its height changes with the
+    // words. Reserve the tallest combination's height and nothing below the
+    // headline moves. Re-measured on resize because it is width-dependent.
+    const LONGEST = { who: 'the work crew', what: 'a Sunday roast', where: 'Greenwich' };
+    const reserve = () => {
+      h1.style.minHeight = '';
+      const keep = {};
+      KEYS.forEach((k) => {
+        const w = pills[k].querySelector('.w');
+        keep[k] = w.textContent;
+        w.textContent = LONGEST[k];
+        pills[k].style.width = 'auto';
+      });
+      const tallest = h1.getBoundingClientRect().height;
+      KEYS.forEach((k) => {
+        pills[k].querySelector('.w').textContent = keep[k];
+        pills[k].style.width = '';
+      });
+      h1.style.minHeight = Math.ceil(tallest) + 'px';
+    };
+    reserve();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
+    let rt = null;
+    const onResize = () => { clearTimeout(rt); rt = setTimeout(reserve, 150); };
+    window.addEventListener('resize', onResize);
+
     let held = 0;
     KEYS.forEach((k) => {
-      const b = h1.querySelector('[data-pill="' + k + '"]');
-      b.addEventListener('click', () => {
+      pills[k].addEventListener('click', () => {
         held = Date.now();
-        show(k, (at[k] + 1) % slots[k].length);   // tap advances to the next word
+        show(k, (at[k] + 1) % lists[k].length);   // tap advances to the next word
       });
     });
 
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      this._wordsTeardown = () => { delete h1.dataset.wired; };
+    if (still) {
+      this._wordsTeardown = () => {
+        window.removeEventListener('resize', onResize);
+        delete h1.dataset.wired;
+      };
       return;
     }
 
@@ -1457,9 +1529,8 @@ class Component extends DCLogic {
     h1.addEventListener('focusin', pause);
     h1.addEventListener('focusout', resume);
 
-    // The intro covers the page for about six seconds. Cycling from mount
-    // would burn through two or three words before anyone has seen the hero,
-    // and the brief wants the first view to be the canonical sentence.
+    // The intro covers the page for about six seconds; cycling from mount
+    // would burn through two or three words before anyone has seen the hero.
     const loaderGone = () => {
       const el = document.getElementById('grwp-loader');
       if (!el || document.documentElement.hasAttribute('data-intro-skip')) return true;
@@ -1472,7 +1543,7 @@ class Component extends DCLogic {
       if (!paused && Date.now() - held > 1500) {
         const k = KEYS[Math.floor(Math.random() * KEYS.length)];
         // Pick from the other options only, so it never "changes" to itself.
-        let i = Math.floor(Math.random() * (slots[k].length - 1));
+        let i = Math.floor(Math.random() * (lists[k].length - 1));
         if (i >= at[k]) i += 1;
         show(k, i);
       }
@@ -1486,6 +1557,7 @@ class Component extends DCLogic {
 
     this._wordsTeardown = () => {
       clearTimeout(this._words);
+      window.removeEventListener('resize', onResize);
       h1.removeEventListener('pointerenter', pause);
       h1.removeEventListener('pointerleave', resume);
       h1.removeEventListener('focusin', pause);
@@ -1554,7 +1626,7 @@ class Component extends DCLogic {
       const px = parseFloat(r);
       if (!(px >= 14 && px <= 26)) return;
       if (el.closest('#grwp-loader') || el.closest('.grwp-hero')) return;
-      if (el.querySelector('grwp-map') || el.closest('[data-print]')) return;
+      if (el.closest('[data-print]')) return;
       if (el.offsetWidth < 120 || el.offsetHeight < 80) return;
       el.setAttribute('data-lift', '');
     });
@@ -1757,26 +1829,6 @@ class Component extends DCLogic {
       typeIo.observe(ai);
     }
 
-    // Map pins drop in once the map is in view.
-    const mapHost = root.querySelector('grwp-map');
-    if (mapHost) {
-      const pinIo = new IntersectionObserver((entries) => {
-        entries.forEach((en) => {
-          if (!en.isIntersecting) return;
-          pinIo.disconnect();
-          const pins = mapHost.shadowRoot
-            ? mapHost.shadowRoot.querySelectorAll('path.leaflet-interactive')
-            : mapHost.querySelectorAll('path.leaflet-interactive');
-          pins.forEach((p, i) => {
-            p.style.opacity = '0';
-            p.style.transition = 'opacity .4s cubic-bezier(.2,.8,.2,1)';
-            setTimeout(() => { p.style.opacity = '1'; }, 40 + i * 14);
-          });
-        });
-      }, { threshold: 0.25 });
-      pinIo.observe(mapHost);
-    }
-
     // The first screen plays its own entrance once the intro has lifted.
     const firstScreen = Array.from(above);
     const loaderEl = document.getElementById('grwp-loader');
@@ -1805,9 +1857,9 @@ class Component extends DCLogic {
   }
 
   pickArea(key) {
+    // The map is a static image now, so this only drives the chip states and
+    // the line beneath them.
     this.setState({ area: key });
-    const map = document.querySelector('grwp-map');
-    if (map && map.focusArea) map.focusArea(key === 'all' ? null : key);
   }
 
   send(which) {

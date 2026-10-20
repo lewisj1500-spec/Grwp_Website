@@ -3,7 +3,8 @@
    Display: Recoleta (licensed from Latinotype) is NOT bundled. Fraunces (variable, SOFT + WONK)
    is the closest free stand-in and is what these tokens load - replace with real Recoleta
    @font-face rules when binaries are available. */
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1&display=swap");
+/* Fraunces and Caveat are self-hosted; nothing is fetched from another domain. */
+@import url("/fonts/fonts.css");
 @font-face{font-family:"Satoshi";src:url("../assets/fonts/Satoshi-Variable.woff2") format("woff2");font-weight:300 900;font-style:normal;font-display:swap}
 @font-face{font-family:"Satoshi";src:url("../assets/fonts/Satoshi-VariableItalic.woff2") format("woff2");font-weight:300 900;font-style:italic;font-display:swap}
 @font-face{font-family:"Satoshi Static";src:url("../assets/fonts/Satoshi-Light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap}
