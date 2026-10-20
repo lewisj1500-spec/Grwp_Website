@@ -191,8 +191,8 @@ window.__resources = {
   /* headline cluster: centred block, left-aligned contents */
   .grwp-head { position: relative; z-index: 5; min-height: 0; container-type: size; will-change: transform, opacity; }
   .grwp-head-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32cqh 24px 0; box-sizing: border-box; }
-  .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: min(1000px, 100%); max-width: 100%; padding: 0 clamp(0px, 6vw, 96px); }
-  .grwp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: 2.2cqh; }
+  .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: min(1075px, 100%); max-width: 100%; padding: 0; }
+  .grwp-eyebrow { font-size: 15.6px; font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: 2.2cqh; }
 
   /* Cycling words. The sentence is two block lines, each nowrap, so it can
      only ever be two lines; wireWords() sizes the font to whichever
@@ -227,14 +227,14 @@ window.__resources = {
      nowrap lines cannot overflow if the script never runs. */
   .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(76px, 3.2vw); line-height: 1.12; letter-spacing: -.04em; }
   .grwp-h1 em { font-style: normal; color: #6E8A5E; }
-  .grwp-sub { margin: 3cqh 0 0; font-size: max(14px, min(21px, 1.6vw, 4.2cqh)); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
-  .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 6px; width: min(420px, 100%); padding: 6px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
-  .grwp-signup input { flex: 1; min-width: 0; height: max(40px, min(48px, 10cqh)); border: 0; outline: 0; background: transparent; padding: 0 18px; font: 500 16px "Satoshi", system-ui, sans-serif; color: #13231C; }
-  .grwp-signup button { flex-shrink: 0; height: max(40px, min(48px, 10cqh)); padding: 0 22px; border: 0; border-radius: 999px; background: #13231C; color: #F6F2EA; font: 700 15px "Satoshi", system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 140ms; }
+  .grwp-sub { margin: 3cqh 0 0; font-size: max(18.2px, min(27.3px, 2.08vw, 5.46cqh)); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
+  .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 8px; width: min(546px, 100%); padding: 8px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
+  .grwp-signup input { flex: 1; min-width: 0; height: max(52px, min(62px, 13cqh)); border: 0; outline: 0; background: transparent; padding: 0 23px; font: 500 20.8px "Satoshi", system-ui, sans-serif; color: #13231C; }
+  .grwp-signup button { flex-shrink: 0; height: max(52px, min(62px, 13cqh)); padding: 0 29px; border: 0; border-radius: 999px; background: #13231C; color: #F6F2EA; font: 700 19.5px "Satoshi", system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 140ms; }
   .grwp-signup button:hover { background: #2E4A3F; }
   /* Not in the design file: the consent line that has to sit under the field,
      and this page's Formspree confirmation, restyled for the new cluster. */
-  .grwp-consent { margin: 1.2cqh 0 0; font-size: 12.5px; line-height: 1.5; color: rgba(19,35,28,.74); }
+  .grwp-consent { margin: 1.2cqh 0 0; font-size: 16.25px; line-height: 1.5; color: rgba(19,35,28,.74); }
   .grwp-consent a { color: #13231C; text-decoration: underline; text-underline-offset: 2px; }
 
   .grwp-sent { margin: 2.4cqh 0 0; font-size: 13px; font-weight: 700; color: #2E4A3F; }
@@ -273,8 +273,12 @@ window.__resources = {
 
        Here the plates keep their natural proportions; landscape crops them
        (below). The art box becomes the band rather than a 100/40 slab. */
-    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, 46vh); }
-    .grwp-band { height: min(37.8vw, 46vh); }
+    /* 36vh rather than 46vh: the 30%-larger copy needs the height more than
+       the river does. At 1024x800 the headline is capped by WIDTH at 55.9px,
+       and this is the band height that lets it actually reach that rather
+       than being squeezed below it. The skyline stays uncut. */
+    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, 36vh); }
+    .grwp-band { height: min(37.8vw, 36vh); }
     .grwp-band-art { height: 100%; aspect-ratio: auto; }
     .grwp-band-art .grwp-river { bottom: 19.5%; }
     .grwp-band-art .grwp-fence { bottom: -5.8%; }
@@ -292,8 +296,8 @@ window.__resources = {
        Scaling it pulls them back into their own corners and leaves the centre
        clear, which is what this composition needs. The plates are 3:1, so a
        width cap of Nvh lands them about N/3 deep. */
-    .grwp-canopy { --canopy: min(100%, 78vh); }
-    .grwp-front { top: min(-2vw, -6vh); }
+    .grwp-canopy { --canopy: min(100%, 72vh); }
+    .grwp-front { top: min(-2vw, -15vh); }
     .grwp-front-row > div { max-height: 42vh;
       -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
               mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); }
@@ -347,8 +351,12 @@ window.__resources = {
     .grwp-nav-pill a { padding: 0 min(16px, 3.1vw); }
     .grwp-nav-pill a.cta { padding: 0 min(22px, 4.3vw); }
     /* Same squeeze on the signup, or the placeholder truncates. */
-    .grwp-signup input { padding: 0 min(18px, 3.5vw); }
-    .grwp-signup button { padding: 0 min(22px, 4.6vw); }
+    /* 30% larger will not fit "you@email.com" and "Join the waitlist" on one
+       row at phone widths, so the pill becomes a stack rather than shrinking
+       back down. */
+    .grwp-signup { flex-direction: column; align-items: stretch; border-radius: 22px; padding: 10px; gap: 10px; }
+    .grwp-signup input { padding: 0 18px; text-align: left; }
+    .grwp-signup button { width: 100%; padding: 0 20px; }
   }
 
   @media (max-width: 760px) {
@@ -368,7 +376,7 @@ window.__resources = {
     /* The oak is one frame with a corner at each end, shown twice — each half
        windows one end of it. At 300% each window shows a third, not a half,
        so the offset that lines up the right-hand end moves with it. */
-    .grwp-front { top: -4vw; --oak: 300%; }
+    .grwp-front { top: -10vw; --oak: 300%; }
 
     /* The river is a continuous panorama, so this one does just crop — but
        the WINDOW has to match the art's height or band's overflow:hidden
@@ -384,7 +392,7 @@ window.__resources = {
        needed where the leaves reach the middle; on a phone it just steals
        width from the email field. */
     .grwp-head-col { padding: 0; }
-    .grwp-sub { font-size: 16px; }
+    .grwp-sub { font-size: 20.8px; }
   }
 
   /* Short phones (SE-sized, and anything in landscape-ish portrait): the
@@ -396,7 +404,7 @@ window.__resources = {
     /* A short window onto art this wide crops away the skyline and leaves
        nothing but water. Pull the panorama back so the city fits the window. */
     .grwp-band-art { left: -32.5%; width: 165%; }
-    .grwp-sub { font-size: 15px; }
+    .grwp-sub { font-size: 19.5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -717,7 +725,7 @@ window.__resources = {
       <div class="grwp-head-inner">
         <div class="grwp-head-col">
           <div class="grwp-eyebrow">EVERY PLAN STARTS SOMEWHERE</div>
-          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho."><span class="grwp-line">This Saturday, <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-line grwp-rest"><span class="grwp-part">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-part"> in <button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></span></h1>
+          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho."><span class="grwp-line grwp-rest"><span class="grwp-part">This Saturday,</span><span class="grwp-part"> <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button></span></span><span class="grwp-line grwp-rest"><span class="grwp-part">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-part"> in <button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></span></h1>
           <p class="grwp-sub">Grwp finds the place that works for everyone.</p>
           <div class="grwp-signup">
             <input id="email-top" type="email" placeholder="you@email.com" aria-label="Email address" />
@@ -1515,6 +1523,24 @@ class Component extends DCLogic {
       }
       ghost.remove();
       h1.style.fontSize = size + 'px';
+
+      /* Width is only half of it: a bigger headline makes the whole cluster
+         taller, and on a short window that runs into the river band. Step
+         back down until it clears. The other elements are sized in cqh and
+         do not move with the font, so only the headline's own height counts. */
+      const band = document.querySelector('.grwp-band');
+      if (band) {
+        for (let pass = 0; pass < 8; pass++) {
+          const over = h1.parentElement.getBoundingClientRect().bottom -
+                       band.getBoundingClientRect().top;
+          if (over <= 0) break;
+          const lh = parseFloat(getComputedStyle(h1).lineHeight) || size * 1.12;
+          const lines = Math.max(1, Math.round(h1.getBoundingClientRect().height / lh));
+          const drop = Math.max(0.5, over / (lines * 1.12));
+          size = Math.max(12, size - drop);
+          h1.style.fontSize = size + 'px';
+        }
+      }
     };
     fit();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
