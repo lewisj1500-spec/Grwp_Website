@@ -145,7 +145,7 @@ window.__resources = {
   @keyframes grwpSwayLs { 0%, 100% { transform: rotate(-0.7deg); } 50% { transform: rotate(0.8deg); } }
   @keyframes grwpSwayRs { 0%, 100% { transform: rotate(0.7deg); }  50% { transform: rotate(-0.8deg); } }
 
-  .grwp-hero { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto minmax(430px,1fr) 37.8vw; background: #F6F2EA; font-family: "Satoshi", system-ui, sans-serif; color: #13231C; }
+  .grwp-hero { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto minmax(430px,1fr) min(37.8vw, 56vh, max(26vh, calc(48vh - 190px))); background: #F6F2EA; font-family: "Satoshi", system-ui, sans-serif; color: #13231C; }
   .grwp-hero img { display: block; }
 
   /* sky (moves with the river) */
@@ -158,18 +158,23 @@ window.__resources = {
   .grwp-sky-fade { position: absolute; inset: 0; background: linear-gradient(180deg, #F6F2EA 0%, rgba(246,242,234,.94) 30%, rgba(246,242,234,.55) 55%, rgba(246,242,234,0) 78%); }
 
   /* foliage */
-  .grwp-canopy { position: absolute; top: -3vw; left: -6%; right: -6%; z-index: 3; pointer-events: none; will-change: transform; }
-  .grwp-canopy-inner { position: relative; }
-  .grwp-canopy-inner img { width: var(--canopy, 100%); height: auto; }
-  .grwp-canopy-inner .l { transform-origin: 0 0; animation: grwpSwayL 14s ease-in-out infinite; }
-  .grwp-canopy-inner .r { position: absolute; top: 0; right: 0; left: auto; transform-origin: 100% 0; animation: grwpSwayR 19s ease-in-out -6s infinite; }
-  .grwp-front { position: absolute; top: -2vw; left: -5%; right: -5%; z-index: 4; pointer-events: none; will-change: transform; }
-  .grwp-front-row { display: flex; }
-  .grwp-front-row > div { width: 50%; overflow: hidden; }
-  .grwp-front-row > div img { width: var(--oak, 200%); max-width: none; height: auto; }
-  .grwp-front-row .l { transform-origin: 0 0; animation: grwpSwayRs 15s ease-in-out -3s infinite; }
-  .grwp-front-row .r { transform-origin: 100% 0; animation: grwpSwayLs 11s ease-in-out -8s infinite; }
-  .grwp-front-row .r img { margin-left: calc(100% - var(--oak, 200%)); }
+  /* Pinned to their own corner and capped by screen height. Sized off width
+     alone, they grew huge on an ultrawide and swallowed the headline. Past
+     about 1.48:1 they stop growing and the extra width opens up in the
+     middle. 166vh is 112 x 1.48; 81vh is about 55 x 1.48, each front half
+     being 50% of a box 110% of the screen wide. */
+  .grwp-canopy { position: absolute; top: calc(-3 * min(1vw, 1.48vh)); left: -6%; right: -6%; z-index: 3; pointer-events: none; will-change: transform; }
+  .grwp-canopy-inner { position: relative; height: calc(min(112vw, 166vh) * 0.3334); }
+  .grwp-canopy-inner img { position: absolute; top: 0; width: min(100%, 166vh); max-width: none; height: auto; }
+  .grwp-canopy-inner .l { left: 0; transform-origin: 0 0; animation: grwpSwayL 14s ease-in-out infinite; }
+  .grwp-canopy-inner .r { right: 0; left: auto; transform-origin: 100% 0; animation: grwpSwayR 19s ease-in-out -6s infinite; }
+  .grwp-front { position: absolute; top: calc(-2 * min(1vw, 1.48vh)); left: -5%; right: -5%; z-index: 4; pointer-events: none; will-change: transform; }
+  .grwp-front-row { position: static; display: block; }
+  .grwp-front-row > div { position: absolute; top: 0; width: min(50%, 81vh); aspect-ratio: 3 / 2; overflow: hidden; }
+  .grwp-front-row > div img { position: absolute; top: 0; width: 200%; max-width: none; height: auto; }
+  .grwp-front-row .l { left: 0; transform-origin: 0 0; animation: grwpSwayRs 15s ease-in-out -3s infinite; }
+  .grwp-front-row .r { right: 0; transform-origin: 100% 0; animation: grwpSwayLs 11s ease-in-out -8s infinite; }
+  .grwp-front-row .r img { margin-left: -100%; }
 
   /* nav: fixed, turns solid halfway down the hero */
   .grwp-nav-slot { position: relative; height: calc(44px + max(54px, clamp(112px,12vw,150px) * .3835)); }
@@ -228,7 +233,7 @@ window.__resources = {
   .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(76px, 3.2vw); line-height: 1.23; letter-spacing: -.04em; }
   .grwp-h1 em { font-style: normal; color: #6E8A5E; }
   .grwp-sub { margin: 3cqh 0 0; font-size: max(18.2px, min(27.3px, 2.08vw, 5.46cqh)); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
-  .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 8px; width: min(546px, 100%); padding: 8px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
+  .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 8px; width: min(max(546px, 26vw), 620px, 100%); padding: 8px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
   .grwp-signup input { flex: 1; min-width: 0; height: max(52px, min(62px, 13cqh)); border: 0; outline: 0; background: transparent; padding: 0 23px; font: 500 20.8px "Satoshi", system-ui, sans-serif; color: #13231C; }
   .grwp-signup button { flex-shrink: 0; height: max(52px, min(62px, 13cqh)); padding: 0 29px; border: 0; border-radius: 999px; background: #13231C; color: #F6F2EA; font: 700 19.5px "Satoshi", system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 140ms; }
   .grwp-signup button:hover { background: #2E4A3F; }
@@ -240,22 +245,17 @@ window.__resources = {
   .grwp-sent { margin: 2.4cqh 0 0; font-size: 13px; font-weight: 700; color: #2E4A3F; }
 
   /* river + railing band at the bottom of the hero */
-  .grwp-band { position: absolute; left: 0; right: 0; bottom: 0; height: 37.8vw; z-index: 5; overflow: hidden; pointer-events: none; }
-  /* The art box IS the band, and each plate crops inside it rather than the
-     band clipping whatever sticks out. The river is anchored to its own TOP,
-     so shortening the band can only ever take water off the bottom - the
-     roofline survives at every size. The fence is anchored to its bottom, so
-     the railing and wall survive and only bush tops are lost, softened by the
-     masks. This has to be the base rule: when it was landscape-only, every
-     phone and portrait size cut the buildings. */
-  .grwp-band-art { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; }
+  .grwp-band { position: absolute; left: 0; right: 0; bottom: 0; height: min(37.8vw, 56vh, max(26vh, calc(48vh - 190px))); z-index: 5; overflow: hidden; pointer-events: none; }
+  /* Full width, shorter - never cropped. The art box fills the band and each
+     plate's height is a fixed share of it, so capping the band squashes the
+     picture slightly instead of taking the rooftops off the top. The numbers
+     are what the images already measured at normal sizes, so nothing moves
+     below the cap: 40/37.8 = 105.8% for the art box, 779/3200/0.40 = 60.9%
+     for the river, 963/3200/0.40 = 75.2% for the fence. */
+  .grwp-band-art { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 105.8%; }
   .grwp-band-art img { position: absolute; left: 0; width: 100%; }
-  .grwp-band-art .grwp-river { height: 86%; bottom: 7%; object-fit: cover; object-position: 50% 0%; will-change: transform;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%);
-            mask-image: linear-gradient(to bottom, transparent 0, #000 8%); }
-  .grwp-band-art .grwp-fence { height: 97%; bottom: -24%; object-fit: cover; object-position: 50% 100%;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
-            mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
+  .grwp-band-art .grwp-river { bottom: 19.5%; height: 60.9%; will-change: transform; }
+  .grwp-band-art .grwp-fence { bottom: -5.5%; height: 75.2%; }
 
   /* The section after the hero has to sit below it (z-index < 2) so it slides
      up under the railing. */
@@ -291,14 +291,15 @@ window.__resources = {
     /* min-height, not height: the hero grows when the art and the copy need
        more room than one screen, instead of squeezing them. */
     /* Exactly one screen. The band keeps the design's 37.8vw until that would
-       push the hero past the fold, then it takes whatever height is left over
-       after the nav and the copy - about 540px between them. On an ultrawide
-       37.8vw is the whole viewport height on its own, which is what was
-       putting the hero 532px past the fold. The floor stops it vanishing on
-       very short windows; the plates crop rather than clip, so nothing is
-       cut either way. */
-    .grwp-hero { height: 100vh; min-height: 0; grid-template-rows: auto minmax(0,1fr) min(37.8vw, max(24vh, calc(100vh - 620px))); }
-    .grwp-band { height: min(37.8vw, max(24vh, calc(100vh - 620px))); }
+       push the hero past the fold. Past that it is tied to the viewport
+       HEIGHT, because the copy sits just above the band and so a tall band
+       pushes the copy up the screen: 48vh - 190px puts the copy's centre at
+       roughly 52% of the hero. On an ultrawide 37.8vw is the whole viewport
+       height on its own, which is what was putting the hero 532px past the
+       fold. The floor stops it vanishing on very short windows; the plates
+       crop rather than clip, so nothing is cut either way. */
+    .grwp-hero { height: 100vh; min-height: 0; grid-template-rows: auto minmax(0,1fr) min(37.8vw, 56vh, max(26vh, calc(48vh - 190px))); }
+    .grwp-band { height: min(37.8vw, 56vh, max(26vh, calc(48vh - 190px))); }
     /* 32cqh of top padding was sized for the design's smaller copy; with the
        copy 30% larger it no longer fits the row and the guard ends up
        shrinking the type instead. The drop does this job now. */
@@ -311,19 +312,12 @@ window.__resources = {
      Portrait tablets have the room, so they keep the design's spacing. */
   @media (min-width: 761px) and (min-height: 700px) and (min-aspect-ratio: 4/3) {
     .grwp-head-inner { padding-top: min(32cqh, 8px); }
+  }
 
-    /* The canopy is the one layer that must NOT keep its full length here.
-       Its leaves run right across the frame, so at full width on a short
-       screen they reach into the middle and sit on the tagline and headline.
-       Scaling it pulls them back into their own corners and leaves the centre
-       clear, which is what this composition needs. The plates are 3:1, so a
-       width cap of Nvh lands them about N/3 deep. */
-    .grwp-canopy { --canopy: min(100%, 72vh); }
-    .grwp-front { top: min(-2vw, -15vh); }
-    .grwp-front-row > div { max-height: 42vh;
-      -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
-              mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); }
-
+  /* Past 2:1 the copy column opens up so the fitted headline can grow with
+     the screen instead of staying pinned to its 1075px cap. */
+  @media (min-aspect-ratio: 2/1) {
+    .grwp-head-col { width: min(1700px, 100%); }
   }
 
   /* ── HERO on phones ─────────────────────────────────────────────
@@ -374,12 +368,17 @@ window.__resources = {
        empty frame, so widening the frame slides them off the edge and opens a
        hole in the middle. Widen the plates inside it instead, anchored to
        their own edge, and the leaves grow inward and overlap. */
-    .grwp-canopy { top: -6vw; --canopy: 172%; }
+    .grwp-canopy { top: -6vw; }
+    .grwp-canopy-inner { height: calc(112vw * 1.72 * 0.3334); }
+    .grwp-canopy-inner img { width: 172%; }
 
     /* The oak is one frame with a corner at each end, shown twice — each half
        windows one end of it. At 300% each window shows a third, not a half,
        so the offset that lines up the right-hand end moves with it. */
-    .grwp-front { top: -10vw; --oak: 300%; }
+    .grwp-front { top: -10vw; }
+    .grwp-front-row > div { width: 50%; aspect-ratio: 1 / 1; }
+    .grwp-front-row > div img { width: 300%; }
+    .grwp-front-row .r img { margin-left: -200%; }
 
     /* The river is a continuous panorama, so this one does just crop — but
        the WINDOW has to match the art's height or band's overflow:hidden
@@ -1471,7 +1470,7 @@ class Component extends DCLogic {
     /* Fit the type to the WIDEST combination rather than the one on screen,
        so no combination can overflow its line. Measured on a hidden clone at
        a reference size, which keeps it independent of the current size. */
-    const REF = 100, MAX = 76;
+    const REF = 100, MAX = 110;   // past 2:1 the column opens up and the headline grows into it
     const fit = () => {
       const col = h1.parentElement;
       const ccs = getComputedStyle(col);
