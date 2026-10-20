@@ -189,36 +189,35 @@ window.__resources = {
   .grwp-nav-logo:hover, .grwp-nav-pill a:hover { opacity: 1; }
 
   /* headline cluster: centred block, left-aligned contents */
-  .grwp-head { position: relative; z-index: 2; min-height: 0; container-type: size; will-change: transform, opacity; }
+  .grwp-head { position: relative; z-index: 5; min-height: 0; container-type: size; will-change: transform, opacity; }
   .grwp-head-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32cqh 24px 0; box-sizing: border-box; }
   .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: min(1000px, 100%); max-width: 100%; padding: 0 clamp(0px, 6vw, 96px); }
   .grwp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: 2.2cqh; }
 
-  /* Cycling words. Each pill hugs its current word and animates its width to
-     the next one, so the sentence moves rather than jumping. The full stop is
-     tied to the WHERE pill so it can never wrap onto a line by itself. */
-  /* border-box, because the width the script animates to is measured with
-     getBoundingClientRect, which includes the padding. gap rather than a
-     margin on the icon, so .25em is .25em of the headline and not of the
-     icon's own reduced size. */
-  .grwp-pill { display: inline-flex; align-items: center; gap: .25em; white-space: nowrap; vertical-align: baseline; overflow: hidden; box-sizing: border-box; padding: .08em .35em; border: 0; border-radius: .4em; color: #13231C; font: inherit; letter-spacing: inherit; line-height: 1; cursor: pointer; transition: width 300ms cubic-bezier(.2,.8,.2,1); }
+  /* Cycling words. The sentence is two block lines, each nowrap, so it can
+     only ever be two lines; wireWords() sizes the font to whichever
+     combination is widest, so the longest one still fits. The pill carries no
+     width of its own - it is exactly its word plus padding - and its width is
+     animated only while a word is being swapped. */
+  .grwp-line { display: block; white-space: nowrap; }
+  .grwp-pill { display: inline-flex; align-items: baseline; gap: .2em; padding: .06em .3em; border: 0; border-radius: .4em; box-sizing: border-box; color: #13231C; background-clip: padding-box; font: inherit; letter-spacing: inherit; line-height: 1; cursor: pointer; vertical-align: baseline; transition: width 300ms cubic-bezier(.2,.8,.2,1); }
   .grwp-pill:hover { filter: brightness(.95); }
   .grwp-pill:focus-visible { outline: 3px solid #13231C; outline-offset: 2px; }
-  .grwp-pill .w { text-align: left; }
   .grwp-pill .i { font-size: .38em; opacity: .6; }
   .grwp-pill[data-pill="who"]   { transform: rotate(-1.5deg); }
   .grwp-pill[data-pill="what"]  { transform: rotate(1.5deg); }
   .grwp-pill[data-pill="where"] { transform: rotate(-1.5deg); }
-  .grwp-end { white-space: nowrap; }
+  /* Only while the width is in flight, so the resting box keeps a text
+     baseline rather than an overflow box's bottom edge. */
+  .grwp-pill.is-sizing { overflow: hidden; }
   @media (prefers-reduced-motion: reduce) { .grwp-pill { transition: none; } }
-
-  /* The break after WHO only applies on desktop; narrower screens wrap freely. */
-  .grwp-br { display: none; }
-  @media (min-width: 1024px) { .grwp-br { display: inline; } }
   /* font-family / font-variation-settings / word-spacing are not in the design
      file, which has no base h1 rule. Here the design system sets bare <h1> in
      Fraunces, so the Satoshi the design inherits has to be restated. */
-  .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(76px, 5vw, 9.5cqh); line-height: 1.12; letter-spacing: -.04em; text-wrap: pretty; }
+  /* Pre-JS fallback only: wireWords() replaces this with a size measured
+     against the widest possible line. Deliberately conservative, so the
+     nowrap lines cannot overflow if the script never runs. */
+  .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(76px, 3.2vw); line-height: 1.12; letter-spacing: -.04em; }
   .grwp-h1 em { font-style: normal; color: #6E8A5E; }
   .grwp-sub { margin: 3cqh 0 0; font-size: max(14px, min(21px, 1.6vw, 4.2cqh)); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
   .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 6px; width: min(420px, 100%); padding: 6px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
@@ -278,7 +277,6 @@ window.__resources = {
      Portrait tablets have the room, so they keep the design's spacing. */
   @media (min-width: 761px) and (min-height: 700px) and (min-aspect-ratio: 4/3) {
     .grwp-head-inner { padding-top: min(32cqh, 8px); }
-    .grwp-h1 { font-size: min(76px, 4.5vw, 8.4cqh); }
 
     /* The canopy is the one layer that must NOT keep its full length here.
        Its leaves run right across the frame, so at full width on a short
@@ -311,15 +309,6 @@ window.__resources = {
     .grwp-band-art .grwp-fence { height: 97%; bottom: -24%; object-fit: cover; object-position: 50% 100%;
       -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
               mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
-  }
-
-  /* ── HERO headline on desktop ───────────────────────────────────
-     Exactly two lines, broken after WHO. The cap is set by the longest
-     combination - "This Saturday, the work crew" / "want a Sunday roast in
-     Greenwich." - which runs about 17.5px of line for every 1px of font
-     size, so 46px is the largest that still fits the 827px text column. ── */
-  @media (min-width: 1024px) {
-    .grwp-h1 { font-size: clamp(30px, 3.4vw, 46px); }
   }
 
   /* ── HERO on phones ─────────────────────────────────────────────
@@ -387,7 +376,6 @@ window.__resources = {
        needed where the leaves reach the middle; on a phone it just steals
        width from the email field. */
     .grwp-head-col { padding: 0; }
-    .grwp-h1 { font-size: min(40px, 8.4vw, 8.6cqh); }
     .grwp-sub { font-size: 16px; }
   }
 
@@ -400,7 +388,6 @@ window.__resources = {
     /* A short window onto art this wide crops away the skyline and leaves
        nothing but water. Pull the panorama back so the city fits the window. */
     .grwp-band-art { left: -32.5%; width: 165%; }
-    .grwp-h1 { font-size: min(34px, 7.2vw, 7.6cqh); }
     .grwp-sub { font-size: 15px; }
   }
 
@@ -722,7 +709,7 @@ window.__resources = {
       <div class="grwp-head-inner">
         <div class="grwp-head-col">
           <div class="grwp-eyebrow">EVERY PLAN STARTS SOMEWHERE</div>
-          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho.">This Saturday, <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button><br class="grwp-br">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button> in <span class="grwp-end"><button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></h1>
+          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho."><span class="grwp-line">This Saturday, <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-line">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button> in <button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></h1>
           <p class="grwp-sub">Grwp finds the place that works for everyone.</p>
           <div class="grwp-signup">
             <input id="email-top" type="email" placeholder="you@email.com" aria-label="Email address" />
@@ -1435,8 +1422,8 @@ class Component extends DCLogic {
     };
   }
 
-  /** Hero headline — one of the three words changes every 2.5-3s. Paused
-   *  while the reader is pointing at or tabbed into the headline (WCAG
+  /** Hero headline - two nowrap lines, one of the three words changing every
+   *  2.5-3s. Paused while the reader is pointing at or tabbed into it (WCAG
    *  2.2.2), and off entirely under reduced motion, where it stays on the
    *  first-view sentence. Tapping a pill always works either way. */
   wireWords() {
@@ -1462,54 +1449,95 @@ class Component extends DCLogic {
     });
     if (KEYS.some((k) => !pills[k] || lists[k].length < 2)) return;
 
-    // Width is animated, not jumped: measure the pill with the new word in
-    // place, put the old width back, then let the CSS transition run.
+    /* Fit the type to the WIDEST combination rather than the one on screen,
+       so no combination can overflow its line. Measured on a hidden clone at
+       a reference size, which keeps it independent of the current size. */
+    const REF = 100, MAX = 76;
+    const fit = () => {
+      const col = h1.parentElement;
+      const ccs = getComputedStyle(col);
+      const avail = col.clientWidth - parseFloat(ccs.paddingLeft) - parseFloat(ccs.paddingRight);
+      if (!(avail > 0)) return;
+
+      const ghost = h1.cloneNode(true);
+      ghost.removeAttribute('data-grwp');
+      ghost.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;' +
+                            'width:auto;max-width:none;min-height:0;font-size:' + REF + 'px;';
+      col.appendChild(ghost);
+      const gl = ghost.querySelectorAll('.grwp-line');
+      const gw = (k) => ghost.querySelector('[data-pill="' + k + '"] .w');
+
+      let w1 = 0, worstWho = lists.who[0];
+      lists.who.forEach((o) => {
+        gw('who').textContent = o;
+        const w = gl[0].getBoundingClientRect().width;
+        if (w > w1) { w1 = w; worstWho = o; }
+      });
+      let w2 = 0, worstWhat = lists.what[0], worstWhere = lists.where[0];
+      lists.what.forEach((a) => {
+        gw('what').textContent = a;
+        lists.where.forEach((b) => {
+          gw('where').textContent = b;
+          const w = gl[1].getBoundingClientRect().width;
+          if (w > w2) { w2 = w; worstWhat = a; worstWhere = b; }
+        });
+      });
+
+      const widest = Math.max(w1, w2);
+      if (!(widest > 0)) { ghost.remove(); return; }
+      let size = Math.min(MAX, REF * (avail / widest));
+
+      /* Glyph advances are rounded at the size they are actually drawn, so
+         scaling a 100px measurement down lands a pixel or two out. Put the
+         worst combination on the ghost at the candidate size and correct
+         against that, which is exact rather than proportional. */
+      gw('who').textContent = worstWho;
+      gw('what').textContent = worstWhat;
+      gw('where').textContent = worstWhere;
+      for (let pass = 0; pass < 4; pass++) {
+        ghost.style.fontSize = size + 'px';
+        const got = Math.max(gl[0].getBoundingClientRect().width,
+                             gl[1].getBoundingClientRect().width);
+        if (got <= avail) break;
+        size = Math.min(MAX, size * (avail / got) - 0.05);
+      }
+      ghost.remove();
+      h1.style.fontSize = size + 'px';
+    };
+    fit();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    let rt = null;
+    const onResize = () => { clearTimeout(rt); rt = setTimeout(fit, 150); };
+    window.addEventListener('resize', onResize);
+
+    /* Lock the current width, swap the word, measure the new natural width,
+       transition to it, then hand the width back to the content. */
     const show = (k, i) => {
       const b = pills[k], word = b.querySelector('.w');
-      const from = b.getBoundingClientRect().width;
       at[k] = i;
+      if (still) { word.textContent = lists[k][i]; return; }
+      const from = b.getBoundingClientRect().width;
       word.textContent = lists[k][i];
       b.style.transition = 'none';
       b.style.width = 'auto';
       const to = b.getBoundingClientRect().width;
-      if (still) { b.style.width = ''; b.style.transition = ''; return; }
       b.style.width = from + 'px';
-      void b.offsetWidth;                 // flush, or there is nothing to animate from
+      void b.offsetWidth;
       b.style.transition = '';
+      b.classList.add('is-sizing');
       b.style.width = to + 'px';
+      clearTimeout(b._t);
+      b._t = setTimeout(() => {
+        b.style.width = '';                 // back to hugging its word
+        b.classList.remove('is-sizing');
+      }, 340);
     };
-
-    // Below 1024px the sentence wraps freely, so its height changes with the
-    // words. Reserve the tallest combination's height and nothing below the
-    // headline moves. Re-measured on resize because it is width-dependent.
-    const LONGEST = { who: 'the work crew', what: 'a Sunday roast', where: 'Greenwich' };
-    const reserve = () => {
-      h1.style.minHeight = '';
-      const keep = {};
-      KEYS.forEach((k) => {
-        const w = pills[k].querySelector('.w');
-        keep[k] = w.textContent;
-        w.textContent = LONGEST[k];
-        pills[k].style.width = 'auto';
-      });
-      const tallest = h1.getBoundingClientRect().height;
-      KEYS.forEach((k) => {
-        pills[k].querySelector('.w').textContent = keep[k];
-        pills[k].style.width = '';
-      });
-      h1.style.minHeight = Math.ceil(tallest) + 'px';
-    };
-    reserve();
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reserve);
-    let rt = null;
-    const onResize = () => { clearTimeout(rt); rt = setTimeout(reserve, 150); };
-    window.addEventListener('resize', onResize);
 
     let held = 0;
     KEYS.forEach((k) => {
       pills[k].addEventListener('click', () => {
         held = Date.now();
-        show(k, (at[k] + 1) % lists[k].length);   // tap advances to the next word
+        show(k, (at[k] + 1) % lists[k].length);
       });
     });
 
@@ -1542,9 +1570,8 @@ class Component extends DCLogic {
     const tick = () => {
       if (!paused && Date.now() - held > 1500) {
         const k = KEYS[Math.floor(Math.random() * KEYS.length)];
-        // Pick from the other options only, so it never "changes" to itself.
         let i = Math.floor(Math.random() * (lists[k].length - 1));
-        if (i >= at[k]) i += 1;
+        if (i >= at[k]) i += 1;            // never "change" to the same word
         show(k, i);
       }
       this._words = setTimeout(tick, 2500 + Math.random() * 500);
