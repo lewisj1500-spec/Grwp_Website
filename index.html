@@ -241,17 +241,21 @@ window.__resources = {
 
   /* river + railing band at the bottom of the hero */
   .grwp-band { position: absolute; left: 0; right: 0; bottom: 0; height: 37.8vw; z-index: 5; overflow: hidden; pointer-events: none; }
-  /* The design's own sizing, restored. Everything here is driven by the
-     viewport WIDTH, so the river, the railing and the band itself always keep
-     the same proportions to one another and nothing is ever cropped into:
-     the band is 37.8vw, the art 40vw, so only the top 2.2vw - empty sky - is
-     ever clipped. The vh caps and object-fit crops that replaced this existed
-     only to force the hero into exactly 100vh, and that is what was cutting
-     the roofline and the railing. */
-  .grwp-band-art { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; aspect-ratio: 100/40; }
-  .grwp-band-art img { position: absolute; left: 0; width: 100%; height: auto; }
-  .grwp-river { bottom: 19.5%; will-change: transform; }
-  .grwp-fence { bottom: -5.5%; }
+  /* The art box IS the band, and each plate crops inside it rather than the
+     band clipping whatever sticks out. The river is anchored to its own TOP,
+     so shortening the band can only ever take water off the bottom - the
+     roofline survives at every size. The fence is anchored to its bottom, so
+     the railing and wall survive and only bush tops are lost, softened by the
+     masks. This has to be the base rule: when it was landscape-only, every
+     phone and portrait size cut the buildings. */
+  .grwp-band-art { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; }
+  .grwp-band-art img { position: absolute; left: 0; width: 100%; }
+  .grwp-band-art .grwp-river { height: 86%; bottom: 7%; object-fit: cover; object-position: 50% 0%; will-change: transform;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 8%); }
+  .grwp-band-art .grwp-fence { height: 97%; bottom: -24%; object-fit: cover; object-position: 50% 100%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
+            mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
 
   /* The section after the hero has to sit below it (z-index < 2) so it slides
      up under the railing. */
@@ -286,8 +290,15 @@ window.__resources = {
        than being squeezed below it. The skyline stays uncut. */
     /* min-height, not height: the hero grows when the art and the copy need
        more room than one screen, instead of squeezing them. */
-    .grwp-hero { min-height: 100vh; height: auto; grid-template-rows: auto minmax(430px,1fr) 37.8vw; }
-    .grwp-band { height: 37.8vw; }
+    /* Exactly one screen. The band keeps the design's 37.8vw until that would
+       push the hero past the fold, then it takes whatever height is left over
+       after the nav and the copy - about 540px between them. On an ultrawide
+       37.8vw is the whole viewport height on its own, which is what was
+       putting the hero 532px past the fold. The floor stops it vanishing on
+       very short windows; the plates crop rather than clip, so nothing is
+       cut either way. */
+    .grwp-hero { height: 100vh; min-height: 0; grid-template-rows: auto minmax(0,1fr) min(37.8vw, max(24vh, calc(100vh - 540px))); }
+    .grwp-band { height: min(37.8vw, max(24vh, calc(100vh - 540px))); }
     /* 32cqh of top padding was sized for the design's smaller copy; with the
        copy 30% larger it no longer fits the row and the guard ends up
        shrinking the type instead. The drop does this job now. */
