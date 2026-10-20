@@ -184,12 +184,26 @@
   /* headline cluster: centred block, left-aligned contents */
   .grwp-head { position: relative; z-index: 2; min-height: 0; container-type: size; will-change: transform, opacity; }
   .grwp-head-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32cqh 24px 0; box-sizing: border-box; }
-  .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; max-width: 100%; }
-  .grwp-tagline { width: min(150px, 11vw, 17cqh * 1.31); height: auto; transform: rotate(-6deg); margin-bottom: 2cqh; }
+  .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: min(1000px, 100%); max-width: 100%; padding: 0 clamp(0px, 6vw, 96px); }
+  .grwp-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: 2.2cqh; }
+
+  /* Cycling words. Every option for a slot sits in the same grid cell, so the
+     pill is always as wide as its own longest word and the sentence never
+     re-flows when one changes - the brief's "reserve each slot's width"
+     option, which also keeps the wrap stable at 390px. */
+  .grwp-pill { overflow: hidden; display: inline-flex; white-space: nowrap; align-items: center; gap: .18em; vertical-align: baseline; margin: .04em 0; padding: .02em .32em .06em; border: 0; border-radius: .4em; color: #13231C; font: inherit; letter-spacing: inherit; line-height: 1; cursor: pointer; transform: rotate(-1.5deg); }
+  .grwp-pill:hover { filter: brightness(.95); }
+  .grwp-pill:focus-visible { outline: 3px solid #13231C; outline-offset: 2px; }
+  .grwp-pill .i { font-size: .38em; opacity: .6; }
+  .grwp-pill .slot { display: inline-grid; }
+  .grwp-pill .slot > span { grid-area: 1 / 1; text-align: center; visibility: hidden; }
+  .grwp-pill .slot > span.on { visibility: visible; animation: grwpWordIn 420ms cubic-bezier(.2,.8,.2,1); }
+  @keyframes grwpWordIn { from { opacity: 0; transform: translateY(.45em); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .grwp-pill .slot > span.on { animation: none; } }
   /* font-family / font-variation-settings / word-spacing are not in the design
      file, which has no base h1 rule. Here the design system sets bare <h1> in
      Fraunces, so the Satoshi the design inherits has to be restated. */
-  .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(92px, 6.4vw, 9.5cqh); line-height: .95; letter-spacing: -.04em; text-wrap: pretty; max-width: 22ch; }
+  .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(76px, 5vw, 9.5cqh); line-height: 1.12; letter-spacing: -.04em; text-wrap: pretty; }
   .grwp-h1 em { font-style: normal; color: #6E8A5E; }
   .grwp-sub { margin: 3cqh 0 0; font-size: max(14px, min(21px, 1.6vw, 4.2cqh)); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
   .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 6px; width: min(420px, 100%); padding: 6px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
@@ -250,7 +264,7 @@
      Portrait tablets have the room, so they keep the design's spacing. */
   @media (min-width: 761px) and (min-height: 700px) and (min-aspect-ratio: 4/3) {
     .grwp-head-inner { padding-top: min(32cqh, 8px); }
-    .grwp-h1 { font-size: min(92px, 6.4vw, 8.4cqh); }
+    .grwp-h1 { font-size: min(76px, 4.5vw, 8.4cqh); }
 
     /* The canopy is the one layer that must NOT keep its full length here.
        Its leaves run right across the frame, so at full width on a short
@@ -345,9 +359,12 @@
     .grwp-band-art { left: -55%; right: auto; width: 210%; }
 
     /* 11vw puts the sticker at 43px on a 390px screen, which is a smudge. */
-    .grwp-tagline { width: min(150px, 21vw); }
     .grwp-head-inner { padding-top: 0; }
-    .grwp-h1 { font-size: min(44px, 10vw, 8.6cqh); }
+    /* The inset that keeps the copy clear of the oak's corner leaves is only
+       needed where the leaves reach the middle; on a phone it just steals
+       width from the email field. */
+    .grwp-head-col { padding: 0; }
+    .grwp-h1 { font-size: min(40px, 8.4vw, 8.6cqh); }
     .grwp-sub { font-size: 16px; }
   }
 
@@ -360,8 +377,7 @@
     /* A short window onto art this wide crops away the skyline and leaves
        nothing but water. Pull the panorama back so the city fits the window. */
     .grwp-band-art { left: -32.5%; width: 165%; }
-    .grwp-tagline { width: min(150px, 15vw); }
-    .grwp-h1 { font-size: min(38px, 8vw, 7.6cqh); }
+    .grwp-h1 { font-size: min(34px, 7.2vw, 7.6cqh); }
     .grwp-sub { font-size: 15px; }
     .grwp-small { font-size: 10.5px; gap: 1cqh; }
   }
@@ -676,16 +692,16 @@
       <div class="grwp-nav-pill">
         <a href="how-it-works.html">How it works</a>
         <a href="#memories">Moments</a>
-        <a class="cta" href="#join">Get the app</a>
+        <a class="cta" href="#top">Join the waitlist</a>
       </div>
     </nav>
 
     <div class="grwp-head" data-grwp="head">
       <div class="grwp-head-inner">
         <div class="grwp-head-col">
-          <img class="grwp-tagline" src="assets/landing-hero/tagline-sticker.webp" alt="Plan it. Do it. Remember it." />
-          <h1 class="grwp-h1">Everyone wants to do something. <em>Nobody wants to organise it.</em></h1>
-          <p class="grwp-sub">Discover the places you’ll love, bring your people</p>
+          <div class="grwp-eyebrow">EVERY PLAN STARTS SOMEWHERE</div>
+          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho.">This Saturday, <button class="grwp-pill" type="button" data-pill="who" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="slot" aria-hidden="true"><span class="on">the family</span><span>the flatmates</span><span>the uni lot</span><span>the work crew</span><span>the cousins</span><span>the book club</span></span><span class="i" aria-hidden="true">↻</span></button><br> want <button class="grwp-pill" type="button" data-pill="what" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="slot" aria-hidden="true"><span class="on">brunch</span><span>a Sunday roast</span><span>a pub quiz</span><span>crazy golf</span><span>a picnic</span><span>ramen</span><span>a gallery trip</span><span>live jazz</span></span><span class="i" aria-hidden="true">↻</span></button> in <button class="grwp-pill" type="button" data-pill="where" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="slot" aria-hidden="true"><span class="on">Soho</span><span>Peckham</span><span>Hackney</span><span>Brixton</span><span>Borough</span><span>Clapham</span><span>Camden</span><span>Greenwich</span></span><span class="i" aria-hidden="true">↻</span></button>.</h1>
+          <p class="grwp-sub">Grwp finds the place that works for everyone.</p>
           <div class="grwp-signup">
             <input id="email-top" type="email" placeholder="you@email.com" aria-label="Email address" />
             <button type="button" onClick="{{ sendTop }}">Join the waitlist</button>
@@ -695,7 +711,7 @@
             <p class="grwp-sent">You’re on the list. We’ll email you once, when Grwp launches. Changed your mind? Email <a href="mailto:privacy@grwp.app">privacy@grwp.app</a> and we’ll remove you.</p>
           </sc-if>
           <div class="grwp-small">
-            <div>IOS &amp; ANDROID · LONDON FIRST</div>
+            <div>IPHONE FIRST · LONDON FIRST</div>
             <div>LONDON BORN.<br />MADE FOR MAKING PLANS.</div>
           </div>
         </div>
@@ -911,7 +927,7 @@
       <div data-m="band-body" style="flex:1 1 420px;min-width:300px;padding:clamp(30px,3.6vw,60px);color:var(--cream-500)">
         <div style="font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sage-300);margin-bottom:18px">What we're not building</div>
         <h2 style="margin:0 0 22px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.8vw,72px);line-height:.9;letter-spacing:-.04em;color:var(--cream-100)">Social, minus <span style="color:var(--coral-500)">the media.</span></h2>
-        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:26em">No feed. No followers. No profile to keep up. Nobody sees what you liked &mdash; not your friends, not anyone.</p>
+        <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:26em">No followers, no public posts, no endless scroll. Nobody sees what you liked &mdash; not your friends, not anyone.</p>
         <p style="margin:0 0 24px;font-size:16.5px;line-height:1.6;color:rgba(242,237,230,.78);max-width:26em">Every other app wants your time. We'd rather you spent it somewhere else.</p>
         <p style="margin:0;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(20px,2.2vw,32px);line-height:1.12;letter-spacing:-.03em;color:var(--sage-300);max-width:22em">We measure success by the time you spend out of the app.</p>
       </div>
@@ -1084,7 +1100,7 @@
           <h2 style="margin:0 0 20px;font-family:var(--font-display);font-variation-settings:var(--display-variation);font-weight:900;font-size:clamp(34px,4.8vw,72px);line-height:.9;letter-spacing:-.04em">Meeting people gets harder <span style="color:var(--coral-700)">every year.</span></h2>
           <p style="margin:0 0 16px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Your circle shrinks. Making new friends means turning up somewhere alone and hoping, and most people don't.</p>
           <p style="margin:0 0 24px;font-size:16.5px;line-height:1.6;color:var(--ink-600);max-width:25em">Communities on Grwp make it easy. Anyone can start one &mdash; you set what it is, where it meets, and who can join.</p>
-          <a href="#join" style="display:inline-block;background:var(--ink-800);color:var(--cream-100);border-radius:999px;padding:15px 28px;font-size:15.5px;font-weight:600" style-hover="background:var(--ink-700)">Start a community</a>
+          <a href="#join" style="display:inline-block;background:var(--ink-800);color:var(--cream-100);border-radius:999px;padding:15px 28px;font-size:15.5px;font-weight:600" style-hover="background:var(--ink-700)">Join the waitlist</a>
         </div>
         <div style="flex:1 1 400px;min-width:300px;display:flex;flex-direction:column;gap:12px">
           <div data-m="club-row" style="background:#FFFFFF;border-radius:var(--radius-lg);padding:12px;display:flex;align-items:center;gap:14px;box-shadow:0 16px 36px rgba(18,26,22,.1)">
@@ -1174,9 +1190,9 @@
         <div data-m="footer-links" style="display:flex;flex-wrap:wrap;gap:24px">
           <a href="#top" style="font-size:15px" style-hover="color:var(--sage-300)">Home</a>
           <a href="how-it-works.html" style="font-size:15px" style-hover="color:var(--sage-300)">How it works</a>
-          <a href="#join" style="font-size:15px" style-hover="color:var(--sage-300)">Early access</a>
-          <a href="/website-privacy" style="font-size:15px" style-hover="color:var(--sage-300)">Privacy</a>
-          <a href="/website-terms" style="font-size:15px" style-hover="color:var(--sage-300)">Terms</a>
+          <a href="#join" style="font-size:15px" style-hover="color:var(--sage-300)">Join the waitlist</a>
+          <a href="/website-privacy" style="font-size:15px" style-hover="color:var(--sage-300)">Website privacy</a>
+          <a href="/website-terms" style="font-size:15px" style-hover="color:var(--sage-300)">Website terms</a>
           <a href="mailto:support@grwp.app" style="font-size:15px" style-hover="color:var(--sage-300)">Contact</a>
         </div>
         <span style="display:inline-flex;gap:7px">
@@ -1186,6 +1202,7 @@
         </span>
       </div>
       <div style="margin-top:clamp(20px,3vw,30px);padding-top:18px;border-top:1px solid var(--border-inverse)">
+        <p style="margin:0 0 10px;font-size:13px;line-height:1.6;color:rgba(242,237,230,.66)">Grwp Social Limited &middot; Registered in England and Wales &middot; Company No. 17183116 &middot; Registered office: 27 Old Gloucester Street, London, WC1N 3AX</p>
         <span style="font-size:13px;color:rgba(242,237,230,.66)">&copy; Grwp &middot; London</span>
       </div>
     </div>
@@ -1220,6 +1237,8 @@ class Component extends DCLogic {
     // on scroll when the parallax is switched off.
     clearTimeout(this._hero);
     this._hero = setTimeout(() => this.wireHero(), 60);
+    clearTimeout(this._words);
+    this._words = setTimeout(() => this.wireWords(), 80);
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
     clearTimeout(this._wire);
     this._wire = setTimeout(() => this.wireMotion(), 260);
@@ -1229,6 +1248,8 @@ class Component extends DCLogic {
     clearTimeout(this._wire);
     clearTimeout(this._car);
     clearTimeout(this._hero);
+    clearTimeout(this._words);
+    if (this._wordsTeardown) this._wordsTeardown();
     if (this._io) this._io.disconnect();
     if (this._carTeardown) this._carTeardown();
     if (this._heroTeardown) this._heroTeardown();
@@ -1380,6 +1401,96 @@ class Component extends DCLogic {
       window.removeEventListener('resize', onResize);
       if (raf) cancelAnimationFrame(raf);
       delete nav.dataset.wired;
+    };
+  }
+
+  /** Hero headline — one of the three words changes every 2.5-3s. Paused
+   *  while the reader is pointing at or tabbed into the headline (WCAG
+   *  2.2.2), and off entirely under reduced motion, where it stays on the
+   *  first-view sentence. Tapping a pill always works either way. */
+  wireWords() {
+    const h1 = document.querySelector('[data-grwp="headline"]');
+    if (!h1) {
+      if ((this._wordTries = (this._wordTries || 0) + 1) < 60) {
+        this._words = setTimeout(() => this.wireWords(), 200);
+      }
+      return;
+    }
+    if (h1.dataset.wired) return;
+    h1.dataset.wired = 'on';
+
+    const KEYS = ['who', 'what', 'where'];
+    const at = { who: 0, what: 0, where: 0 };
+    const slots = {};
+    KEYS.forEach((k) => {
+      const b = h1.querySelector('[data-pill="' + k + '"]');
+      slots[k] = b ? Array.from(b.querySelectorAll('.slot > span')) : [];
+    });
+    if (KEYS.some((k) => slots[k].length < 2)) return;
+
+    const show = (k, i) => {
+      at[k] = i;
+      slots[k].forEach((el, j) => el.classList.toggle('on', j === i));
+    };
+
+    // Taps work whatever the motion setting, and hold the timer off briefly
+    // so an automatic change cannot stomp on the reader's own.
+    let held = 0;
+    KEYS.forEach((k) => {
+      const b = h1.querySelector('[data-pill="' + k + '"]');
+      b.addEventListener('click', () => {
+        held = Date.now();
+        show(k, (at[k] + 1) % slots[k].length);   // tap advances to the next word
+      });
+    });
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this._wordsTeardown = () => { delete h1.dataset.wired; };
+      return;
+    }
+
+    let paused = false;
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
+    h1.addEventListener('pointerenter', pause);
+    h1.addEventListener('pointerleave', resume);
+    h1.addEventListener('focusin', pause);
+    h1.addEventListener('focusout', resume);
+
+    // The intro covers the page for about six seconds. Cycling from mount
+    // would burn through two or three words before anyone has seen the hero,
+    // and the brief wants the first view to be the canonical sentence.
+    const loaderGone = () => {
+      const el = document.getElementById('grwp-loader');
+      if (!el || document.documentElement.hasAttribute('data-intro-skip')) return true;
+      const cs = getComputedStyle(el);
+      // NB not offsetParent: the loader is position:fixed, so that is always null.
+      return cs.display === 'none' || cs.visibility === 'hidden' || cs.opacity === '0';
+    };
+
+    const tick = () => {
+      if (!paused && Date.now() - held > 1500) {
+        const k = KEYS[Math.floor(Math.random() * KEYS.length)];
+        // Pick from the other options only, so it never "changes" to itself.
+        let i = Math.floor(Math.random() * (slots[k].length - 1));
+        if (i >= at[k]) i += 1;
+        show(k, i);
+      }
+      this._words = setTimeout(tick, 2500 + Math.random() * 500);
+    };
+    const begin = () => {
+      if (!loaderGone()) { this._words = setTimeout(begin, 250); return; }
+      this._words = setTimeout(tick, 2500 + Math.random() * 500);
+    };
+    begin();
+
+    this._wordsTeardown = () => {
+      clearTimeout(this._words);
+      h1.removeEventListener('pointerenter', pause);
+      h1.removeEventListener('pointerleave', resume);
+      h1.removeEventListener('focusin', pause);
+      h1.removeEventListener('focusout', resume);
+      delete h1.dataset.wired;
     };
   }
 
