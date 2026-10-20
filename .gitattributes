@@ -1,0 +1,11 @@
+# Vendored third-party code must stay byte-for-byte what it replaced, or the
+# SRI hashes in support.js no longer describe it. core.autocrlf would rewrite
+# the line endings on checkout, so these are excluded from eol conversion.
+vendor/*.js -text
+
+# Binary assets: never touch.
+*.woff2 -text
+*.webp -text
+*.png  -text
+*.jpg  -text
+*.gif  -text
