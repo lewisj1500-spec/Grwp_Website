@@ -10,7 +10,7 @@ Static site — no build step.
 
 ## Files
 - `index.html` — landing page
-- `how-it-works.html` — How it works
+- `website-privacy.html`, `website-terms.html` — legal pages
 - `assets/` — photos, logos, annotations, intro clip, icons
 - `_ds/` — Grwp design system (tokens, styles, components)
 - `support.js`, `image-slot.js`, `grwp-map.js` — runtime
