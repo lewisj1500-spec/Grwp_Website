@@ -145,7 +145,7 @@ window.__resources = {
   @keyframes grwpSwayLs { 0%, 100% { transform: rotate(-0.7deg); } 50% { transform: rotate(0.8deg); } }
   @keyframes grwpSwayRs { 0%, 100% { transform: rotate(0.7deg); }  50% { transform: rotate(-0.8deg); } }
 
-  .grwp-hero { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto minmax(380px,1fr) 37.8vw; background: #F6F2EA; font-family: "Satoshi", system-ui, sans-serif; color: #13231C; }
+  .grwp-hero { position: relative; z-index: 2; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto minmax(430px,1fr) 37.8vw; background: #F6F2EA; font-family: "Satoshi", system-ui, sans-serif; color: #13231C; }
   .grwp-hero img { display: block; }
 
   /* sky (moves with the river) */
@@ -241,6 +241,13 @@ window.__resources = {
 
   /* river + railing band at the bottom of the hero */
   .grwp-band { position: absolute; left: 0; right: 0; bottom: 0; height: 37.8vw; z-index: 5; overflow: hidden; pointer-events: none; }
+  /* The design's own sizing, restored. Everything here is driven by the
+     viewport WIDTH, so the river, the railing and the band itself always keep
+     the same proportions to one another and nothing is ever cropped into:
+     the band is 37.8vw, the art 40vw, so only the top 2.2vw - empty sky - is
+     ever clipped. The vh caps and object-fit crops that replaced this existed
+     only to force the hero into exactly 100vh, and that is what was cutting
+     the roofline and the railing. */
   .grwp-band-art { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; aspect-ratio: 100/40; }
   .grwp-band-art img { position: absolute; left: 0; width: 100%; height: auto; }
   .grwp-river { bottom: 19.5%; will-change: transform; }
@@ -277,11 +284,15 @@ window.__resources = {
        the river does. At 1024x800 the headline is capped by WIDTH at 55.9px,
        and this is the band height that lets it actually reach that rather
        than being squeezed below it. The skyline stays uncut. */
-    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, 28vh); }
-    .grwp-band { height: min(37.8vw, 28vh); }
-    .grwp-band-art { height: 100%; aspect-ratio: auto; }
-    .grwp-band-art .grwp-river { bottom: 19.5%; }
-    .grwp-band-art .grwp-fence { bottom: -5.8%; }
+    /* min-height, not height: the hero grows when the art and the copy need
+       more room than one screen, instead of squeezing them. */
+    .grwp-hero { min-height: 100vh; height: auto; grid-template-rows: auto minmax(430px,1fr) 37.8vw; }
+    .grwp-band { height: 37.8vw; }
+    /* 32cqh of top padding was sized for the design's smaller copy; with the
+       copy 30% larger it no longer fits the row and the guard ends up
+       shrinking the type instead. The drop does this job now. */
+    .grwp-head-inner { padding-top: min(32cqh, 8px); }
+
   }
 
   /* Landscape only. 32cqh is a third of the headline row: fine on the tall row
@@ -302,25 +313,6 @@ window.__resources = {
       -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
               mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); }
 
-    /* The band's two plates are 3.3:1 and 4.1:1, so at this aspect they are
-       far taller than the band and one buries the other - at 1920x725 the
-       fence alone is 578px against a 333px band and the river never shows.
-       Crop them instead, each keeping the end that matters: the river its top
-       (sky and skyline), the fence its bottom (railing and wall). The
-       percentages are the design's own proportions against the band, so where
-       the band is its natural height the boxes match the images' aspect and
-       cover crops nothing.
-
-       Both cuts are then softened. The river's own sky would otherwise meet
-       the page sky at a hard line, and the fence's top 40% is empty only in
-       the middle - at the edges the bushes run right to it, so a straight cut
-       slices through them. */
-    .grwp-band-art .grwp-river { height: 86%; bottom: 7%; object-fit: cover; object-position: 50% 0%;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%);
-              mask-image: linear-gradient(to bottom, transparent 0, #000 8%); }
-    .grwp-band-art .grwp-fence { height: 97%; bottom: -24%; object-fit: cover; object-position: 50% 100%;
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
-              mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
   }
 
   /* ── HERO on phones ─────────────────────────────────────────────
@@ -365,7 +357,7 @@ window.__resources = {
        peeked in. lvh is the collapsed height, kept as a floor so this can
        never come in under a full screen whatever the chrome is doing. */
     .grwp-hero { min-height: max(120svh, 100lvh); }
-    .grwp-hero { grid-template-rows: auto minmax(300px,1fr) 60vw; }
+    .grwp-hero { grid-template-rows: auto minmax(540px,1fr) 79vw; }
 
     /* Each foliage plate carries its leaves on its own side of an otherwise
        empty frame, so widening the frame slides them off the edge and opens a
@@ -383,7 +375,7 @@ window.__resources = {
        slices straight through the skyline and the page sky shows above the
        cut. 210% wide at 100/40 is 84vw tall; 79vw keeps the design's own
        slim crop off the top and nothing more. */
-    .grwp-band { height: 60vw; }
+    .grwp-band { height: 79vw; }
     .grwp-band-art { left: -55%; right: auto; width: 210%; }
 
     /* 11vw puts the sticker at 43px on a 390px screen, which is a smudge. */
@@ -399,8 +391,8 @@ window.__resources = {
      cluster is five stacked elements and simply does not fit next to a 40vw
      band. Everything steps down together rather than the headline alone. */
   @media (max-width: 760px) and (max-height: 720px) {
-    .grwp-hero { grid-template-rows: auto minmax(260px,1fr) 48vw; }
-    .grwp-band { height: 48vw; }
+    .grwp-hero { grid-template-rows: auto minmax(470px,1fr) 62vw; }
+    .grwp-band { height: 62vw; }
     /* A short window onto art this wide crops away the skyline and leaves
        nothing but water. Pull the panorama back so the city fits the window. */
     .grwp-band-art { left: -32.5%; width: 165%; }
