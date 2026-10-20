@@ -227,13 +227,22 @@
      starts cutting the skyline. That is the floor; above it the band keeps
      the design's own 37.8vw wherever it fits, which is every tablet. ── */
   @media (min-width: 761px) and (min-height: 700px) {
-    /* The band's floor is only 32.2vw while the river sits 19.5% up the art.
-       Slide the river most of the way down and the floor becomes the river
-       image's own height, 24.34vw, which lets the band shrink with the screen
-       instead of the width alone. What is lost is open water, not skyline. */
-    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, max(27vw, 42vh)); }
-    .grwp-band { height: min(37.8vw, max(27vw, 42vh)); }
-    .grwp-river { bottom: 4%; }
+    /* The band was sized off viewport WIDTH, so on a wide short screen it ate
+       71% of the height. Drive it off the height instead and let the plates
+       CROP vertically rather than scale: each keeps its full width and loses
+       depth, which is what an aspect this long needs.
+
+       The plates keep their natural proportions and the band's own
+       overflow:hidden does the trimming, so nothing is ever scaled or
+       squashed. The art box becomes the band rather than a 100/40 slab.
+
+       Here the plates keep their natural proportions; landscape crops them
+       (below). The art box becomes the band rather than a 100/40 slab. */
+    .grwp-hero { height: 100vh; grid-template-rows: auto minmax(0,1fr) min(37.8vw, 46vh); }
+    .grwp-band { height: min(37.8vw, 46vh); }
+    .grwp-band-art { height: 100%; aspect-ratio: auto; }
+    .grwp-band-art .grwp-river { bottom: 19.5%; }
+    .grwp-band-art .grwp-fence { bottom: -5.8%; }
   }
 
   /* Landscape only. 32cqh is a third of the headline row: fine on the tall row
@@ -243,16 +252,37 @@
     .grwp-head-inner { padding-top: min(32cqh, 8px); }
     .grwp-h1 { font-size: min(92px, 6.4vw, 8.4cqh); }
 
-    /* Both foliage layers are sized off viewport WIDTH, so on a short wide
-       laptop they hang a third of the way down the screen and meet the band
-       in the middle. Cap them against the HEIGHT instead: the plates are
-       3:1, so a width cap of Nvh lands the leaves at about N/3 vh deep. */
+    /* The canopy is the one layer that must NOT keep its full length here.
+       Its leaves run right across the frame, so at full width on a short
+       screen they reach into the middle and sit on the tagline and headline.
+       Scaling it pulls them back into their own corners and leaves the centre
+       clear, which is what this composition needs. The plates are 3:1, so a
+       width cap of Nvh lands them about N/3 deep. */
     .grwp-canopy { --canopy: min(100%, 78vh); }
-    /* The oak cannot shrink the same way: each half windows one end of a
-       single frame, so anything under 200% makes both halves show the WHOLE
-       frame and its far corner leaks into the middle. Lift it instead, so it
-       hangs less far down without changing size. */
-    .grwp-front { top: min(-2vw, -7vh); }
+    .grwp-front { top: min(-2vw, -6vh); }
+    .grwp-front-row > div { max-height: 42vh;
+      -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent 100%);
+              mask-image: linear-gradient(to bottom, #000 80%, transparent 100%); }
+
+    /* The band's two plates are 3.3:1 and 4.1:1, so at this aspect they are
+       far taller than the band and one buries the other - at 1920x725 the
+       fence alone is 578px against a 333px band and the river never shows.
+       Crop them instead, each keeping the end that matters: the river its top
+       (sky and skyline), the fence its bottom (railing and wall). The
+       percentages are the design's own proportions against the band, so where
+       the band is its natural height the boxes match the images' aspect and
+       cover crops nothing.
+
+       Both cuts are then softened. The river's own sky would otherwise meet
+       the page sky at a hard line, and the fence's top 40% is empty only in
+       the middle - at the edges the bushes run right to it, so a straight cut
+       slices through them. */
+    .grwp-band-art .grwp-river { height: 86%; bottom: 7%; object-fit: cover; object-position: 50% 0%;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%);
+              mask-image: linear-gradient(to bottom, transparent 0, #000 8%); }
+    .grwp-band-art .grwp-fence { height: 97%; bottom: -24%; object-fit: cover; object-position: 50% 100%;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
+              mask-image: linear-gradient(to bottom, transparent 0, #000 9%); }
   }
 
   /* ── HERO on phones ─────────────────────────────────────────────
