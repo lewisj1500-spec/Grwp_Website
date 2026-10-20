@@ -200,6 +200,14 @@ window.__resources = {
      width of its own - it is exactly its word plus padding - and its width is
      animated only while a word is being swapped. */
   .grwp-line { display: block; white-space: nowrap; }
+  /* Line 2 is one nowrap run on desktop. On a phone its two parts become
+     their own lines, so the sentence is three short lines instead of two
+     long ones - which is what lets the type stay a readable size. */
+  .grwp-part { display: inline; }
+  @media (max-width: 760px) {
+    .grwp-rest { white-space: normal; }
+    .grwp-part { display: block; white-space: nowrap; }
+  }
   .grwp-pill { display: inline-flex; align-items: baseline; gap: .2em; padding: .06em .3em; border: 0; border-radius: .4em; box-sizing: border-box; color: #13231C; background-clip: padding-box; font: inherit; letter-spacing: inherit; line-height: 1; cursor: pointer; vertical-align: baseline; transition: width 300ms cubic-bezier(.2,.8,.2,1); }
   .grwp-pill:hover { filter: brightness(.95); }
   .grwp-pill:focus-visible { outline: 3px solid #13231C; outline-offset: 2px; }
@@ -709,7 +717,7 @@ window.__resources = {
       <div class="grwp-head-inner">
         <div class="grwp-head-col">
           <div class="grwp-eyebrow">EVERY PLAN STARTS SOMEWHERE</div>
-          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho."><span class="grwp-line">This Saturday, <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-line">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button> in <button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></h1>
+          <h1 class="grwp-h1" data-grwp="headline" aria-label="This Saturday, the family want brunch in Soho."><span class="grwp-line">This Saturday, <button class="grwp-pill" type="button" data-pill="who" data-words="the family|the flatmates|the uni lot|the work crew|the cousins|the book club" aria-label="Change who" title="Tap to change" style="background:#E3B465"><span class="w" aria-hidden="true">the family</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-line grwp-rest"><span class="grwp-part">want <button class="grwp-pill" type="button" data-pill="what" data-words="brunch|a Sunday roast|a pub quiz|crazy golf|a picnic|ramen|a gallery trip|live jazz" aria-label="Change what" title="Tap to change" style="background:#E8623F"><span class="w" aria-hidden="true">brunch</span><span class="i" aria-hidden="true">↻</span></button></span><span class="grwp-part"> in <button class="grwp-pill" type="button" data-pill="where" data-words="Soho|Peckham|Hackney|Brixton|Borough|Clapham|Camden|Greenwich" aria-label="Change where" title="Tap to change" style="background:#9AAA77"><span class="w" aria-hidden="true">Soho</span><span class="i" aria-hidden="true">↻</span></button>.</span></span></h1>
           <p class="grwp-sub">Grwp finds the place that works for everyone.</p>
           <div class="grwp-signup">
             <input id="email-top" type="email" placeholder="you@email.com" aria-label="Email address" />
@@ -1467,10 +1475,15 @@ class Component extends DCLogic {
       const gl = ghost.querySelectorAll('.grwp-line');
       const gw = (k) => ghost.querySelector('[data-pill="' + k + '"] .w');
 
+      // On a phone line 2 is split into its own blocks, so the unit that has
+      // to fit is the widest part, not the whole run. scrollWidth gives that
+      // either way, because the ghost is shrink-to-fit.
+      const runWidth = (el) => Math.max(el.scrollWidth, el.getBoundingClientRect().width);
+
       let w1 = 0, worstWho = lists.who[0];
       lists.who.forEach((o) => {
         gw('who').textContent = o;
-        const w = gl[0].getBoundingClientRect().width;
+        const w = runWidth(gl[0]);
         if (w > w1) { w1 = w; worstWho = o; }
       });
       let w2 = 0, worstWhat = lists.what[0], worstWhere = lists.where[0];
@@ -1478,7 +1491,7 @@ class Component extends DCLogic {
         gw('what').textContent = a;
         lists.where.forEach((b) => {
           gw('where').textContent = b;
-          const w = gl[1].getBoundingClientRect().width;
+          const w = runWidth(gl[1]);
           if (w > w2) { w2 = w; worstWhat = a; worstWhere = b; }
         });
       });
@@ -1496,8 +1509,7 @@ class Component extends DCLogic {
       gw('where').textContent = worstWhere;
       for (let pass = 0; pass < 4; pass++) {
         ghost.style.fontSize = size + 'px';
-        const got = Math.max(gl[0].getBoundingClientRect().width,
-                             gl[1].getBoundingClientRect().width);
+        const got = Math.max(runWidth(gl[0]), runWidth(gl[1]));
         if (got <= avail) break;
         size = Math.min(MAX, size * (avail / got) - 0.05);
       }
