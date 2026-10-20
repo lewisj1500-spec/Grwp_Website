@@ -195,9 +195,12 @@ window.__resources = {
 
   /* headline cluster: centred block, left-aligned contents */
   .grwp-head { position: relative; z-index: 5; min-height: 0; container-type: size; will-change: transform, opacity; }
-  .grwp-head-inner { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32cqh 24px 0; box-sizing: border-box; }
+  /* One unit for the whole cluster: the smallest of 1% of the screen width,
+     1.5% of the screen height, or 3.6% of the headline row itself (so the
+     cluster always fits above the river). cqh resolves against .grwp-head. */
+  .grwp-head-inner { --k: min(1vw, 1.5vh, 3.6cqh); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: calc(2 * var(--k)) 24px 0; box-sizing: border-box; }
   .grwp-head-col { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: min(1075px, 100%); max-width: 100%; padding: 0; }
-  .grwp-eyebrow { font-size: 15.6px; font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: 2.2cqh; }
+  .grwp-eyebrow { font-size: clamp(12px, calc(0.8 * var(--k)), 18px); font-weight: 700; letter-spacing: .18em; color: #4E5A54; margin-bottom: max(10px, calc(1.2 * var(--k))); }
 
   /* Cycling words. The sentence is two block lines, each nowrap, so it can
      only ever be two lines; wireWords() sizes the font to whichever
@@ -232,14 +235,14 @@ window.__resources = {
      nowrap lines cannot overflow if the script never runs. */
   .grwp-h1 { margin: 0; font-family: "Satoshi", system-ui, sans-serif; font-variation-settings: normal; word-spacing: normal; font-weight: 900; font-size: min(76px, 3.2vw); line-height: 1.23; letter-spacing: -.04em; }
   .grwp-h1 em { font-style: normal; color: #6E8A5E; }
-  .grwp-sub { margin: 3cqh 0 0; font-size: max(18.2px, min(27.3px, 2.08vw, 5.46cqh)); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
-  .grwp-signup { margin-top: 3.8cqh; display: flex; align-items: center; gap: 8px; width: min(max(546px, 26vw), 620px, 100%); padding: 8px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
-  .grwp-signup input { flex: 1; min-width: 0; height: max(52px, min(62px, 13cqh)); border: 0; outline: 0; background: transparent; padding: 0 23px; font: 500 20.8px "Satoshi", system-ui, sans-serif; color: #13231C; }
-  .grwp-signup button { flex-shrink: 0; height: max(52px, min(62px, 13cqh)); padding: 0 29px; border: 0; border-radius: 999px; background: #13231C; color: #F6F2EA; font: 700 19.5px "Satoshi", system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 140ms; }
+  .grwp-sub { margin: max(14px, calc(1.6 * var(--k))) 0 0; font-size: clamp(15px, calc(1.3 * var(--k)), 28px); line-height: 1.45; color: #13231C; max-width: 46ch; text-wrap: pretty; }
+  .grwp-signup { margin-top: max(18px, calc(2.2 * var(--k))); display: flex; align-items: center; gap: 8px; width: min(clamp(300px, calc(32 * var(--k)), 680px), 100%); padding: 8px; border-radius: 999px; background: #FFFDF9; border: 1.5px solid rgba(19,35,28,.14); box-shadow: 0 6px 22px rgba(19,35,28,.10); box-sizing: border-box; }
+  .grwp-signup input { flex: 1; min-width: 0; height: clamp(44px, calc(3.2 * var(--k)), 68px); border: 0; outline: 0; background: transparent; padding: 0 23px; font: 500 clamp(15px, calc(1.05 * var(--k)), 22px) "Satoshi", system-ui, sans-serif; color: #13231C; }
+  .grwp-signup button { flex-shrink: 0; height: clamp(44px, calc(3.2 * var(--k)), 68px); padding: 0 clamp(20px, calc(1.5 * var(--k)), 32px); border: 0; border-radius: 999px; background: #13231C; color: #F6F2EA; font: 700 clamp(15px, calc(1 * var(--k)), 21px) "Satoshi", system-ui, sans-serif; cursor: pointer; white-space: nowrap; transition: background-color 140ms; }
   .grwp-signup button:hover { background: #2E4A3F; }
   /* Not in the design file: the consent line that has to sit under the field,
      and this page's Formspree confirmation, restyled for the new cluster. */
-  .grwp-consent { margin: 1.2cqh 0 0; font-size: 16.25px; line-height: 1.5; color: rgba(19,35,28,.74); }
+  .grwp-consent { margin: max(8px, calc(0.8 * var(--k))) 0 0; font-size: clamp(12px, calc(0.8 * var(--k)), 16px); line-height: 1.5; color: rgba(19,35,28,.74); }
   .grwp-consent a { color: #13231C; text-decoration: underline; text-underline-offset: 2px; }
 
   .grwp-sent { margin: 2.4cqh 0 0; font-size: 13px; font-weight: 700; color: #2E4A3F; }
@@ -300,25 +303,9 @@ window.__resources = {
        crop rather than clip, so nothing is cut either way. */
     .grwp-hero { height: 100vh; min-height: 0; grid-template-rows: auto minmax(0,1fr) min(37.8vw, 56vh, max(26vh, calc(48vh - 190px))); }
     .grwp-band { height: min(37.8vw, 56vh, max(26vh, calc(48vh - 190px))); }
-    /* 32cqh of top padding was sized for the design's smaller copy; with the
-       copy 30% larger it no longer fits the row and the guard ends up
-       shrinking the type instead. The drop does this job now. */
-    .grwp-head-inner { padding-top: min(32cqh, 8px); }
 
   }
 
-  /* Landscape only. 32cqh is a third of the headline row: fine on the tall row
-     the design assumes, crippling once that row is squeezed to fit one screen.
-     Portrait tablets have the room, so they keep the design's spacing. */
-  @media (min-width: 761px) and (min-height: 700px) and (min-aspect-ratio: 4/3) {
-    .grwp-head-inner { padding-top: min(32cqh, 8px); }
-  }
-
-  /* Past 2:1 the copy column opens up so the fitted headline can grow with
-     the screen instead of staying pinned to its 1075px cap. */
-  @media (min-aspect-ratio: 2/1) {
-    .grwp-head-col { width: min(1700px, 100%); }
-  }
 
   /* ── HERO on phones ─────────────────────────────────────────────
      Not in the design file, which has no mobile treatment. Its fluid sizing
@@ -1470,7 +1457,16 @@ class Component extends DCLogic {
     /* Fit the type to the WIDEST combination rather than the one on screen,
        so no combination can overflow its line. Measured on a hidden clone at
        a reference size, which keeps it independent of the current size. */
-    const REF = 100, MAX = 110;   // past 2:1 the column opens up and the headline grows into it
+    const REF = 100;
+    /* Same unit as the CSS --k, in px. On desktop the headline is 4.6k
+       (34-150px); fit-to-width below can only make it smaller. Phones keep
+       the old 110px cap and their own three-line layout. */
+    const headMax = () => {
+      if (window.innerWidth <= 760) return 110;
+      const row = h1.closest('.grwp-head').clientHeight;
+      const k = Math.min(window.innerWidth / 100, window.innerHeight * 0.015, row * 0.036);
+      return Math.max(34, Math.min(150, 4.6 * k));
+    };
     const fit = () => {
       const col = h1.parentElement;
       const ccs = getComputedStyle(col);
@@ -1508,6 +1504,7 @@ class Component extends DCLogic {
 
       const widest = Math.max(w1, w2);
       if (!(widest > 0)) { ghost.remove(); return; }
+      const MAX = headMax();
       let size = Math.min(MAX, REF * (avail / widest));
 
       /* Glyph advances are rounded at the size they are actually drawn, so
@@ -1544,13 +1541,7 @@ class Component extends DCLogic {
           h1.style.fontSize = size + 'px';
         }
 
-        /* Sit the cluster 20% of the headline row lower than centred, but
-           never closer than 8px to the band - the band paints over the copy,
-           so any overlap would simply hide it. */
-        const row = h1.closest('.grwp-head').getBoundingClientRect().height;
-        const room = band.getBoundingClientRect().top - col.getBoundingClientRect().bottom - 8;
-        const drop = Math.max(0, Math.min(row * 0.38, room));
-        col.style.transform = drop ? 'translateY(' + drop + 'px)' : '';
+        col.style.transform = '';   // centred; spacing comes from --k now
       }
     };
     fit();
